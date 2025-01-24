@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>裁剪與排列工具 / 聲骸配置示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #controls {
+            margin-bottom: 20px;
+        }
+
+        #canvas {
+            border: 1px solid #ccc;
+            display: block;
+            margin: 10px 0;
+            width: 100%;
+            height: auto;
+        }
+
+        #outputCanvas {
+            border: 1px solid #ccc;
+            display: block;
+            margin: 10px 0;
+            width: 50%;
+            height: auto;
+        }
+
+        .container {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 第一部分：裁剪與排列工具 -->
+    <h1>方便GoogleKeep圖片轉文字</h1>
+    <div id="controls">
+        <label for="upload">取得圖片：</label>
+        <input type="file" id="upload" accept="image/*">
+    </div>
+    <canvas id="outputCanvas"></canvas>
+    <script>
+        const uploadInput = document.getElementById('upload');
+        const outputCanvas = document.getElementById('outputCanvas');
+        const ctx = outputCanvas.getContext('2d', { willReadFrequently: true });
+
+        uploadInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const img = new Image();
+                const reader = new FileReader();
+
+                reader.onload = (e) => {
+                    img.src = e.target.result;
+                };
+
+                reader.readAsDataURL(file);
+
+                img.onload = () => {
+                    outputCanvas.width = img.width;
+                    outputCanvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                    const cropRanges = [
+                        { xStart: 190, xEnd: 370, yStart: 720, yEnd: 750 },
+                        { xStart: 65, xEnd: 370, yStart: 880, yEnd: 910 },
+                        { xStart: 65, xEnd: 370, yStart: 915, yEnd: 945 },
+                        { xStart: 65, xEnd: 370, yStart: 950, yEnd: 980 },
+                        { xStart: 65, xEnd: 370, yStart: 985, yEnd: 1015 },
+                        { xStart: 65, xEnd: 370, yStart: 1020, yEnd: 1050 },
+
+                        { xStart: 570, xEnd: 750, yStart: 720, yEnd: 750 },
+                        { xStart: 445, xEnd: 750, yStart: 880, yEnd: 910 },
+                        { xStart: 445, xEnd: 750, yStart: 915, yEnd: 945 },
+                        { xStart: 445, xEnd: 750, yStart: 950, yEnd: 980 },
+                        { xStart: 445, xEnd: 750, yStart: 985, yEnd: 1015 },
+                        { xStart: 445, xEnd: 750, yStart: 1020, yEnd: 1050 },
+
+                        { xStart: 945, xEnd: 1125, yStart: 720, yEnd: 750 },
+                        { xStart: 820, xEnd: 1125, yStart: 880, yEnd: 910 },
+                        { xStart: 820, xEnd: 1125, yStart: 915, yEnd: 945 },
+                        { xStart: 820, xEnd: 1125, yStart: 950, yEnd: 980 },
+                        { xStart: 820, xEnd: 1125, yStart: 985, yEnd: 1015 },
+                        { xStart: 820, xEnd: 1125, yStart: 1020, yEnd: 1050 },
+
+                        { xStart: 1315, xEnd: 1495, yStart: 720, yEnd: 750 },
+                        { xStart: 1190, xEnd: 1495, yStart: 880, yEnd: 910 },
+                        { xStart: 1190, xEnd: 1495, yStart: 915, yEnd: 945 },
+                        { xStart: 1190, xEnd: 1495, yStart: 950, yEnd: 980 },
+                        { xStart: 1190, xEnd: 1495, yStart: 985, yEnd: 1015 },
+                        { xStart: 1190, xEnd: 1495, yStart: 1020, yEnd: 1050 },
+
+                        { xStart: 1690, xEnd: 1870, yStart: 720, yEnd: 750 },
+                        { xStart: 1565, xEnd: 1870, yStart: 880, yEnd: 910 },
+                        { xStart: 1565, xEnd: 1870, yStart: 915, yEnd: 945 },
+                        { xStart: 1565, xEnd: 1870, yStart: 950, yEnd: 980 },
+                        { xStart: 1565, xEnd: 1870, yStart: 985, yEnd: 1015 },
+                        { xStart: 1565, xEnd: 1870, yStart: 1020, yEnd: 1050 }
+                    ];
+
+                    const blocksPerRow = 6;
+                    const gap = 80;
+                    const rowGap = 25;
+                    let totalWidth = 0;
+                    let totalHeight = 0;
+
+                    const croppedDataArray = cropRanges.map((range, index) => {
+                        const cropWidth = range.xEnd - range.xStart;
+                        const cropHeight = range.yEnd - range.yStart;
+                        const row = Math.floor(index / blocksPerRow);
+                        const col = index % blocksPerRow;
+
+                        totalWidth = Math.max(totalWidth, blocksPerRow * (cropWidth + gap) - gap);
+                        totalHeight = Math.max(totalHeight, (row + 1) * (cropHeight + rowGap) - rowGap);
+
+                        const croppedImageData = ctx.getImageData(range.xStart, range.yStart, cropWidth, cropHeight);
+                        return { data: croppedImageData, width: cropWidth, height: cropHeight, row, col };
+                    });
+
+                    outputCanvas.width = totalWidth;
+                    outputCanvas.height = totalHeight;
+                    ctx.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
+
+                    croppedDataArray.forEach(({ data, width, height, row, col }) => {
+                        const x = col * (width + gap);
+                        const y = row * (height + rowGap);
+
+                        const tileWidth = Math.max(width, gap);
+                        const tileHeight = Math.max(height, rowGap);
+
+                        ctx.putImageData(data, x, y, 0, 0, tileWidth, tileHeight);
+                    });
+                };
+            }
+        });
+    </script>
+
+    <!-- 第二部分：聲骸配置示例 -->
+    <h1>匯入取代角色的JSON檔案</h1>
+    <input type="file" id="fileInput" accept=".json">
+    <p>1. 選擇 JSON 檔案後，將會動態添加角色名稱。</p>
+
+    <div class="container">
+        <label for="dynamicDropdown">2. 替換聲骸角色：</label>
+        <select id="dynamicDropdown">
+            <option value="">請選擇...</option>
+        </select>
+    </div>
+
+    <div class="container">
+        <label for="fixedDropdown">3. 聲骸Cost配置：</label>
+        <select id="fixedDropdown">
+            <option value="">請選擇...</option>
+            <option value="43311">43311</option>
+            <option value="44111">44111</option>
+            <option value="41111">41111</option>
+        </select>
+    </div>
+
+    <div class="container">
+        <label for="textInput">4. 聲骸主副詞條：</label>
+        <textarea id="textInput" placeholder="請輸入聲骸主副詞條" disabled></textarea>
+    </div>
+
+    <div class="container">
+        <button id="saveButton" disabled>保存至新 JSON 文件</button>
+    </div>
+
+    <script>
+        const lookupTable = {
+            "4": [
+                { "zhHant": "暴擊", "zhHans": "暴击22%" },
+                { "zhHant": "暴擊傷害", "zhHans": "暴伤44%" },
+                { "zhHant": "生命", "zhHans": "生命33%" },
+                { "zhHant": "攻擊", "zhHans": "攻击力33%" },
+                { "zhHant": "防禦", "zhHans": "防御41.8%" },
+                { "zhHant": "治療效果加成", "zhHans": "治疗26.4%" }
+            ],
+            "3": [
+                { "zhHant": "衍射傷害加成", "zhHans": "属伤30%" },
+                { "zhHant": "湮滅傷害加成", "zhHans": "属伤30%" },
+                { "zhHant": "熱熔傷害加成", "zhHans": "属伤30%" },
+                { "zhHant": "冷凝傷害加成", "zhHans": "属伤30%" },
+                { "zhHant": "導電傷害加成", "zhHans": "属伤30%" },
+                { "zhHant": "氣動傷害加成", "zhHans": "属伤30%" },
+                { "zhHant": "攻擊", "zhHans": "攻击力30%" },
+                { "zhHant": "生命", "zhHans": "生命30%" },
+                { "zhHant": "共鳴效率", "zhHans": "共鸣效率32%" },
+                { "zhHant": "防禦", "zhHans": "防御38%" }
+            ],
+            "1": [
+                { "zhHant": "攻擊", "zhHans": "攻击力18%" },
+                { "zhHant": "生命", "zhHans": "生命22.8%" },
+                { "zhHant": "防禦", "zhHans": "防御18%" }
+            ]
+        };
+
+        const additionalPropertyData = [
+            { "zhHant": "暴擊", "zhHans": "暴击" },
+            { "zhHant": "暴擊傷害", "zhHans": "暴伤" },
+            { "zhHant": "攻擊", "zhHans": "攻击" },
+            { "zhHant": "防禦", "zhHans": "防御" },
+            { "zhHant": "生命", "zhHans": "生命" },
+            { "zhHant": "共鳴效率", "zhHans": "共鸣效率" },
+            { "zhHant": "普攻傷害加成", "zhHans": "普攻伤害" },
+            { "zhHant": "重擊傷害加成", "zhHans": "重击伤害" },
+            { "zhHant": "共鳴技能傷害加成", "zhHans": "技能伤害" },
+            { "zhHant": "共鳴解放傷害加成", "zhHans": "解放伤害" }
+        ];
+
+        let loadedData = null;
+
+        document.getElementById("fileInput").addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    try {
+                        loadedData = JSON.parse(e.target.result);
+                        populateDynamicDropdown(loadedData);
+                    } catch (error) {
+                        console.error("JSON 格式錯誤:", error);
+                        alert("無法解析 JSON 檔案，請檢查檔案格式。");
+                    }
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        function populateDynamicDropdown(data) {
+            const dropdown = document.getElementById("dynamicDropdown");
+            dropdown.innerHTML = '<option value="">請選擇...</option>';
+
+            if (data.role && Array.isArray(data.role)) {
+                data.role.forEach(role => {
+                    if (role.name) {
+                        const option = document.createElement("option");
+                        option.value = role.name;
+                        option.textContent = role.name;
+                        dropdown.appendChild(option);
+                    }
+                });
+            }
+        }
+
+        document.getElementById("fixedDropdown").addEventListener("change", function () {
+            const textInput = document.getElementById("textInput");
+            const value = this.value;
+
+            if (value) {
+                textInput.disabled = false;
+            } else {
+                textInput.disabled = true;
+                textInput.value = "";
+            }
+        });
+
+
+        document.getElementById("textInput").addEventListener("input", function () {
+            document.getElementById("saveButton").disabled = !this.value.trim();
+        });
+
+        document.getElementById("saveButton").addEventListener("click", function () {
+            const textInput = document.getElementById("textInput").value.trim();
+            if (!textInput) {
+                alert("請先輸入聲骸主副詞條");
+                return;
+            }
+
+            if (!loadedData) {
+                alert("請先上傳一個有效的 JSON 檔案");
+                return;
+            }
+
+            const selectedRoleName = document.getElementById("dynamicDropdown").value;
+            const selectedRole = loadedData.role.find(role => role.name === selectedRoleName);
+            const selectedConfig = document.getElementById("fixedDropdown").value;
+
+            if (selectedRole) {
+                const costList = selectedRole.costList;
+
+                if (!costList || costList.length === 0) {
+                    alert("CostList 資料不存在");
+                    return;
+                }
+
+                costList.forEach(cost => cost.propertyList = []); // 清空 propertyList
+                const inputLines = textInput.split("\n").map(line => line.trim()).filter(line => line.length > 0);
+                let lineIndex = 0;
+
+                costList.forEach((cost, idx) => {
+                    if (lineIndex >= inputLines.length) return;
+
+                    const lookupKey = selectedConfig[idx];
+                    const lookupData = lookupTable[lookupKey];
+
+                    // 填入 mainAtrri
+                    cost.mainAtrri = inputLines[lineIndex];
+                    if (lookupData) {
+                        const matched = lookupData.find(item => item.zhHant === cost.mainAtrri);
+                        if (matched) cost.mainAtrri = matched.zhHans;
+                    }
+
+                    // 查詢額外的不可翻譯資料
+                    const additionalMatched = additionalPropertyData.find(item => item.zhHant === cost.mainAtrri);
+                    if (additionalMatched) {
+                        cost.mainAtrri = additionalMatched.zhHans;
+                    }
+
+                    lineIndex++;
+
+                    // 填入 propertyList
+                    while (lineIndex < inputLines.length && cost.propertyList.length < 5) {
+                        const property = inputLines[lineIndex];
+                        const value = inputLines[lineIndex + 1];
+                        if (property && value) {
+                            cost.propertyList.push({ property, value });
+                            lineIndex += 2;
+                        } else {
+                            break;
+                        }
+                    }
+
+                    // 替換 property 資料
+                    cost.propertyList.forEach(propertyItem => {
+                        const additionalMatch = additionalPropertyData.find(item => item.zhHant === propertyItem.property);
+                        if (additionalMatch) {
+                            let newProperty = additionalMatch.zhHans;
+
+                            // 如果是"攻擊"或"防禦"，根據value中是否包含百分號來進行處理
+                            if (propertyItem.property === "攻擊" || propertyItem.property === "防禦" || propertyItem.property === "生命") {
+                                if (propertyItem.value.includes("%")) {
+                                    newProperty = "大" + newProperty;  // 加"大"
+                                } else {
+                                    newProperty = "小" + newProperty;  // 加"小"
+                                }
+                            }
+
+                            propertyItem.property = newProperty; // 更新property
+                        }
+                    });
+                });
+
+
+                if (lineIndex < inputLines.length) {
+                    alert("部分資料未能完全填充到 CostList，請確認是否需要增加 CostList 項目。");
+                }
+
+                const blob = new Blob([JSON.stringify(loadedData, null, 2)], { type: 'application/json' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'mcdata.json';
+                link.click();
+            } else {
+                alert("請選擇一個角色");
+            }
+        });
+    </script>
+</body>
+</html>
