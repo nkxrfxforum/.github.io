@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>裁剪與排列工具 / 聲骸配置示例</title>
+    <title>Keep圖片文字匯入Json</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -37,10 +37,11 @@
 </head>
 <body>
     <!-- 第一部分：裁剪與排列工具 -->
-    <h1>方便GoogleKeep圖片轉文字</h1>
+    <h1>GoogleKeep圖片轉文字</h1>
     <div id="controls">
         <label for="upload">取得圖片：</label>
         <input type="file" id="upload" accept="image/*">
+        <a href="https://keep.google.com/" target="_blank">GoogleKeep</a>
     </div>
     <canvas id="outputCanvas"></canvas>
     <script>
@@ -141,6 +142,7 @@
     <!-- 第二部分：聲骸配置示例 -->
     <h1>匯入取代角色的JSON檔案</h1>
     <input type="file" id="fileInput" accept=".json">
+    <a href="http://asfaz.cn/mingchao/index.html" target="_blank">鸣潮声骸评分工具</a>
     <p>1. 選擇 JSON 檔案後，將會動態添加角色名稱。</p>
 
     <div class="container">
@@ -162,7 +164,7 @@
 
     <div class="container">
         <label for="textInput">4. 聲骸主副詞條：</label>
-        <textarea id="textInput" placeholder="請輸入聲骸主副詞條" disabled></textarea>
+        <textarea id="textInput" placeholder="GoogleKeep圖片轉換後文字" disabled></textarea>
     </div>
 
     <div class="container">
