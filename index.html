@@ -346,11 +346,6 @@
                     });
                 });
 
-
-                if (lineIndex < inputLines.length) {
-                    alert("部分資料未能完全填充到 CostList，請確認是否需要增加 CostList 項目。");
-                }
-
                 const blob = new Blob([JSON.stringify(loadedData, null, 2)], { type: 'application/json' });
                 const link = document.createElement('a');
                 link.href = URL.createObjectURL(blob);
