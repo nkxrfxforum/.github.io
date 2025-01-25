@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Keep圖片文字匯入JSON</title>
+    <title>Keep圖片文字匯入Json</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -66,35 +66,35 @@
                     outputCanvas.height = img.height;
                     ctx.drawImage(img, 0, 0);
                     const cropRanges = [
-                        { xStart: 190, xEnd: 370, yStart: 720, yEnd: 750 },
+                        { xStart: 220, xEnd: 370, yStart: 720, yEnd: 750 },
                         { xStart: 65, xEnd: 370, yStart: 880, yEnd: 910 },
                         { xStart: 65, xEnd: 370, yStart: 915, yEnd: 945 },
                         { xStart: 65, xEnd: 370, yStart: 950, yEnd: 980 },
                         { xStart: 65, xEnd: 370, yStart: 985, yEnd: 1015 },
                         { xStart: 65, xEnd: 370, yStart: 1020, yEnd: 1050 },
 
-                        { xStart: 570, xEnd: 750, yStart: 720, yEnd: 750 },
+                        { xStart: 600, xEnd: 750, yStart: 720, yEnd: 750 },
                         { xStart: 445, xEnd: 750, yStart: 880, yEnd: 910 },
                         { xStart: 445, xEnd: 750, yStart: 915, yEnd: 945 },
                         { xStart: 445, xEnd: 750, yStart: 950, yEnd: 980 },
                         { xStart: 445, xEnd: 750, yStart: 985, yEnd: 1015 },
                         { xStart: 445, xEnd: 750, yStart: 1020, yEnd: 1050 },
 
-                        { xStart: 945, xEnd: 1125, yStart: 720, yEnd: 750 },
+                        { xStart: 975, xEnd: 1125, yStart: 720, yEnd: 750 },
                         { xStart: 820, xEnd: 1125, yStart: 880, yEnd: 910 },
                         { xStart: 820, xEnd: 1125, yStart: 915, yEnd: 945 },
                         { xStart: 820, xEnd: 1125, yStart: 950, yEnd: 980 },
                         { xStart: 820, xEnd: 1125, yStart: 985, yEnd: 1015 },
                         { xStart: 820, xEnd: 1125, yStart: 1020, yEnd: 1050 },
 
-                        { xStart: 1315, xEnd: 1495, yStart: 720, yEnd: 750 },
+                        { xStart: 1345, xEnd: 1495, yStart: 720, yEnd: 750 },
                         { xStart: 1190, xEnd: 1495, yStart: 880, yEnd: 910 },
                         { xStart: 1190, xEnd: 1495, yStart: 915, yEnd: 945 },
                         { xStart: 1190, xEnd: 1495, yStart: 950, yEnd: 980 },
                         { xStart: 1190, xEnd: 1495, yStart: 985, yEnd: 1015 },
                         { xStart: 1190, xEnd: 1495, yStart: 1020, yEnd: 1050 },
 
-                        { xStart: 1690, xEnd: 1870, yStart: 720, yEnd: 750 },
+                        { xStart: 1720, xEnd: 1870, yStart: 720, yEnd: 750 },
                         { xStart: 1565, xEnd: 1870, yStart: 880, yEnd: 910 },
                         { xStart: 1565, xEnd: 1870, yStart: 915, yEnd: 945 },
                         { xStart: 1565, xEnd: 1870, yStart: 950, yEnd: 980 },
@@ -104,7 +104,7 @@
 
                     const blocksPerRow = 6;
                     const gap = 80;
-                    const rowGap = 25;
+                    const rowGap = 40;
                     let totalWidth = 0;
                     let totalHeight = 0;
 
@@ -163,6 +163,13 @@
     </div>
 
     <div class="container">
+        <label for="dynamicDropdown2">聲骸全套替換：</label>
+        <select id="dynamicDropdown2">
+            <option value="">不替換...</option>
+        </select>
+    </div>
+
+    <div class="container">
         <label for="textInput">4. 聲骸主副詞條：</label>
         <textarea id="textInput" placeholder="GoogleKeep圖片轉換後文字" disabled></textarea>
     </div>
@@ -175,7 +182,9 @@
         const lookupTable = {
             "4": [
                 { "zhHant": "暴擊", "zhHans": "暴击22%" },
+                { "zhHant": "暴繫", "zhHans": "暴击22%" },
                 { "zhHant": "暴擊傷害", "zhHans": "暴伤44%" },
+                { "zhHant": "暴繫傷害", "zhHans": "暴伤44%" },
                 { "zhHant": "生命", "zhHans": "生命33%" },
                 { "zhHant": "攻擊", "zhHans": "攻击力33%" },
                 { "zhHant": "防禦", "zhHans": "防御41.8%" },
@@ -202,7 +211,9 @@
 
         const additionalPropertyData = [
             { "zhHant": "暴擊", "zhHans": "暴击" },
+            { "zhHant": "暴繫", "zhHans": "暴击" },
             { "zhHant": "暴擊傷害", "zhHans": "暴伤" },
+            { "zhHant": "暴繫傷害", "zhHans": "暴伤" },
             { "zhHant": "攻擊", "zhHans": "攻击" },
             { "zhHant": "防禦", "zhHans": "防御" },
             { "zhHant": "生命", "zhHans": "生命" },
@@ -213,7 +224,34 @@
             { "zhHant": "共鳴解放傷害加成", "zhHans": "解放伤害" }
         ];
 
+        const costEchoData = [
+            { "zhHant": "浮星祛暗", "zhHans": "光套" },
+            { "zhHant": "熔山裂谷", "zhHans": "火套" },
+            { "zhHant": "凝夜白霜", "zhHans": "冰套" },
+            { "zhHant": "沉日劫明", "zhHans": "暗套" },
+            { "zhHant": "徹空冥雷", "zhHans": "雷套" },
+            { "zhHant": "嘯谷長風", "zhHans": "风套" },
+            { "zhHant": "隱世回光", "zhHans": "奶套" },
+            { "zhHant": "輕雲出月", "zhHans": "轻云套" },
+            { "zhHant": "不絕餘音", "zhHans": "攻击套" },
+            { "zhHant": "凌冽決斷之心", "zhHans": "凌冽套" },
+            { "zhHant": "此間永駐之光", "zhHans": "此间套" },
+            { "zhHant": "幽夜隱匿之帷", "zhHans": "幽夜套" },
+            { "zhHant": "高天共奏之曲", "zhHans": "高天套" },
+            { "zhHant": "無懼浪濤之勇", "zhHans": "无惧套" }
+        ];
+
         let loadedData = null;
+
+        const dropdown = document.getElementById('dynamicDropdown2');
+
+        // 動態生成選項
+        costEchoData.forEach(item => {
+            const option = document.createElement('option');
+            option.value = item.zhHant; // 可根據需求設為 item.zhHans 或其他字段
+            option.textContent = item.zhHant;
+            dropdown.appendChild(option);
+        });
 
         document.getElementById("fileInput").addEventListener("change", function (event) {
             const file = event.target.files[0];
@@ -298,6 +336,7 @@
 
                     const lookupKey = selectedConfig[idx];
                     const lookupData = lookupTable[lookupKey];
+                    
 
                     // 填入 mainAtrri
                     cost.mainAtrri = inputLines[lineIndex];
@@ -311,6 +350,10 @@
                     if (additionalMatched) {
                         cost.mainAtrri = additionalMatched.zhHans;
                     }
+
+                    const selectedConfig2 = document.getElementById("dynamicDropdown2").value;
+                    const matched2 = costEchoData.find(item2 => item2.zhHant === selectedConfig2);
+                    if (matched2) cost.suite = matched2.zhHans;
 
                     lineIndex++;
 
@@ -346,6 +389,11 @@
                     });
                 });
 
+
+                if (lineIndex < inputLines.length) {
+                    alert("請確認資料來源，資料長度過長");
+                }
+
                 const blob = new Blob([JSON.stringify(loadedData, null, 2)], { type: 'application/json' });
                 const link = document.createElement('a');
                 link.href = URL.createObjectURL(blob);
@@ -355,6 +403,7 @@
                 alert("請選擇一個角色");
             }
         });
+
     </script>
 </body>
 </html>
