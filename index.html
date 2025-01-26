@@ -331,6 +331,23 @@
                 const inputLines = textInput.split("\n").map(line => line.trim()).filter(line => line.length > 0);
                 let lineIndex = 0;
 
+                if (55 < inputLines.length) {
+                    inputLines.forEach((cost, idx) => {
+                        if (idx > 0) {
+                            if (inputLines[(idx - 1)] == inputLines[idx]) {
+                                const firstChar = inputLines[idx][0];
+                                if (!isNaN(firstChar)) {
+                                    const firstCharPrevious = inputLines[(idx - 1)][0];
+                                    if (!isNaN(firstCharPrevious)) {
+                                        inputLines.splice(idx, 1);
+                                        idx--;
+                                    }
+                                }
+                            }
+                        }
+                    })
+                }
+
                 costList.forEach((cost, idx) => {
                     if (lineIndex >= inputLines.length) return;
 
