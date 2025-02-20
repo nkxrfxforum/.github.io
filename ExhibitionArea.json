@@ -1,10 +1,12 @@
 {
-  "lastUpdated": "2025-02-20T11:18:25.961Z",
+  "lastUpdated": "2025-02-20T11:28:23.505Z",
   "data": [
     {
       "UID": 701002947,
       "Changli": "d5/d5dfaaf55fad9ad811baf7c6eb6422aff2a52990",
-      "Jinhsi": "75/7553b547ef8a57bda2377ac150211ae3a1270b8e"
+      "Jinhsi": "75/7553b547ef8a57bda2377ac150211ae3a1270b8e",
+      "Chixia": "3f/3f6643ebd420652ea4a7ca599ef00839cbee73d0",
+      "Baizhi": "94/946783f0f0cb09a73ba1abc81d79626fc6ea5c3f"
     },
     {
       "UID": 700032297,
@@ -12,5 +14,5 @@
       "Jinhsi": "3a/3a42b531deda8a75c3046437a920b20742d1582a"
     }
   ],
-  "sha": "e6f2883b4354ff1fe34570493267b630efe8d9ab"
+  "sha": "0adc0a02310f2b255c8766743faa59f1bc45b1ad"
 }
