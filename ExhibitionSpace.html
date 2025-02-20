@@ -1,0 +1,677 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>動態載入角色相關圖片與資料提交</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+            padding-top: 5%;
+        }
+
+        .input-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input, select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: #007bff;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f44336;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #e53935;
+        }
+
+        #imageContainer {
+            margin-top: 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .imageRow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .imageRow img {
+            max-width: 90%;
+            margin: 0 auto;
+            border-radius: 0px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #uidSearchContainer {
+            display: block;
+        }
+
+        .clear-button-container, .refresh-button-container {
+            display: inline-block;
+        }
+
+        .refresh-button-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 5px;
+            gap: 10px;
+            margin-top: -20px;
+        }
+
+        #lastUpdatedContainer {
+            font-size: 14px;
+            color: #555;
+        }
+
+        /* 表單相關樣式 */
+        .form-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            display: none; /* 預設隱藏 */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .input-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.8em;
+            display: none;
+        }
+
+        .input-error {
+            border: 1px solid red;
+        }
+
+        #submitButton {
+            background-color: #4CAF50;
+        }
+
+        #submitButton:hover {
+            background-color: #45a049;
+        }
+
+        #fillButton {
+            background-color: #2196F3; /* 藍色按鈕 */
+        }
+
+        #fillButton:hover {
+            background-color: #1976D2;
+        }
+
+        @media (min-width: 768px) {
+            .imageRow img {
+                max-width: 80%;
+            }
+            #imageContainer {
+                padding: 0 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 刷新資料與更新時間 -->
+    <div class="refresh-button-container">
+        <div id="lastUpdatedContainer">上次更新時間: --</div>
+        <button id="refreshButton">刷新資料</button>
+        <button id="fillButton">填寫</button>
+    </div>
+
+    <!-- 角色選擇與搜尋框 -->
+    <div class="input-container">
+        <select id="searchField">
+            <option value="UID">特徵碼</option>
+            <!--<option value="Brant">布蘭特</option>-->
+            <option value="Phoebe">菲比</option>
+            <option value="Roccia">洛可可</option>
+            <option value="Carlotta">珂萊塔</option>
+            <option value="Camellya">椿</option>
+            <option value="TheShorekeeper">守岸人</option>
+            <option value="XiangliYao">相里要</option>
+            <option value="Zhezhi">折枝</option>
+            <option value="Changli">長離</option>
+            <option value="Jinhsi">今汐</option>
+            <option value="Yinlin">吟霖</option>
+            <option value="Jiyan">忌炎</option>
+            <option value="Lingyang">凌陽</option>
+            <option value="Verina">維里奈</option>
+            <option value="Jianxin">鑒心</option>
+            <option value="Encore">安可</option>
+            <option value="Calcharo">卡卡羅</option>
+            <option value="Youhu">釉瑚</option>
+            <option value="Lumi">燈燈</option>
+            <option value="Yuanwu">淵武</option>
+            <option value="Taoqi">桃祈</option>
+            <option value="Danjin">丹瑾</option>
+            <option value="Aalto">秋水</option>
+            <option value="Mortefi">莫特斐</option>
+            <option value="Sanhua">散華</option>
+            <option value="Chixia">熾霞</option>
+            <option value="Baizhi">白芷</option>
+            <option value="Yangyang">秧秧</option>
+        </select>
+        <div id="uidSearchContainer">
+            <input list="uidList" id="searchInput" placeholder="輸入資料">
+        </div>
+        <div id="clearButtonContainer" class="clear-button-container">
+            <button id="clearButton">清空</button>
+        </div>
+    </div>
+    <datalist id="uidList"></datalist>
+
+    <div id="imageContainer"></div>
+
+    <!-- 表單區域 -->
+    <div class="form-container" id="formContainer">
+        <div id="myForm">
+            <div class="form-group">
+                <label for="uid">UID：</label>
+                <input type="text" id="uid" name="entry.1799773083" 
+                       pattern="^\d{9}$" 
+                       required 
+                       title="請輸入9位數字的UID">
+                <span class="error" id="uidError">請輸入有效的9位數字UID</span>
+            </div>
+
+            <div class="form-group">
+                <label>角色圖片URL（格式要求：以"https://wutheringwaves-discord.kurogames-global.com/back/"開頭，以".jpeg"結尾）：</label>
+                <div class="input-grid">
+                    <div class="input-item">
+                        <label>長離 (Changli)</label>
+                        <input type="text" name="entry.1010615920" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>今汐 (Jinhsi)</label>
+                        <input type="text" name="entry.667122120" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>凌陽 (Lingyang)</label>
+                        <input type="text" name="entry.36112820" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>維里奈 (Verina)</label>
+                        <input type="text" name="entry.1670640948" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>鑒心 (Jianxin)</label>
+                        <input type="text" name="entry.1512629849" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>安可 (Encore)</label>
+                        <input type="text" name="entry.1615498069" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>卡卡羅 (Calcharo)</label>
+                        <input type="text" name="entry.1882477133" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>釉瑚 (Youhu)</label>
+                        <input type="text" name="entry.1940618963" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>燈燈 (Lumi)</label>
+                        <input type="text" name="entry.1323442684" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>淵武 (Yuanwu)</label>
+                        <input type="text" name="entry.1635391347" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>桃祈 (Taoqi)</label>
+                        <input type="text" name="entry.1241481076" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>丹瑾 (Danjin)</label>
+                        <input type="text" name="entry.1705751059" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>秋水 (Aalto)</label>
+                        <input type="text" name="entry.2057539388" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>莫特斐 (Mortefi)</label>
+                        <input type="text" name="entry.309909200" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>散華 (Sanhua)</label>
+                        <input type="text" name="entry.227039002" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>熾霞 (Chixia)</label>
+                        <input type="text" name="entry.106698563" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>白芷 (Baizhi)</label>
+                        <input type="text" name="entry.2119692119" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>秧秧 (Yangyang)</label>
+                        <input type="text" name="entry.202350123" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>忌炎 (Jiyan)</label>
+                        <input type="text" name="entry.886408567" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>吟霖 (Yinlin)</label>
+                        <input type="text" name="entry.2008085604" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>折枝 (Zhezhi)</label>
+                        <input type="text" name="entry.1554202698" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>相里要 (XiangliYao)</label>
+                        <input type="text" name="entry.1640300951" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>守岸人 (TheShorekeeper)</label>
+                        <input type="text" name="entry.1948258821" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>椿 (Camellya)</label>
+                        <input type="text" name="entry.133273729" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>珂萊塔 (Carlotta)</label>
+                        <input type="text" name="entry.1003312775" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>洛可可 (Roccia)</label>
+                        <input type="text" name="entry.858812911" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>菲比 (Phoebe)</label>
+                        <input type="text" name="entry.689942780" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                    <div class="input-item">
+                        <label>布蘭特 (Brant)</label>
+                        <input type="text" name="entry.1455870840" class="image-input">
+                        <span class="error">URL格式錯誤或圖片不存在</span>
+                    </div>
+                </div>
+                <span class="error" id="formError">請檢查UID是否為9位數字</span>
+            </div>
+
+            <button type="button" id="submitButton" onclick="submitForm()">提交</button>
+        </div>
+    </div>
+
+    <script>
+    const dataList = document.getElementById("uidList");
+    const searchField = document.getElementById("searchField");
+    const searchInput = document.getElementById("searchInput");
+    const imageContainer = document.getElementById("imageContainer");
+    const clearButton = document.getElementById("clearButton");
+    const refreshButton = document.getElementById("refreshButton");
+    const uidSearchContainer = document.getElementById("uidSearchContainer");
+    const clearButtonContainer = document.getElementById("clearButtonContainer");
+    const lastUpdatedContainer = document.getElementById("lastUpdatedContainer");
+    const jsonUrl = "https://raw.githubusercontent.com/nkxrfxforum/.github.io/refs/heads/main/ExhibitionArea.json";
+    let jsonData = [];
+
+    // 表單相關變數
+    const prefix = "https://wutheringwaves-discord.kurogames-global.com/back/";
+    const suffix = ".jpeg";
+    const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSf0xo-hrrsX7rIFANMcJDGJH3ghXknfC1VJ4669eiBINaJcig/formResponse";
+    const formContainer = document.getElementById("formContainer");
+    const fillButton = document.getElementById("fillButton");
+
+    // 從 API 取得 JSON 並更新 datalist
+    async function fetchAndUpdateUIDList() {
+        try {
+            const response = await fetch(jsonUrl);
+            if (!response.ok) throw new Error("網路請求失敗");
+
+            jsonData = await response.json();
+            updateUIDList(jsonData);
+            updateLastUpdated(jsonData.lastUpdated);
+        } catch (error) {
+            console.error("獲取 JSON 失敗:", error);
+        }
+    }
+
+    // 解析 JSON 並動態加入 UID 選項
+    function updateUIDList(data) {
+        dataList.innerHTML = "";
+        if (data.data && Array.isArray(data.data)) {
+            data.data.forEach(item => {
+                let option = document.createElement("option");
+                option.value = item.UID;
+                dataList.appendChild(option);
+            });
+        } else {
+            console.warn("JSON 格式錯誤或無數據");
+        }
+    }
+
+    // 更新上次更新時間顯示
+    function updateLastUpdated(lastUpdated) {
+        const date = new Date(lastUpdated);
+        const formattedDate = `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+        lastUpdatedContainer.textContent = `上次更新時間: ${formattedDate}`;
+    }
+
+    // 根據選擇的欄位顯示/隱藏輸入框和清空按鈕
+    searchField.addEventListener("change", function () {
+        if (searchField.value === "UID") {
+            uidSearchContainer.style.display = "block";
+            clearButtonContainer.style.display = "inline-block";
+            imageContainer.innerHTML = "";
+        } else {
+            uidSearchContainer.style.display = "none";
+            searchInput.value = "";
+            imageContainer.innerHTML = "";
+            fetchAndUpdateImages();
+            clearButtonContainer.style.display = "inline-block";
+        }
+    });
+
+    // 當選擇欄位或輸入資料時，載入對應的圖片
+    searchInput.addEventListener("input", function () {
+        const searchValue = searchInput.value;
+        const selectedField = searchField.value;
+        let filteredItems = [];
+
+        if (selectedField === "UID") {
+            filteredItems = jsonData.data.filter(item => item.UID == searchValue);
+        } else {
+            for (let i = 0; i < jsonData.data.length; i++) {
+                if (jsonData.data[i][selectedField] == searchValue) {
+                    filteredItems.push(jsonData.data[i]);
+                }
+            }
+        }
+
+        imageContainer.innerHTML = "";
+        filteredItems.forEach(item => {
+            if (selectedField === "UID") {
+                Object.keys(item).forEach(key => {
+                    if (key !== "UID") {
+                        const imageUrl = `https://wutheringwaves-discord.kurogames-global.com/back/${item[key]}.jpeg`;
+                        const img = document.createElement("img");
+                        img.src = imageUrl;
+                        img.alt = "圖片";
+                        img.style.display = "none";
+                        const row = document.createElement("div");
+                        row.classList.add("imageRow");
+                        row.appendChild(img);
+                        imageContainer.appendChild(row);
+                        img.onload = function () { img.style.display = "block"; };
+                        img.onerror = function () { row.remove(); };
+                    }
+                });
+            } else {
+                const imageUrl = `https://wutheringwaves-discord.kurogames-global.com/back/${item[selectedField]}.jpeg`;
+                const img = document.createElement("img");
+                img.src = imageUrl;
+                img.alt = "圖片";
+                img.style.display = "none";
+                const row = document.createElement("div");
+                row.classList.add("imageRow");
+                row.appendChild(img);
+                imageContainer.appendChild(row);
+                img.onload = function () { img.style.display = "block"; };
+                img.onerror = function () { row.remove(); };
+            }
+        });
+    });
+
+    // 根據所選欄位載入所有相關圖片
+    function fetchAndUpdateImages() {
+        const selectedField = searchField.value;
+        const filteredItems = jsonData.data.filter(item => item[selectedField]);
+
+        imageContainer.innerHTML = "";
+        filteredItems.forEach(item => {
+            if (selectedField === "UID") {
+                Object.keys(item).forEach(key => {
+                    if (key !== "UID") {
+                        const imageUrl = `https://wutheringwaves-discord.kurogames-global.com/back/${item[key]}.jpeg`;
+                        const img = document.createElement("img");
+                        img.src = imageUrl;
+                        img.alt = "圖片";
+                        img.style.display = "none";
+                        const row = document.createElement("div");
+                        row.classList.add("imageRow");
+                        row.appendChild(img);
+                        imageContainer.appendChild(row);
+                        img.onload = function () { img.style.display = "block"; };
+                        img.onerror = function () { row.remove(); };
+                    }
+                });
+            } else {
+                const imageUrl = `https://wutheringwaves-discord.kurogames-global.com/back/${item[selectedField]}.jpeg`;
+                const img = document.createElement("img");
+                img.src = imageUrl;
+                img.alt = "圖片";
+                img.style.display = "none";
+                const row = document.createElement("div");
+                row.classList.add("imageRow");
+                row.appendChild(img);
+                imageContainer.appendChild(row);
+                img.onload = function () { img.style.display = "block"; };
+                img.onerror = function () { row.remove(); };
+            }
+        });
+    }
+
+    // 清空按鈕事件
+    clearButton.addEventListener("click", function () {
+        searchInput.value = "";
+        imageContainer.innerHTML = "";
+        uidSearchContainer.style.display = "block";
+        clearButtonContainer.style.display = "inline-block";
+        searchField.value = "UID";
+    });
+
+    // 刷新資料按鈕事件
+    refreshButton.addEventListener("click", function () {
+        fetchAndUpdateUIDList();
+        imageContainer.innerHTML = "";
+        searchInput.value = "";
+    });
+
+    // 顯示/隱藏表單
+    fillButton.addEventListener("click", function () {
+        formContainer.style.display = formContainer.style.display === "none" ? "block" : "none";
+    });
+
+    // 使用 <img> 標籤檢查圖片是否存在
+    function checkImageExists(url) {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => resolve(true);
+            img.onerror = () => resolve(false);
+            img.src = url;
+        });
+    }
+
+    // 單個輸入框驗證
+    async function validateInput(input) {
+        const value = input.value.trim();
+        const errorElement = input.nextElementSibling;
+        input.classList.remove('input-error');
+        errorElement.style.display = 'none';
+
+        if (!value) return true;
+
+        if (!value.startsWith(prefix) || !value.endsWith(suffix)) {
+            input.classList.add('input-error');
+            errorElement.style.display = 'block';
+            return false;
+        }
+
+        const imageExists = await checkImageExists(value);
+        if (!imageExists) {
+            input.classList.add('input-error');
+            errorElement.style.display = 'block';
+            return false;
+        }
+
+        return true;
+    }
+
+    // 為所有圖片輸入框添加失去焦點事件
+    document.querySelectorAll('.image-input').forEach(input => {
+        input.addEventListener('blur', async () => {
+            await validateInput(input);
+        });
+    });
+
+    // 清空表單輸入框
+    function clearFormInputs() {
+        document.getElementById('uid').value = '';
+        document.querySelectorAll('.image-input').forEach(input => {
+            input.value = '';
+            input.classList.remove('input-error');
+            input.nextElementSibling.style.display = 'none'; // 隱藏錯誤訊息
+        });
+        document.getElementById('uidError').style.display = 'none';
+        document.getElementById('formError').style.display = 'none';
+    }
+
+    // 提交表單
+    async function submitForm() {
+        const uid = document.getElementById('uid');
+        const imageInputs = document.querySelectorAll('.image-input');
+        const formData = new FormData();
+
+        document.querySelectorAll('.error').forEach(error => error.style.display = 'none');
+
+        if (!uid.value.match(/^\d{9}$/)) {
+            document.getElementById('uidError').style.display = 'block';
+            document.getElementById('formError').style.display = 'block';
+            return;
+        }
+        formData.append('entry.1799773083', uid.value);
+
+        for (const input of imageInputs) {
+            const value = input.value.trim();
+            let processedValue = '';
+
+            if (value) {
+                const isValidUrl = await validateInput(input);
+                if (isValidUrl) {
+                    processedValue = value.slice(prefix.length, -suffix.length);
+                }
+            }
+            formData.append(input.name, processedValue);
+        }
+
+        try {
+            const response = await fetch(formUrl, {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors'
+            });
+            console.log('提交成功');
+            alert('表單提交後，5-10分鐘後才會更新，請耐心等待。'); // 修改提示文字
+            clearFormInputs(); // 清空表單
+            formContainer.style.display = 'none'; // 提交後隱藏表單
+        } catch (error) {
+            console.error('提交失敗:', error);
+            alert('表單提交失敗，請稍後再試。');
+        }
+    }
+
+    // 頁面初始化
+    fetchAndUpdateUIDList();
+</script>
+</body>
+</html>
