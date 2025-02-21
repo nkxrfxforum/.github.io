@@ -16,6 +16,17 @@
             padding-top: 5%;
         }
 
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+
         .input-container {
             display: flex;
             align-items: center;
@@ -30,9 +41,9 @@
             outline: none;
         }
 
-        input:focus, select:focus {
-            border-color: #007bff;
-        }
+            input:focus, select:focus {
+                border-color: #007bff;
+            }
 
         button {
             padding: 10px 15px;
@@ -44,9 +55,9 @@
             cursor: pointer;
         }
 
-        button:hover {
-            background-color: #e53935;
-        }
+            button:hover {
+                background-color: #e53935;
+            }
 
         #imageContainer {
             margin-top: 20px;
@@ -66,12 +77,12 @@
             gap: 10px;
         }
 
-        .imageRow img {
-            max-width: 90%;
-            margin: 0 auto;
-            border-radius: 0px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
+            .imageRow img {
+                max-width: 90%;
+                margin: 0 auto;
+                border-radius: 0px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
 
         #uidSearchContainer {
             display: block;
@@ -95,13 +106,12 @@
             color: #555;
         }
 
-        /* 表單相關樣式 */
         .form-container {
             max-width: 600px;
             margin: 20px auto;
             padding: 20px;
             border: 1px solid #ccc;
-            display: none; /* 預設隱藏 */
+            display: none;
             position: fixed;
             top: 50%;
             left: 50%;
@@ -155,22 +165,23 @@
             background-color: #4CAF50;
         }
 
-        #submitButton:hover {
-            background-color: #45a049;
-        }
+            #submitButton:hover {
+                background-color: #45a049;
+            }
 
         #fillButton {
-            background-color: #2196F3; /* 藍色按鈕 */
+            background-color: #2196F3;
         }
 
-        #fillButton:hover {
-            background-color: #1976D2;
-        }
+            #fillButton:hover {
+                background-color: #1976D2;
+            }
 
         @media (min-width: 768px) {
             .imageRow img {
                 max-width: 80%;
             }
+
             #imageContainer {
                 padding: 0 40px;
             }
@@ -178,18 +189,17 @@
     </style>
 </head>
 <body>
-    <!-- 刷新資料與更新時間 -->
+    <div class="overlay" id="overlay"></div>
+
     <div class="refresh-button-container">
         <div id="lastUpdatedContainer">上次更新時間: --</div>
         <button id="refreshButton">刷新資料</button>
         <button id="fillButton">填寫</button>
     </div>
 
-    <!-- 角色選擇與搜尋框 -->
     <div class="input-container">
         <select id="searchField">
             <option value="UID">特徵碼</option>
-            <!--<option value="Brant">布蘭特</option>-->
             <option value="Phoebe">菲比</option>
             <option value="Roccia">洛可可</option>
             <option value="Carlotta">珂萊塔</option>
@@ -229,14 +239,13 @@
 
     <div id="imageContainer"></div>
 
-    <!-- 表單區域 -->
     <div class="form-container" id="formContainer">
         <div id="myForm">
             <div class="form-group">
                 <label for="uid">UID：</label>
-                <input type="text" id="uid" name="entry.1799773083" 
-                       pattern="^\d{9}$" 
-                       required 
+                <input type="text" id="uid" name="entry.1799773083"
+                       pattern="^\d{9}$"
+                       required
                        title="請輸入9位數字的UID">
                 <span class="error" id="uidError">請輸入有效的9位數字UID</span>
             </div>
@@ -393,285 +402,286 @@
     </div>
 
     <script>
-    const dataList = document.getElementById("uidList");
-    const searchField = document.getElementById("searchField");
-    const searchInput = document.getElementById("searchInput");
-    const imageContainer = document.getElementById("imageContainer");
-    const clearButton = document.getElementById("clearButton");
-    const refreshButton = document.getElementById("refreshButton");
-    const uidSearchContainer = document.getElementById("uidSearchContainer");
-    const clearButtonContainer = document.getElementById("clearButtonContainer");
-    const lastUpdatedContainer = document.getElementById("lastUpdatedContainer");
-    const jsonUrl = "https://raw.githubusercontent.com/nkxrfxforum/.github.io/refs/heads/main/ExhibitionArea.json";
-    let jsonData = [];
+        const dataList = document.getElementById("uidList");
+        const searchField = document.getElementById("searchField");
+        const searchInput = document.getElementById("searchInput");
+        const imageContainer = document.getElementById("imageContainer");
+        const clearButton = document.getElementById("clearButton");
+        const refreshButton = document.getElementById("refreshButton");
+        const uidSearchContainer = document.getElementById("uidSearchContainer");
+        const clearButtonContainer = document.getElementById("clearButtonContainer");
+        const lastUpdatedContainer = document.getElementById("lastUpdatedContainer");
+        const jsonUrl = "https://raw.githubusercontent.com/nkxrfxforum/.github.io/refs/heads/main/ExhibitionArea.json";
+        let jsonData = [];
 
-    // 表單相關變數
-    const prefix = "https://wutheringwaves-discord.kurogames-global.com/back/";
-    const suffix = ".jpeg";
-    const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSf0xo-hrrsX7rIFANMcJDGJH3ghXknfC1VJ4669eiBINaJcig/formResponse";
-    const formContainer = document.getElementById("formContainer");
-    const fillButton = document.getElementById("fillButton");
+        const prefix = "https://wutheringwaves-discord.kurogames-global.com/back/";
+        const suffix = ".jpeg";
+        const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSf0xo-hrrsX7rIFANMcJDGJH3ghXknfC1VJ4669eiBINaJcig/formResponse";
+        const formContainer = document.getElementById("formContainer");
+        const fillButton = document.getElementById("fillButton");
+        const overlay = document.getElementById("overlay");
 
-    // 從 API 取得 JSON 並更新 datalist
-    async function fetchAndUpdateUIDList() {
-        try {
-            const response = await fetch(jsonUrl);
-            if (!response.ok) throw new Error("網路請求失敗");
-
-            jsonData = await response.json();
-            updateUIDList(jsonData);
-            updateLastUpdated(jsonData.lastUpdated);
-        } catch (error) {
-            console.error("獲取 JSON 失敗:", error);
+        async function fetchAndUpdateUIDList() {
+            try {
+                const response = await fetch(jsonUrl);
+                if (!response.ok) throw new Error("網路請求失敗");
+                jsonData = await response.json();
+                updateUIDList(jsonData);
+                updateLastUpdated(jsonData.lastUpdated);
+            } catch (error) {
+                console.error("獲取 JSON 失敗:", error);
+            }
         }
-    }
 
-    // 解析 JSON 並動態加入 UID 選項
-    function updateUIDList(data) {
-        dataList.innerHTML = "";
-        if (data.data && Array.isArray(data.data)) {
-            data.data.forEach(item => {
-                let option = document.createElement("option");
-                option.value = item.UID;
-                dataList.appendChild(option);
-            });
-        } else {
-            console.warn("JSON 格式錯誤或無數據");
+        function updateUIDList(data) {
+            dataList.innerHTML = "";
+            if (data.data && Array.isArray(data.data)) {
+                data.data.forEach(item => {
+                    let option = document.createElement("option");
+                    option.value = item.UID;
+                    dataList.appendChild(option);
+                });
+            }
         }
-    }
 
-    // 更新上次更新時間顯示
-    function updateLastUpdated(lastUpdated) {
-        const date = new Date(lastUpdated);
-        const formattedDate = `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-        lastUpdatedContainer.textContent = `上次更新時間: ${formattedDate}`;
-    }
+        function updateLastUpdated(lastUpdated) {
+            const date = new Date(lastUpdated);
+            const formattedDate = `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+            lastUpdatedContainer.textContent = `上次更新時間: ${formattedDate}`;
+        }
 
-    // 根據選擇的欄位顯示/隱藏輸入框和清空按鈕
-    searchField.addEventListener("change", function () {
-        if (searchField.value === "UID") {
-            uidSearchContainer.style.display = "block";
-            clearButtonContainer.style.display = "inline-block";
+        searchField.addEventListener("change", function () {
+            if (searchField.value === "UID") {
+                uidSearchContainer.style.display = "block";
+                clearButtonContainer.style.display = "inline-block";
+                imageContainer.innerHTML = "";
+            } else {
+                uidSearchContainer.style.display = "none";
+                searchInput.value = "";
+                imageContainer.innerHTML = "";
+                fetchAndUpdateImages();
+                clearButtonContainer.style.display = "inline-block";
+            }
+        });
+
+        searchInput.addEventListener("input", function () {
+            const searchValue = searchInput.value;
+            const selectedField = searchField.value;
+            let filteredItems = [];
+
+            if (selectedField === "UID") {
+                filteredItems = jsonData.data.filter(item => item.UID == searchValue);
+            } else {
+                filteredItems = jsonData.data.filter(item => item[selectedField] == searchValue);
+            }
+
             imageContainer.innerHTML = "";
-        } else {
-            uidSearchContainer.style.display = "none";
+            filteredItems.forEach(item => {
+                if (selectedField === "UID") {
+                    Object.keys(item).forEach(key => {
+                        if (key !== "UID") {
+                            const imageUrl = `https://wutheringwaves-discord.kurogames-global.com/back/${item[key]}.jpeg`;
+                            const img = document.createElement("img");
+                            img.src = imageUrl;
+                            img.alt = "圖片";
+                            img.style.display = "none";
+                            const row = document.createElement("div");
+                            row.classList.add("imageRow");
+                            row.appendChild(img);
+                            imageContainer.appendChild(row);
+                            img.onload = function () { img.style.display = "block"; };
+                            img.onerror = function () { row.remove(); };
+                        }
+                    });
+                } else {
+                    const imageUrl = `https://wutheringwaves-discord.kurogames-global.com/back/${item[selectedField]}.jpeg`;
+                    const img = document.createElement("img");
+                    img.src = imageUrl;
+                    img.alt = "圖片";
+                    img.style.display = "none";
+                    const row = document.createElement("div");
+                    row.classList.add("imageRow");
+                    row.appendChild(img);
+                    imageContainer.appendChild(row);
+                    img.onload = function () { img.style.display = "block"; };
+                    img.onerror = function () { row.remove(); };
+                }
+            });
+        });
+
+        function fetchAndUpdateImages() {
+            const selectedField = searchField.value;
+            const filteredItems = jsonData.data.filter(item => item[selectedField]);
+
+            imageContainer.innerHTML = "";
+            filteredItems.forEach(item => {
+                if (selectedField === "UID") {
+                    Object.keys(item).forEach(key => {
+                        if (key !== "UID") {
+                            const imageUrl = `https://wutheringwaves-discord.kurogames-global.com/back/${item[key]}.jpeg`;
+                            const img = document.createElement("img");
+                            img.src = imageUrl;
+                            img.alt = "圖片";
+                            img.style.display = "none";
+                            const row = document.createElement("div");
+                            row.classList.add("imageRow");
+                            row.appendChild(img);
+                            imageContainer.appendChild(row);
+                            img.onload = function () { img.style.display = "block"; };
+                            img.onerror = function () { row.remove(); };
+                        }
+                    });
+                } else {
+                    const imageUrl = `https://wutheringwaves-discord.kurogames-global.com/back/${item[selectedField]}.jpeg`;
+                    const img = document.createElement("img");
+                    img.src = imageUrl;
+                    img.alt = "圖片";
+                    img.style.display = "none";
+                    const row = document.createElement("div");
+                    row.classList.add("imageRow");
+                    row.appendChild(img);
+                    imageContainer.appendChild(row);
+                    img.onload = function () { img.style.display = "block"; };
+                    img.onerror = function () { row.remove(); };
+                }
+            });
+        }
+
+        clearButton.addEventListener("click", function () {
             searchInput.value = "";
             imageContainer.innerHTML = "";
-            fetchAndUpdateImages();
+            uidSearchContainer.style.display = "block";
             clearButtonContainer.style.display = "inline-block";
-        }
-    });
+            searchField.value = "UID";
+        });
 
-    // 當選擇欄位或輸入資料時，載入對應的圖片
-    searchInput.addEventListener("input", function () {
-        const searchValue = searchInput.value;
-        const selectedField = searchField.value;
-        let filteredItems = [];
+        refreshButton.addEventListener("click", function () {
+            fetchAndUpdateUIDList();
+            imageContainer.innerHTML = "";
+            searchInput.value = "";
+        });
 
-        if (selectedField === "UID") {
-            filteredItems = jsonData.data.filter(item => item.UID == searchValue);
-        } else {
-            for (let i = 0; i < jsonData.data.length; i++) {
-                if (jsonData.data[i][selectedField] == searchValue) {
-                    filteredItems.push(jsonData.data[i]);
-                }
-            }
+        function toggleForm() {
+            const isVisible = formContainer.style.display === "block";
+            formContainer.style.display = isVisible ? "none" : "block";
+            overlay.style.display = isVisible ? "none" : "block";
         }
 
-        imageContainer.innerHTML = "";
-        filteredItems.forEach(item => {
-            if (selectedField === "UID") {
-                Object.keys(item).forEach(key => {
-                    if (key !== "UID") {
-                        const imageUrl = `https://wutheringwaves-discord.kurogames-global.com/back/${item[key]}.jpeg`;
-                        const img = document.createElement("img");
-                        img.src = imageUrl;
-                        img.alt = "圖片";
-                        img.style.display = "none";
-                        const row = document.createElement("div");
-                        row.classList.add("imageRow");
-                        row.appendChild(img);
-                        imageContainer.appendChild(row);
-                        img.onload = function () { img.style.display = "block"; };
-                        img.onerror = function () { row.remove(); };
-                    }
-                });
-            } else {
-                const imageUrl = `https://wutheringwaves-discord.kurogames-global.com/back/${item[selectedField]}.jpeg`;
-                const img = document.createElement("img");
-                img.src = imageUrl;
-                img.alt = "圖片";
-                img.style.display = "none";
-                const row = document.createElement("div");
-                row.classList.add("imageRow");
-                row.appendChild(img);
-                imageContainer.appendChild(row);
-                img.onload = function () { img.style.display = "block"; };
-                img.onerror = function () { row.remove(); };
+        fillButton.addEventListener("click", function (e) {
+            e.stopPropagation();
+            toggleForm();
+        });
+
+        overlay.addEventListener("click", function () {
+            toggleForm();
+        });
+
+        formContainer.addEventListener("click", function (e) {
+            e.stopPropagation();
+        });
+
+        document.addEventListener("click", function (e) {
+            if (formContainer.style.display === "block" &&
+                !formContainer.contains(e.target) &&
+                e.target !== fillButton) {
+                toggleForm();
             }
         });
-    });
 
-    // 根據所選欄位載入所有相關圖片
-    function fetchAndUpdateImages() {
-        const selectedField = searchField.value;
-        const filteredItems = jsonData.data.filter(item => item[selectedField]);
-
-        imageContainer.innerHTML = "";
-        filteredItems.forEach(item => {
-            if (selectedField === "UID") {
-                Object.keys(item).forEach(key => {
-                    if (key !== "UID") {
-                        const imageUrl = `https://wutheringwaves-discord.kurogames-global.com/back/${item[key]}.jpeg`;
-                        const img = document.createElement("img");
-                        img.src = imageUrl;
-                        img.alt = "圖片";
-                        img.style.display = "none";
-                        const row = document.createElement("div");
-                        row.classList.add("imageRow");
-                        row.appendChild(img);
-                        imageContainer.appendChild(row);
-                        img.onload = function () { img.style.display = "block"; };
-                        img.onerror = function () { row.remove(); };
-                    }
-                });
-            } else {
-                const imageUrl = `https://wutheringwaves-discord.kurogames-global.com/back/${item[selectedField]}.jpeg`;
-                const img = document.createElement("img");
-                img.src = imageUrl;
-                img.alt = "圖片";
-                img.style.display = "none";
-                const row = document.createElement("div");
-                row.classList.add("imageRow");
-                row.appendChild(img);
-                imageContainer.appendChild(row);
-                img.onload = function () { img.style.display = "block"; };
-                img.onerror = function () { row.remove(); };
-            }
-        });
-    }
-
-    // 清空按鈕事件
-    clearButton.addEventListener("click", function () {
-        searchInput.value = "";
-        imageContainer.innerHTML = "";
-        uidSearchContainer.style.display = "block";
-        clearButtonContainer.style.display = "inline-block";
-        searchField.value = "UID";
-    });
-
-    // 刷新資料按鈕事件
-    refreshButton.addEventListener("click", function () {
-        fetchAndUpdateUIDList();
-        imageContainer.innerHTML = "";
-        searchInput.value = "";
-    });
-
-    // 顯示/隱藏表單
-    fillButton.addEventListener("click", function () {
-        formContainer.style.display = formContainer.style.display === "none" ? "block" : "none";
-    });
-
-    // 使用 <img> 標籤檢查圖片是否存在
-    function checkImageExists(url) {
-        return new Promise((resolve) => {
-            const img = new Image();
-            img.onload = () => resolve(true);
-            img.onerror = () => resolve(false);
-            img.src = url;
-        });
-    }
-
-    // 單個輸入框驗證
-    async function validateInput(input) {
-        const value = input.value.trim();
-        const errorElement = input.nextElementSibling;
-        input.classList.remove('input-error');
-        errorElement.style.display = 'none';
-
-        if (!value) return true;
-
-        if (!value.startsWith(prefix) || !value.endsWith(suffix)) {
-            input.classList.add('input-error');
-            errorElement.style.display = 'block';
-            return false;
-        }
-
-        const imageExists = await checkImageExists(value);
-        if (!imageExists) {
-            input.classList.add('input-error');
-            errorElement.style.display = 'block';
-            return false;
-        }
-
-        return true;
-    }
-
-    // 為所有圖片輸入框添加失去焦點事件
-    document.querySelectorAll('.image-input').forEach(input => {
-        input.addEventListener('blur', async () => {
-            await validateInput(input);
-        });
-    });
-
-    // 清空表單輸入框
-    function clearFormInputs() {
-        document.getElementById('uid').value = '';
-        document.querySelectorAll('.image-input').forEach(input => {
-            input.value = '';
-            input.classList.remove('input-error');
-            input.nextElementSibling.style.display = 'none'; // 隱藏錯誤訊息
-        });
-        document.getElementById('uidError').style.display = 'none';
-        document.getElementById('formError').style.display = 'none';
-    }
-
-    // 提交表單
-    async function submitForm() {
-        const uid = document.getElementById('uid');
-        const imageInputs = document.querySelectorAll('.image-input');
-        const formData = new FormData();
-
-        document.querySelectorAll('.error').forEach(error => error.style.display = 'none');
-
-        if (!uid.value.match(/^\d{9}$/)) {
-            document.getElementById('uidError').style.display = 'block';
-            document.getElementById('formError').style.display = 'block';
-            return;
-        }
-        formData.append('entry.1799773083', uid.value);
-
-        for (const input of imageInputs) {
-            const value = input.value.trim();
-            let processedValue = '';
-
-            if (value) {
-                const isValidUrl = await validateInput(input);
-                if (isValidUrl) {
-                    processedValue = value.slice(prefix.length, -suffix.length);
-                }
-            }
-            formData.append(input.name, processedValue);
-        }
-
-        try {
-            const response = await fetch(formUrl, {
-                method: 'POST',
-                body: formData,
-                mode: 'no-cors'
+        function checkImageExists(url) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(true);
+                img.onerror = () => resolve(false);
+                img.src = url;
             });
-            console.log('提交成功');
-            alert('表單提交後，5-10分鐘後才會更新，請耐心等待。'); // 修改提示文字
-            clearFormInputs(); // 清空表單
-            formContainer.style.display = 'none'; // 提交後隱藏表單
-        } catch (error) {
-            console.error('提交失敗:', error);
-            alert('表單提交失敗，請稍後再試。');
         }
-    }
 
-    // 頁面初始化
-    fetchAndUpdateUIDList();
-</script>
+        async function validateInput(input) {
+            const value = input.value.trim();
+            const errorElement = input.nextElementSibling;
+            input.classList.remove('input-error');
+            errorElement.style.display = 'none';
+
+            if (!value) return true;
+
+            if (!value.startsWith(prefix) || !value.endsWith(suffix)) {
+                input.classList.add('input-error');
+                errorElement.style.display = 'block';
+                return false;
+            }
+
+            const imageExists = await checkImageExists(value);
+            if (!imageExists) {
+                input.classList.add('input-error');
+                errorElement.style.display = 'block';
+                return false;
+            }
+
+            return true;
+        }
+
+        document.querySelectorAll('.image-input').forEach(input => {
+            input.addEventListener('blur', async () => {
+                await validateInput(input);
+            });
+        });
+
+        function clearFormInputs() {
+            document.getElementById('uid').value = '';
+            document.querySelectorAll('.image-input').forEach(input => {
+                input.value = '';
+                input.classList.remove('input-error');
+                input.nextElementSibling.style.display = 'none';
+            });
+            document.getElementById('uidError').style.display = 'none';
+            document.getElementById('formError').style.display = 'none';
+        }
+
+        async function submitForm() {
+            const uid = document.getElementById('uid');
+            const imageInputs = document.querySelectorAll('.image-input');
+            const formData = new FormData();
+
+            document.querySelectorAll('.error').forEach(error => error.style.display = 'none');
+
+            if (!uid.value.match(/^\d{9}$/)) {
+                document.getElementById('uidError').style.display = 'block';
+                document.getElementById('formError').style.display = 'block';
+                return;
+            }
+            formData.append('entry.1799773083', uid.value);
+
+            for (const input of imageInputs) {
+                const value = input.value.trim();
+                let processedValue = '';
+
+                if (value) {
+                    const isValidUrl = await validateInput(input);
+                    if (isValidUrl) {
+                        processedValue = value.slice(prefix.length, -suffix.length);
+                    }
+                }
+                formData.append(input.name, processedValue);
+            }
+
+            try {
+                const response = await fetch(formUrl, {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'no-cors'
+                });
+                console.log('提交成功');
+                alert('表單提交後，5-10分鐘後才會更新，請耐心等待。');
+                clearFormInputs();
+                toggleForm();
+            } catch (error) {
+                console.error('提交失敗:', error);
+                alert('表單提交失敗，請稍後再試。');
+            }
+        }
+
+        fetchAndUpdateUIDList();
+    </script>
 </body>
 </html>
