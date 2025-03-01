@@ -1,0 +1,200 @@
+[
+    {
+        "Name": "今汐",
+        "MaxPoints": 490,
+        "NormalAttack": 2,
+        "HeavyAttack": 0,
+        "SecretWeapon": 20,
+        "Skills": 72,
+        "Other": 6
+    },
+    {
+        "Name": "長離",
+        "MaxPoints": 482.3,
+        "NormalAttack": 1,
+        "HeavyAttack": 0,
+        "SecretWeapon": 27,
+        "Skills": 59,
+        "Other": 13
+    },
+    {
+        "Name": "安可",
+        "MaxPoints": 482.4,
+        "NormalAttack": 59,
+        "HeavyAttack": 2,
+        "SecretWeapon": 5,
+        "Skills": 12,
+        "Other": 22
+    },
+    {
+        "Name": "鑒心",
+        "MaxPoints": 491.8,
+        "NormalAttack": 24,
+        "HeavyAttack": 31,
+        "SecretWeapon": 27,
+        "Skills": 6,
+        "Other": 12
+    },
+    {
+        "Name": "卡卡羅",
+        "MaxPoints": 478.3,
+        "NormalAttack": 20,
+        "HeavyAttack": 3,
+        "SecretWeapon": 52,
+        "Skills": 5,
+        "Other": 20
+    },
+    {
+        "Name": "吟霖",
+        "MaxPoints": 474.7,
+        "NormalAttack": 8,
+        "HeavyAttack": 20,
+        "SecretWeapon": 21,
+        "Skills": 37,
+        "Other": 14
+    },
+    {
+        "Name": "秋水",
+        "MaxPoints": 474.8,
+        "NormalAttack": 25,
+        "HeavyAttack": 0,
+        "SecretWeapon": 22,
+        "Skills": 33,
+        "Other": 20
+    },
+    {
+        "Name": "莫特婓",
+        "MaxPoints": 496,
+        "NormalAttack": 15,
+        "HeavyAttack": 0,
+        "SecretWeapon": 48,
+        "Skills": 31,
+        "Other": 6
+    },
+    {
+        "Name": "丹瑾",
+        "MaxPoints": 474.4,
+        "NormalAttack": 8,
+        "HeavyAttack": 32,
+        "SecretWeapon": 20,
+        "Skills": 22,
+        "Other": 18
+    },
+    {
+        "Name": "熾霞",
+        "MaxPoints": 478.6,
+        "NormalAttack": 6,
+        "HeavyAttack": 0,
+        "SecretWeapon": 35,
+        "Skills": 46,
+        "Other": 13
+    },
+    {
+        "Name": "散華",
+        "MaxPoints": 474.4,
+        "NormalAttack": 2,
+        "HeavyAttack": 30,
+        "SecretWeapon": 32,
+        "Skills": 30,
+        "Other": 6
+    },
+    {
+        "Name": "淵武",
+        "MaxPoints": 499.1,
+        "NormalAttack": 5,
+        "HeavyAttack": 0,
+        "SecretWeapon": 46,
+        "Skills": 45,
+        "Other": 4
+    },
+    {
+        "Name": "秧秧",
+        "MaxPoints": 494.9,
+        "NormalAttack": 5,
+        "HeavyAttack": 28,
+        "SecretWeapon": 40,
+        "Skills": 22,
+        "Other": 5
+    },
+    {
+        "Name": "桃祈",
+        "MaxPoints": 501.3,
+        "NormalAttack": 8,
+        "HeavyAttack": 0,
+        "SecretWeapon": 50,
+        "Skills": 38,
+        "Other": 4
+    },
+    {
+        "Name": "折枝",
+        "MaxPoints": 479.5,
+        "NormalAttack": 54,
+        "HeavyAttack": 18,
+        "SecretWeapon": 0,
+        "Skills": 21,
+        "Other": 7
+    },
+    {
+        "Name": "相里要",
+        "MaxPoints": 484.2,
+        "NormalAttack": 13,
+        "HeavyAttack": 5,
+        "SecretWeapon": 62,
+        "Skills": 7,
+        "Other": 13
+    },
+    {
+        "Name": "守岸人",
+        "MaxPoints": 398.5,
+        "NormalAttack": 1,
+        "HeavyAttack": 1,
+        "SecretWeapon": 97,
+        "Skills": 0,
+        "Other": 1
+    },
+    {
+        "Name": "釉瑚",
+        "MaxPoints": 492.4,
+        "NormalAttack": 11,
+        "HeavyAttack": 8,
+        "SecretWeapon": 29,
+        "Skills": 33,
+        "Other": 19
+    },
+    {
+        "Name": "椿",
+        "MaxPoints": 486.3,
+        "NormalAttack": 66,
+        "HeavyAttack": 2,
+        "SecretWeapon": 22,
+        "Skills": 0,
+        "Other": 10
+    },
+    {
+        "Name": "燈燈",
+        "MaxPoints": 485.2,
+        "NormalAttack": 64,
+        "HeavyAttack": 0,
+        "SecretWeapon": 20,
+        "Skills": 8,
+        "Other": 8
+    },
+    {
+        "Name": "柯萊塔",
+        "MaxPoints": 491.5,
+        "NormalAttack": 11,
+        "HeavyAttack": 0,
+        "SecretWeapon": 0,
+        "Skills": 75,
+        "Other": 14
+    },
+    {
+        "Name": "洛可可",
+        "MaxPoints": 487.5,
+        "NormalAttack": 3,
+        "HeavyAttack": 68,
+        "SecretWeapon": 0,
+        "Skills": 12,
+        "Other": 17
+    }
+]
