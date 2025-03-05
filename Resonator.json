@@ -1,6 +1,7 @@
 [
   {
     "ID": 1,
+    "Class": "主輸出",
     "Name": "今汐",
     "MaxPoints": 490,
     "NormalAttack": 2,
@@ -11,6 +12,7 @@
   },
   {
     "ID": 2,
+    "Class": "主輸出",
     "Name": "忌炎",
     "MaxPoints": 487.6,
     "NormalAttack": 2,
@@ -21,6 +23,7 @@
   },
   {
     "ID": 3,
+    "Class": "主輸出",
     "Name": "長離",
     "MaxPoints": 482.3,
     "NormalAttack": 1,
@@ -28,10 +31,10 @@
     "SecretWeapon": 27,
     "Skills": 59,
     "Other": 13
-
   },
   {
     "ID": 4,
+    "Class": "主輸出",
     "Name": "安可",
     "MaxPoints": 482.4,
     "NormalAttack": 59,
@@ -42,6 +45,7 @@
   },
   {
     "ID": 5,
+    "Class": "主輸出",
     "Name": "鑒心",
     "MaxPoints": 491.8,
     "NormalAttack": 24,
@@ -52,6 +56,7 @@
   },
   {
     "ID": 6,
+    "Class": "主輸出",
     "Name": "卡卡羅",
     "MaxPoints": 478.3,
     "NormalAttack": 20,
@@ -62,6 +67,7 @@
   },
   {
     "ID": 7,
+    "Class": "主輸出",
     "Name": "凌陽",
     "MaxPoints": 475.2,
     "NormalAttack": 40,
@@ -72,6 +78,7 @@
   },
   {
     "ID": 8,
+    "Class": "輔助",
     "Name": "吟霖",
     "MaxPoints": 474.7,
     "NormalAttack": 8,
@@ -82,6 +89,7 @@
   },
   {
     "ID": 9,
+    "Class": "主輸出",
     "Name": "漂泊者-湮滅",
     "MaxPoints": 473.0,
     "NormalAttack": 20,
@@ -92,6 +100,7 @@
   },
   {
     "ID": 10,
+    "Class": "主輸出",
     "Name": "漂泊者",
     "MaxPoints": 473.7,
     "NormalAttack": 11,
@@ -102,6 +111,7 @@
   },
   {
     "ID": 11,
+    "Class": "主輸出",
     "Name": "秋水",
     "MaxPoints": 474.8,
     "NormalAttack": 25,
@@ -112,6 +122,7 @@
   },
   {
     "ID": 12,
+    "Class": "主輸出",
     "Name": "莫特婓",
     "MaxPoints": 496,
     "NormalAttack": 15,
@@ -122,6 +133,7 @@
   },
   {
     "ID": 13,
+    "Class": "主輸出",
     "Name": "丹瑾",
     "MaxPoints": 474.4,
     "NormalAttack": 8,
@@ -132,6 +144,7 @@
   },
   {
     "ID": 14,
+    "Class": "主輸出",
     "Name": "熾霞",
     "MaxPoints": 478.6,
     "NormalAttack": 6,
@@ -142,6 +155,7 @@
   },
   {
     "ID": 15,
+    "Class": "輔助",
     "Name": "散華",
     "MaxPoints": 474.4,
     "NormalAttack": 2,
@@ -152,6 +166,7 @@
   },
   {
     "ID": 16,
+    "Class": "防禦輔",
     "Name": "淵武",
     "MaxPoints": 499.1,
     "NormalAttack": 5,
@@ -162,6 +177,7 @@
   },
   {
     "ID": 17,
+    "Class": "輔助",
     "Name": "秧秧",
     "MaxPoints": 494.9,
     "NormalAttack": 5,
@@ -172,6 +188,7 @@
   },
   {
     "ID": 18,
+    "Class": "輔助",
     "Name": "桃祈",
     "MaxPoints": 501.3,
     "NormalAttack": 8,
@@ -182,6 +199,7 @@
   },
   {
     "ID": 19,
+    "Class": "攻擊奶",
     "Name": "維里奈",
     "MaxPoints": 442.9,
     "NormalAttack": 0,
@@ -192,6 +210,7 @@
   },
   {
     "ID": 20,
+    "Class": "生命奶",
     "Name": "白芷",
     "MaxPoints": 437.3,
     "NormalAttack": 0,
@@ -202,6 +221,7 @@
   },
   {
     "ID": 21,
+    "Class": "輔助",
     "Name": "折枝",
     "MaxPoints": 479.5,
     "NormalAttack": 54,
@@ -212,6 +232,7 @@
   },
   {
     "ID": 22,
+    "Class": "主輸出",
     "Name": "相里要",
     "MaxPoints": 484.2,
     "NormalAttack": 13,
@@ -222,6 +243,7 @@
   },
   {
     "ID": 23,
+    "Class": "生命奶",
     "Name": "守岸人",
     "MaxPoints": 398.5,
     "NormalAttack": 1,
@@ -232,6 +254,7 @@
   },
   {
     "ID": 24,
+    "Class": "輔助",
     "Name": "釉瑚",
     "MaxPoints": 492.4,
     "NormalAttack": 11,
@@ -242,6 +265,7 @@
   },
   {
     "ID": 25,
+    "Class": "主輸出",
     "Name": "椿",
     "MaxPoints": 486.3,
     "NormalAttack": 66,
@@ -252,6 +276,7 @@
   },
   {
     "ID": 26,
+    "Class": "主輸出",
     "Name": "燈燈",
     "MaxPoints": 485.2,
     "NormalAttack": 64,
@@ -262,6 +287,7 @@
   },
   {
     "ID": 27,
+    "Class": "主輸出",
     "Name": "柯萊塔",
     "MaxPoints": 491.5,
     "NormalAttack": 11,
@@ -272,6 +298,7 @@
   },
   {
     "ID": 28,
+    "Class": "輔助",
     "Name": "洛可可",
     "MaxPoints": 487.5,
     "NormalAttack": 3,
@@ -282,6 +309,7 @@
   },
   {
     "ID": 29,
+    "Class": "主輸出",
     "Name": "菲比",
     "MaxPoints": 479,
     "NormalAttack": 9,
