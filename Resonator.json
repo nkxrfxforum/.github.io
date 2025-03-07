@@ -8,7 +8,11 @@
     "HeavyAttack": 0,
     "SecretWeapon": 20,
     "Skills": 72,
-    "Other": 6
+    "Other": 6,
+    "MainAffix1": [ "攻擊" ],
+    "MainAffix3": [],
+    "MainAffix4": [ "暴擊", "暴擊傷害" ],
+    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
   },
   {
     "ID": 2,
@@ -19,7 +23,11 @@
     "HeavyAttack": 68,
     "SecretWeapon": 0,
     "Skills": 11,
-    "Other": 19
+    "Other": 19,
+    "MainAffix1": [ "攻擊" ],
+    "MainAffix3": [],
+    "MainAffix4": [ "暴擊", "暴擊傷害" ],
+    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
   },
   {
     "ID": 3,
@@ -30,7 +38,11 @@
     "HeavyAttack": 0,
     "SecretWeapon": 27,
     "Skills": 59,
-    "Other": 13
+    "Other": 13,
+    "MainAffix1": [ "攻擊" ],
+    "MainAffix3": [],
+    "MainAffix4": [ "暴擊", "暴擊傷害" ],
+    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
   },
   {
     "ID": 4,
@@ -41,7 +53,11 @@
     "HeavyAttack": 2,
     "SecretWeapon": 5,
     "Skills": 12,
-    "Other": 22
+    "Other": 22,
+    "MainAffix1": [ "攻擊" ],
+    "MainAffix3": [],
+    "MainAffix4": [ "暴擊", "暴擊傷害" ],
+    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
   },
   {
     "ID": 5,
@@ -52,7 +68,11 @@
     "HeavyAttack": 31,
     "SecretWeapon": 27,
     "Skills": 6,
-    "Other": 12
+    "Other": 12,
+    "MainAffix1": [ "攻擊" ],
+    "MainAffix3": [],
+    "MainAffix4": [ "暴擊", "暴擊傷害" ],
+    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
   },
   {
     "ID": 6,
@@ -63,7 +83,11 @@
     "HeavyAttack": 3,
     "SecretWeapon": 52,
     "Skills": 5,
-    "Other": 20
+    "Other": 20,
+    "MainAffix1": [ "攻擊" ],
+    "MainAffix3": [],
+    "MainAffix4": [ "暴擊", "暴擊傷害" ],
+    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
   },
   {
     "ID": 7,
@@ -74,7 +98,11 @@
     "HeavyAttack": 4,
     "SecretWeapon": 4,
     "Skills": 30,
-    "Other": 22
+    "Other": 22,
+    "MainAffix1": [ "攻擊" ],
+    "MainAffix3": [],
+    "MainAffix4": [ "暴擊", "暴擊傷害" ],
+    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
   },
   {
     "ID": 8,
@@ -85,7 +113,11 @@
     "HeavyAttack": 20,
     "SecretWeapon": 21,
     "Skills": 37,
-    "Other": 14
+    "Other": 14,
+    "MainAffix1": [],
+    "MainAffix3": [],
+    "MainAffix4": [],
+    "SupAffix": []
   },
   {
     "ID": 9,
@@ -96,7 +128,11 @@
     "HeavyAttack": 5,
     "SecretWeapon": 30,
     "Skills": 25,
-    "Other": 20
+    "Other": 20,
+    "MainAffix1": [ "攻擊" ],
+    "MainAffix3": [],
+    "MainAffix4": [ "暴擊", "暴擊傷害" ],
+    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
   },
   {
     "ID": 10,
@@ -107,7 +143,11 @@
     "HeavyAttack": 31,
     "SecretWeapon": 23,
     "Skills": 21,
-    "Other": 14
+    "Other": 14,
+    "MainAffix1": [ "攻擊" ],
+    "MainAffix3": [],
+    "MainAffix4": [ "暴擊", "暴擊傷害" ],
+    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
   },
   {
     "ID": 11,
@@ -118,7 +158,11 @@
     "HeavyAttack": 0,
     "SecretWeapon": 22,
     "Skills": 33,
-    "Other": 20
+    "Other": 20,
+    "MainAffix1": [ "攻擊" ],
+    "MainAffix3": [],
+    "MainAffix4": [ "暴擊", "暴擊傷害" ],
+    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
   },
   {
     "ID": 12,
@@ -129,7 +173,11 @@
     "HeavyAttack": 0,
     "SecretWeapon": 48,
     "Skills": 31,
-    "Other": 6
+    "Other": 6,
+    "MainAffix1": [ "攻擊" ],
+    "MainAffix3": [],
+    "MainAffix4": [ "暴擊", "暴擊傷害" ],
+    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
   },
   {
     "ID": 13,
@@ -140,7 +188,11 @@
     "HeavyAttack": 32,
     "SecretWeapon": 20,
     "Skills": 22,
-    "Other": 18
+    "Other": 18,
+    "MainAffix1": [ "攻擊" ],
+    "MainAffix3": [],
+    "MainAffix4": [ "暴擊", "暴擊傷害" ],
+    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
   },
   {
     "ID": 14,
@@ -151,7 +203,11 @@
     "HeavyAttack": 0,
     "SecretWeapon": 35,
     "Skills": 46,
-    "Other": 13
+    "Other": 13,
+    "MainAffix1": [ "攻擊" ],
+    "MainAffix3": [],
+    "MainAffix4": [ "暴擊", "暴擊傷害" ],
+    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
   },
   {
     "ID": 15,
@@ -162,7 +218,11 @@
     "HeavyAttack": 30,
     "SecretWeapon": 32,
     "Skills": 30,
-    "Other": 6
+    "Other": 6,
+    "MainAffix1": [],
+    "MainAffix3": [],
+    "MainAffix4": [],
+    "SupAffix": []
   },
   {
     "ID": 16,
@@ -173,7 +233,11 @@
     "HeavyAttack": 0,
     "SecretWeapon": 46,
     "Skills": 45,
-    "Other": 4
+    "Other": 4,
+    "MainAffix1": [],
+    "MainAffix3": [],
+    "MainAffix4": [],
+    "SupAffix": []
   },
   {
     "ID": 17,
@@ -184,7 +248,11 @@
     "HeavyAttack": 28,
     "SecretWeapon": 40,
     "Skills": 22,
-    "Other": 5
+    "Other": 5,
+    "MainAffix1": [],
+    "MainAffix3": [],
+    "MainAffix4": [],
+    "SupAffix": []
   },
   {
     "ID": 18,
@@ -195,7 +263,11 @@
     "HeavyAttack": 0,
     "SecretWeapon": 50,
     "Skills": 38,
-    "Other": 4
+    "Other": 4,
+    "MainAffix1": [],
+    "MainAffix3": [],
+    "MainAffix4": [],
+    "SupAffix": []
   },
   {
     "ID": 19,
@@ -206,7 +278,11 @@
     "HeavyAttack": 0,
     "SecretWeapon": 0,
     "Skills": 0,
-    "Other": 0
+    "Other": 0,
+    "MainAffix1": [ "攻擊" ],
+    "MainAffix3": [],
+    "MainAffix4": [],
+    "SupAffix": []
   },
   {
     "ID": 20,
@@ -217,7 +293,11 @@
     "HeavyAttack": 0,
     "SecretWeapon": 0,
     "Skills": 0,
-    "Other": 0
+    "Other": 0,
+    "MainAffix1": [],
+    "MainAffix3": [],
+    "MainAffix4": [],
+    "SupAffix": []
   },
   {
     "ID": 21,
@@ -228,7 +308,11 @@
     "HeavyAttack": 18,
     "SecretWeapon": 0,
     "Skills": 21,
-    "Other": 7
+    "Other": 7,
+    "MainAffix1": [],
+    "MainAffix3": [],
+    "MainAffix4": [],
+    "SupAffix": []
   },
   {
     "ID": 22,
@@ -239,7 +323,11 @@
     "HeavyAttack": 5,
     "SecretWeapon": 62,
     "Skills": 7,
-    "Other": 13
+    "Other": 13,
+    "MainAffix1": [ "攻擊" ],
+    "MainAffix3": [],
+    "MainAffix4": [ "暴擊", "暴擊傷害" ],
+    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
   },
   {
     "ID": 23,
@@ -250,7 +338,11 @@
     "HeavyAttack": 1,
     "SecretWeapon": 97,
     "Skills": 0,
-    "Other": 1
+    "Other": 1,
+    "MainAffix1": [],
+    "MainAffix3": [],
+    "MainAffix4": [],
+    "SupAffix": []
   },
   {
     "ID": 24,
@@ -261,7 +353,11 @@
     "HeavyAttack": 8,
     "SecretWeapon": 29,
     "Skills": 33,
-    "Other": 19
+    "Other": 19,
+    "MainAffix1": [],
+    "MainAffix3": [],
+    "MainAffix4": [],
+    "SupAffix": []
   },
   {
     "ID": 25,
@@ -272,7 +368,11 @@
     "HeavyAttack": 2,
     "SecretWeapon": 22,
     "Skills": 0,
-    "Other": 10
+    "Other": 10,
+    "MainAffix1": [ "攻擊" ],
+    "MainAffix3": [],
+    "MainAffix4": [ "暴擊", "暴擊傷害" ],
+    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
   },
   {
     "ID": 26,
@@ -283,7 +383,11 @@
     "HeavyAttack": 0,
     "SecretWeapon": 20,
     "Skills": 8,
-    "Other": 8
+    "Other": 8,
+    "MainAffix1": [ "攻擊" ],
+    "MainAffix3": [],
+    "MainAffix4": [ "暴擊", "暴擊傷害" ],
+    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
   },
   {
     "ID": 27,
@@ -294,7 +398,11 @@
     "HeavyAttack": 0,
     "SecretWeapon": 0,
     "Skills": 75,
-    "Other": 14
+    "Other": 14,
+    "MainAffix1": [ "攻擊" ],
+    "MainAffix3": [],
+    "MainAffix4": [ "暴擊", "暴擊傷害" ],
+    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
   },
   {
     "ID": 28,
@@ -305,7 +413,11 @@
     "HeavyAttack": 68,
     "SecretWeapon": 0,
     "Skills": 12,
-    "Other": 17
+    "Other": 17,
+    "MainAffix1": [],
+    "MainAffix3": [],
+    "MainAffix4": [],
+    "SupAffix": []
   },
   {
     "ID": 29,
@@ -316,6 +428,10 @@
     "HeavyAttack": 54,
     "SecretWeapon": 12,
     "Skills": 4,
-    "Other": 21
+    "Other": 21,
+    "MainAffix1": [ "攻擊" ],
+    "MainAffix3": [],
+    "MainAffix4": [ "暴擊", "暴擊傷害" ],
+    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
   }
 ]
