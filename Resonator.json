@@ -9,10 +9,25 @@
     "SecretWeapon": 20,
     "Skills": 72,
     "Other": 6,
-    "MainAffix1": [ "攻擊" ],
-    "MainAffix3": [],
-    "MainAffix4": [ "暴擊", "暴擊傷害" ],
-    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "衍射傷害加成",
+      "攻擊",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "暴擊傷害"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "共鳴解放傷害加成",
+      "共鳴技能傷害加成"
+    ]
   },
   {
     "ID": 2,
@@ -24,10 +39,25 @@
     "SecretWeapon": 0,
     "Skills": 11,
     "Other": 19,
-    "MainAffix1": [ "攻擊" ],
-    "MainAffix3": [],
-    "MainAffix4": [ "暴擊", "暴擊傷害" ],
-    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "氣動傷害加成",
+      "攻擊",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "暴擊傷害"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "共鳴效率",
+      "重擊傷害加成"
+    ]
   },
   {
     "ID": 3,
@@ -39,10 +69,25 @@
     "SecretWeapon": 27,
     "Skills": 59,
     "Other": 13,
-    "MainAffix1": [ "攻擊" ],
-    "MainAffix3": [],
-    "MainAffix4": [ "暴擊", "暴擊傷害" ],
-    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "熱熔傷害加成",
+      "攻擊",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "暴擊傷害"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "共鳴效率",
+      "共鳴技能傷害加成"
+    ]
   },
   {
     "ID": 4,
@@ -54,10 +99,25 @@
     "SecretWeapon": 5,
     "Skills": 12,
     "Other": 22,
-    "MainAffix1": [ "攻擊" ],
-    "MainAffix3": [],
-    "MainAffix4": [ "暴擊", "暴擊傷害" ],
-    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "熱熔傷害加成",
+      "攻擊",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "暴擊傷害"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "共鳴效率",
+      "普攻傷害加成"
+    ]
   },
   {
     "ID": 5,
@@ -69,10 +129,25 @@
     "SecretWeapon": 27,
     "Skills": 6,
     "Other": 12,
-    "MainAffix1": [ "攻擊" ],
-    "MainAffix3": [],
-    "MainAffix4": [ "暴擊", "暴擊傷害" ],
-    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "氣動傷害加成",
+      "攻擊",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "暴擊傷害"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "共鳴效率",
+      "共鳴解放傷害加成"
+    ]
   },
   {
     "ID": 6,
@@ -84,10 +159,26 @@
     "SecretWeapon": 52,
     "Skills": 5,
     "Other": 20,
-    "MainAffix1": [ "攻擊" ],
-    "MainAffix3": [],
-    "MainAffix4": [ "暴擊", "暴擊傷害" ],
-    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "導電傷害加成",
+      "攻擊",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "共鳴解放傷害加成",
+      "共鳴技能傷害加成"
+    ]
   },
   {
     "ID": 7,
@@ -99,10 +190,26 @@
     "SecretWeapon": 4,
     "Skills": 30,
     "Other": 22,
-    "MainAffix1": [ "攻擊" ],
-    "MainAffix3": [],
-    "MainAffix4": [ "暴擊", "暴擊傷害" ],
-    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "冷凝傷害加成",
+      "攻擊",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "共鳴效率",
+      "普攻傷害加成"
+    ]
   },
   {
     "ID": 8,
@@ -114,25 +221,57 @@
     "SecretWeapon": 21,
     "Skills": 37,
     "Other": 14,
-    "MainAffix1": [],
-    "MainAffix3": [],
-    "MainAffix4": [],
-    "SupAffix": []
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "導電傷害加成",
+      "攻擊",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "共鳴效率",
+      "共鳴技能傷害加成"
+    ]
   },
   {
     "ID": 9,
     "Class": "主輸出",
     "Name": "漂泊者-湮滅",
-    "MaxPoints": 473.0,
+    "MaxPoints": 473,
     "NormalAttack": 20,
     "HeavyAttack": 5,
     "SecretWeapon": 30,
     "Skills": 25,
     "Other": 20,
-    "MainAffix1": [ "攻擊" ],
-    "MainAffix3": [],
-    "MainAffix4": [ "暴擊", "暴擊傷害" ],
-    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "湮滅傷害加成",
+      "攻擊",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "共鳴技能傷害加成",
+      "共鳴解放傷害加成"
+    ]
   },
   {
     "ID": 10,
@@ -144,10 +283,26 @@
     "SecretWeapon": 23,
     "Skills": 21,
     "Other": 14,
-    "MainAffix1": [ "攻擊" ],
-    "MainAffix3": [],
-    "MainAffix4": [ "暴擊", "暴擊傷害" ],
-    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "衍射傷害加成",
+      "攻擊",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "共鳴效率",
+      "共鳴技能傷害加成"
+    ]
   },
   {
     "ID": 11,
@@ -159,10 +314,25 @@
     "SecretWeapon": 22,
     "Skills": 33,
     "Other": 20,
-    "MainAffix1": [ "攻擊" ],
-    "MainAffix3": [],
-    "MainAffix4": [ "暴擊", "暴擊傷害" ],
-    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "氣動傷害加成",
+      "共鳴效率",
+      "攻擊"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "暴擊傷害"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "共鳴效率",
+      "共鳴技能傷害加成"
+    ]
   },
   {
     "ID": 12,
@@ -174,10 +344,25 @@
     "SecretWeapon": 48,
     "Skills": 31,
     "Other": 6,
-    "MainAffix1": [ "攻擊" ],
-    "MainAffix3": [],
-    "MainAffix4": [ "暴擊", "暴擊傷害" ],
-    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "熱熔傷害加成",
+      "攻擊",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "暴擊傷害"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "共鳴效率",
+      "共鳴解放傷害加成"
+    ]
   },
   {
     "ID": 13,
@@ -189,10 +374,25 @@
     "SecretWeapon": 20,
     "Skills": 22,
     "Other": 18,
-    "MainAffix1": [ "攻擊" ],
-    "MainAffix3": [],
-    "MainAffix4": [ "暴擊", "暴擊傷害" ],
-    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "湮滅傷害加成",
+      "攻擊",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "暴擊傷害"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "共鳴技能傷害加成",
+      "重擊傷害加成"
+    ]
   },
   {
     "ID": 14,
@@ -204,10 +404,25 @@
     "SecretWeapon": 35,
     "Skills": 46,
     "Other": 13,
-    "MainAffix1": [ "攻擊" ],
-    "MainAffix3": [],
-    "MainAffix4": [ "暴擊", "暴擊傷害" ],
-    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "熱熔傷害加成",
+      "攻擊",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "暴擊傷害"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "共鳴效率",
+      "共鳴技能傷害加成"
+    ]
   },
   {
     "ID": 15,
@@ -219,10 +434,25 @@
     "SecretWeapon": 32,
     "Skills": 30,
     "Other": 6,
-    "MainAffix1": [],
-    "MainAffix3": [],
-    "MainAffix4": [],
-    "SupAffix": []
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "冷凝傷害加成",
+      "攻擊",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "攻擊"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "共鳴效率",
+      "共鳴解放傷害加成"
+    ]
   },
   {
     "ID": 16,
@@ -234,10 +464,26 @@
     "SecretWeapon": 46,
     "Skills": 45,
     "Other": 4,
-    "MainAffix1": [],
-    "MainAffix3": [],
-    "MainAffix4": [],
-    "SupAffix": []
+    "MainAffix1": [
+      "防禦"
+    ],
+    "MainAffix3": [
+      "導電傷害加成",
+      "防禦",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "暴擊傷害",
+      "防禦"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "防禦",
+      "共鳴效率",
+      "共鳴技能傷害加成"
+    ]
   },
   {
     "ID": 17,
@@ -249,14 +495,29 @@
     "SecretWeapon": 40,
     "Skills": 22,
     "Other": 5,
-    "MainAffix1": [],
-    "MainAffix3": [],
-    "MainAffix4": [],
-    "SupAffix": []
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "氣動傷害加成",
+      "攻擊",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "攻擊"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "共鳴效率",
+      "共鳴解放傷害加成"
+    ]
   },
   {
     "ID": 18,
-    "Class": "輔助",
+    "Class": "防禦輔",
     "Name": "桃祈",
     "MaxPoints": 501.3,
     "NormalAttack": 8,
@@ -264,10 +525,26 @@
     "SecretWeapon": 50,
     "Skills": 38,
     "Other": 4,
-    "MainAffix1": [],
-    "MainAffix3": [],
-    "MainAffix4": [],
-    "SupAffix": []
+    "MainAffix1": [
+      "防禦"
+    ],
+    "MainAffix3": [
+      "湮滅傷害加成",
+      "防禦",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "暴擊傷害",
+      "防禦"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "防禦",
+      "共鳴效率",
+      "共鳴技能傷害加成"
+    ]
   },
   {
     "ID": 19,
@@ -279,10 +556,25 @@
     "SecretWeapon": 0,
     "Skills": 0,
     "Other": 0,
-    "MainAffix1": [ "攻擊" ],
-    "MainAffix3": [],
-    "MainAffix4": [],
-    "SupAffix": []
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "衍射傷害加成",
+      "攻擊",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "治療效果加成",
+      "攻擊"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "共鳴效率"
+    ]
   },
   {
     "ID": 20,
@@ -294,10 +586,25 @@
     "SecretWeapon": 0,
     "Skills": 0,
     "Other": 0,
-    "MainAffix1": [],
-    "MainAffix3": [],
-    "MainAffix4": [],
-    "SupAffix": []
+    "MainAffix1": [
+      "生命"
+    ],
+    "MainAffix3": [
+      "冷凝傷害加成",
+      "生命",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "治療效果加成",
+      "生命"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "生命",
+      "共鳴效率"
+    ]
   },
   {
     "ID": 21,
@@ -309,10 +616,25 @@
     "SecretWeapon": 0,
     "Skills": 21,
     "Other": 7,
-    "MainAffix1": [],
-    "MainAffix3": [],
-    "MainAffix4": [],
-    "SupAffix": []
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "冷凝傷害加成",
+      "攻擊",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "暴擊傷害"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "共鳴效率",
+      "普攻傷害加成"
+    ]
   },
   {
     "ID": 22,
@@ -324,10 +646,25 @@
     "SecretWeapon": 62,
     "Skills": 7,
     "Other": 13,
-    "MainAffix1": [ "攻擊" ],
-    "MainAffix3": [],
-    "MainAffix4": [ "暴擊", "暴擊傷害" ],
-    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "導電傷害加成",
+      "攻擊",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "暴擊傷害"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "共鳴效率",
+      "共鳴解放傷害加成"
+    ]
   },
   {
     "ID": 23,
@@ -339,10 +676,25 @@
     "SecretWeapon": 97,
     "Skills": 0,
     "Other": 1,
-    "MainAffix1": [],
-    "MainAffix3": [],
-    "MainAffix4": [],
-    "SupAffix": []
+    "MainAffix1": [
+      "生命"
+    ],
+    "MainAffix3": [
+      "衍射傷害加成",
+      "生命",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊傷害",
+      "治療效果加成",
+      "生命"
+    ],
+    "SupAffix": [
+      "暴擊傷害",
+      "生命",
+      "共鳴效率",
+      "共鳴解放傷害加成"
+    ]
   },
   {
     "ID": 24,
@@ -354,10 +706,25 @@
     "SecretWeapon": 29,
     "Skills": 33,
     "Other": 19,
-    "MainAffix1": [],
-    "MainAffix3": [],
-    "MainAffix4": [],
-    "SupAffix": []
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "冷凝傷害加成",
+      "攻擊",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "暴擊傷害"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "共鳴效率",
+      "共鳴技能傷害加成"
+    ]
   },
   {
     "ID": 25,
@@ -369,10 +736,25 @@
     "SecretWeapon": 22,
     "Skills": 0,
     "Other": 10,
-    "MainAffix1": [ "攻擊" ],
-    "MainAffix3": [],
-    "MainAffix4": [ "暴擊", "暴擊傷害" ],
-    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "湮滅傷害加成",
+      "攻擊",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "暴擊傷害"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "共鳴效率",
+      "普攻傷害加成"
+    ]
   },
   {
     "ID": 26,
@@ -384,10 +766,24 @@
     "SecretWeapon": 20,
     "Skills": 8,
     "Other": 8,
-    "MainAffix1": [ "攻擊" ],
-    "MainAffix3": [],
-    "MainAffix4": [ "暴擊", "暴擊傷害" ],
-    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "導電傷害加成",
+      "攻擊",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "暴擊傷害"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "普攻傷害加成"
+    ]
   },
   {
     "ID": 27,
@@ -399,10 +795,25 @@
     "SecretWeapon": 0,
     "Skills": 75,
     "Other": 14,
-    "MainAffix1": [ "攻擊" ],
-    "MainAffix3": [],
-    "MainAffix4": [ "暴擊", "暴擊傷害" ],
-    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "冷凝傷害加成",
+      "攻擊",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "暴擊傷害"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "共鳴效率",
+      "共鳴技能傷害加成"
+    ]
   },
   {
     "ID": 28,
@@ -414,10 +825,26 @@
     "SecretWeapon": 0,
     "Skills": 12,
     "Other": 17,
-    "MainAffix1": [],
-    "MainAffix3": [],
-    "MainAffix4": [],
-    "SupAffix": []
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "湮滅傷害加成",
+      "攻擊",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "共鳴效率",
+      "重擊傷害加成"
+    ]
   },
   {
     "ID": 29,
@@ -429,9 +856,53 @@
     "SecretWeapon": 12,
     "Skills": 4,
     "Other": 21,
-    "MainAffix1": [ "攻擊" ],
-    "MainAffix3": [],
-    "MainAffix4": [ "暴擊", "暴擊傷害" ],
-    "SupAffix": [ "暴擊", "暴擊傷害", "攻擊" ]
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "衍射傷害加成",
+      "攻擊",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "暴擊傷害"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "共鳴效率",
+      "重擊傷害加成"
+    ]
+  },
+  {
+    "ID": 30,
+    "Class": "主輸出",
+    "Name": "布蘭特",
+    "MaxPoints": 454.9,
+    "NormalAttack": 62,
+    "HeavyAttack": 0,
+    "SecretWeapon": 12,
+    "Skills": 12,
+    "Other": 14,
+    "MainAffix1": [
+      "攻擊"
+    ],
+    "MainAffix3": [
+      "熱熔傷害加成",
+      "共鳴效率"
+    ],
+    "MainAffix4": [
+      "暴擊",
+      "暴擊傷害"
+    ],
+    "SupAffix": [
+      "暴擊",
+      "暴擊傷害",
+      "攻擊",
+      "共鳴效率",
+      "普攻傷害加成"
+    ]
   }
 ]
