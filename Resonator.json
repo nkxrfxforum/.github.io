@@ -9,6 +9,7 @@
     "SecretWeapon": 20,
     "Skills": 72,
     "Other": 6,
+    "Note": "",
     "MainAffix1": [
       "攻擊"
     ],
@@ -69,6 +70,7 @@
     "SecretWeapon": 27,
     "Skills": 59,
     "Other": 13,
+    "Note": "",
     "MainAffix1": [
       "攻擊"
     ],
@@ -99,6 +101,7 @@
     "SecretWeapon": 5,
     "Skills": 12,
     "Other": 22,
+    "Note": "",
     "MainAffix1": [
       "攻擊"
     ],
@@ -129,6 +132,7 @@
     "SecretWeapon": 27,
     "Skills": 6,
     "Other": 12,
+    "Note": "",
     "MainAffix1": [
       "攻擊"
     ],
@@ -159,6 +163,7 @@
     "SecretWeapon": 52,
     "Skills": 5,
     "Other": 20,
+    "Note": "",
     "MainAffix1": [
       "攻擊"
     ],
@@ -190,6 +195,7 @@
     "SecretWeapon": 4,
     "Skills": 30,
     "Other": 22,
+    "Note": "",
     "MainAffix1": [
       "攻擊"
     ],
@@ -221,6 +227,7 @@
     "SecretWeapon": 21,
     "Skills": 37,
     "Other": 14,
+    "Note": "",
     "MainAffix1": [
       "攻擊"
     ],
@@ -252,6 +259,7 @@
     "SecretWeapon": 30,
     "Skills": 25,
     "Other": 20,
+    "Note": "",
     "MainAffix1": [
       "攻擊"
     ],
@@ -283,6 +291,7 @@
     "SecretWeapon": 23,
     "Skills": 21,
     "Other": 14,
+    "Note": "",
     "MainAffix1": [
       "攻擊"
     ],
@@ -314,6 +323,7 @@
     "SecretWeapon": 22,
     "Skills": 33,
     "Other": 20,
+    "Note": "",
     "MainAffix1": [
       "攻擊"
     ],
@@ -344,6 +354,7 @@
     "SecretWeapon": 48,
     "Skills": 31,
     "Other": 6,
+    "Note": "",
     "MainAffix1": [
       "攻擊"
     ],
@@ -374,6 +385,7 @@
     "SecretWeapon": 20,
     "Skills": 22,
     "Other": 18,
+    "Note": "",
     "MainAffix1": [
       "攻擊"
     ],
@@ -404,6 +416,7 @@
     "SecretWeapon": 35,
     "Skills": 46,
     "Other": 13,
+    "Note": "",
     "MainAffix1": [
       "攻擊"
     ],
@@ -434,6 +447,7 @@
     "SecretWeapon": 32,
     "Skills": 30,
     "Other": 6,
+    "Note": "",
     "MainAffix1": [
       "攻擊"
     ],
@@ -464,6 +478,7 @@
     "SecretWeapon": 46,
     "Skills": 45,
     "Other": 4,
+    "Note": "",
     "MainAffix1": [
       "防禦"
     ],
@@ -495,6 +510,7 @@
     "SecretWeapon": 40,
     "Skills": 22,
     "Other": 5,
+    "Note": "",
     "MainAffix1": [
       "攻擊"
     ],
@@ -525,6 +541,7 @@
     "SecretWeapon": 50,
     "Skills": 38,
     "Other": 4,
+    "Note": "",
     "MainAffix1": [
       "防禦"
     ],
@@ -556,6 +573,7 @@
     "SecretWeapon": 0,
     "Skills": 0,
     "Other": 0,
+    "Note": "",
     "MainAffix1": [
       "攻擊"
     ],
@@ -586,6 +604,7 @@
     "SecretWeapon": 0,
     "Skills": 0,
     "Other": 0,
+    "Note": "",
     "MainAffix1": [
       "生命"
     ],
@@ -616,6 +635,7 @@
     "SecretWeapon": 0,
     "Skills": 21,
     "Other": 7,
+    "Note": "",
     "MainAffix1": [
       "攻擊"
     ],
@@ -646,6 +666,7 @@
     "SecretWeapon": 62,
     "Skills": 7,
     "Other": 13,
+    "Note": "",
     "MainAffix1": [
       "攻擊"
     ],
@@ -676,6 +697,7 @@
     "SecretWeapon": 97,
     "Skills": 0,
     "Other": 1,
+    "Note": "",
     "MainAffix1": [
       "生命"
     ],
@@ -706,6 +728,7 @@
     "SecretWeapon": 29,
     "Skills": 33,
     "Other": 19,
+    "Note": "",
     "MainAffix1": [
       "攻擊"
     ],
@@ -736,6 +759,7 @@
     "SecretWeapon": 22,
     "Skills": 0,
     "Other": 10,
+    "Note": "",
     "MainAffix1": [
       "攻擊"
     ],
@@ -766,6 +790,7 @@
     "SecretWeapon": 20,
     "Skills": 8,
     "Other": 8,
+    "Note": "",
     "MainAffix1": [
       "攻擊"
     ],
@@ -795,6 +820,7 @@
     "SecretWeapon": 0,
     "Skills": 75,
     "Other": 14,
+    "Note": "",
     "MainAffix1": [
       "攻擊"
     ],
@@ -825,6 +851,7 @@
     "SecretWeapon": 0,
     "Skills": 12,
     "Other": 17,
+    "Note": "",
     "MainAffix1": [
       "攻擊"
     ],
@@ -856,6 +883,7 @@
     "SecretWeapon": 12,
     "Skills": 4,
     "Other": 21,
+    "Note": "",
     "MainAffix1": [
       "攻擊"
     ],
@@ -886,6 +914,7 @@
     "SecretWeapon": 12,
     "Skills": 12,
     "Other": 14,
+    "Note": "預設專武及無懼套前提下\n共鳴效率達到93%攻擊可全部吃滿\n當3C換1熱熔傷害加成，且共鳴效率為63%\n此時等於雙共鳴效率93%",
     "MainAffix1": [
       "攻擊"
     ],
