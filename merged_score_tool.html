@@ -40,10 +40,6 @@
 
         /* 切換按鈕 */
         .switch-container {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            z-index: 1000;
             display: flex;
             gap: 0.5rem;
         }
@@ -80,7 +76,8 @@
             border: none;
             box-shadow: none;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .file-input-wrapper {
@@ -120,6 +117,10 @@
         .file-btn::before {
             content: '📷';
             font-size: 1.4rem;
+        }
+
+        #openModalBtn::before {
+            content: none;
         }
 
         /* 主要內容區域 */
@@ -541,15 +542,177 @@
         .fade-in-up {
             animation: fadeInUp 0.4s ease-out forwards;
         }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            color: var(--text-primary);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: var(--accent-red);
+        }
+
+        .modal h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--accent-gold);
+        }
+
+        .section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            color: var(--accent-blue);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .file-input-group {
+            margin-bottom: 1rem;
+        }
+
+        .file-input-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .modal input[type="file"] {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .modal select {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            cursor: pointer;
+            appearance: none;
+        }
+        
+        .modal select:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .modal .btn {
+            background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-orange) 100%);
+            color: #000;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .modal .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .modal .btn:disabled {
+            background: #444;
+            color: #888;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .info-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid var(--accent-gold);
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .info-box p {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+        
+        .info-box span {
+            color: var(--text-primary);
+            font-weight: bold;
+        }
+
+        .message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            display: none;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .message.success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .message.error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid var(--accent-red);
+            color: var(--accent-red);
+        }
     </style>
 </head>
 
 <body>
-    <div class="switch-container">
-        <button class="switch-btn" data-layout="portrait">📱長版(密集)</button>
-        <button class="switch-btn active" data-layout="landscape">💻寬版(完整)</button>
-    </div>
-
     <div class="controls">
         <div class="file-input-wrapper">
             <!-- 注意：ID 已改為 imageInput 以配合 index copy.html 的邏輯 -->
@@ -559,6 +722,8 @@
         <div style="display:none; align-items:center; gap:0.6rem; margin-left:0.6rem;">
             <input id="quickJson" placeholder="貼上 JSON 並按 Enter" style="width:260px; padding:0.6rem; border-radius:8px; background:rgba(255,255,255,0.03); color:var(--text-primary); border:1px solid rgba(255,255,255,0.06); font-family:monospace; font-size:0.9rem;">
         </div>
+        <button id="openModalBtn" class="file-btn">匯出數據</button>
+        <button class="switch-btn" id="layoutToggle">💻</button>
     </div>
 
     <div class="main-content" id="mainContent">
@@ -578,6 +743,46 @@
     <input type="file" id="targetFileInput" style="display:none;">
     <select id="roleSelect" style="display:none;"></select>
     <button id="exportBtn" style="display:none;"></button>
+
+    <div class="modal" id="exportModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModalBtn">&times;</span>
+            <h1>聲骸數據匯出工具</h1>
+
+            <div class="section">
+                <div class="section-title">步驟 1: 確認來源數據</div>
+                <div class="info-box" id="sourceInfo">
+                    <p><strong>角色：</strong><span id="characterName">尚未載入</span></p>
+                    <p><strong>UID：</strong><span id="uid">尚未載入</span></p>
+                    <p><strong>鏈數：</strong><span id="chainNum">0</span></p>
+                    <p><strong>聲骸數量：</strong><span id="echoCount">0</span></p>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">步驟 2: 選擇目標檔案</div>
+                <div class="file-input-group">
+                    <label class="file-input-label">選擇要替換的 JSON 檔案：</label>
+                    <input type="file" id="targetFileInputModal" accept=".json">
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">步驟 3: 選擇角色</div>
+                <div class="select-wrapper">
+                    <select id="roleSelectModal" disabled>
+                        <option value="">請先載入目標 JSON 檔案</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="section">
+                <button class="btn" id="exportBtnModal" disabled>匯出數據</button>
+            </div>
+
+            <div class="message" id="modalMessage"></div>
+        </div>
+    </div>
 
     <script>
         // ==================================================================================
@@ -11567,14 +11772,11 @@
         // 渲染邏輯 (來自 image_score.html)
         // ==================================================================================
 
-        document.querySelectorAll('.switch-btn').forEach(btn => {
-            btn.addEventListener('click', function () {
-                const layout = this.dataset.layout;
-                document.querySelectorAll('.switch-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                currentLayout = layout;
-                renderResult();
-            });
+        const layoutToggle = document.getElementById('layoutToggle');
+        layoutToggle.addEventListener('click', () => {
+            currentLayout = currentLayout === 'landscape' ? 'portrait' : 'landscape';
+            layoutToggle.textContent = currentLayout === 'landscape' ? '💻' : '📱';
+            renderResult();
         });
 
         function renderResult(inputData) {
@@ -11713,9 +11915,277 @@
             mainContent.innerHTML = '';
             noDataMessage.style.display = '';
         }
+
+        // ==================================================================================
+        // 匯出工具邏輯 (整合自 DialogExportData.html)
+        // ==================================================================================
+
+        const openModalBtn = document.getElementById('openModalBtn');
+        const exportModal = document.getElementById('exportModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const targetFileInputModal = document.getElementById('targetFileInputModal');
+        const roleSelectModal = document.getElementById('roleSelectModal');
+        const exportBtnModal = document.getElementById('exportBtnModal');
+        const modalMessage = document.getElementById('modalMessage');
+
+        // Modal 控制
+        openModalBtn.addEventListener('click', () => {
+            exportModal.classList.add('show');
+            updateSourceInfo();
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            exportModal.classList.remove('show');
+        });
+
+        exportModal.addEventListener('click', (e) => {
+            if (e.target === exportModal) {
+                exportModal.classList.remove('show');
+            }
+        });
+
+        // 更新來源資訊
+        function updateSourceInfo() {
+            const sourceInfo = document.getElementById('sourceInfo');
+            if (allEchoList && allEchoList.length > 0) {
+                // 嘗試從 jsonOutput 或 quickJson 獲取完整數據以顯示角色名稱等
+                let data = {};
+                try {
+                    const val = jsonOutput.value || (quickJson ? quickJson.value : '');
+                    if (val) data = JSON.parse(val);
+                } catch (e) {}
+
+                document.getElementById('characterName').textContent = data.Name || 'N/A';
+                document.getElementById('uid').textContent = data.UID || 'N/A';
+                document.getElementById('chainNum').textContent = data.NumberOfStars || 0;
+                document.getElementById('echoCount').textContent = allEchoList.length;
+                checkCanExportModal();
+            } else {
+                document.getElementById('characterName').textContent = '尚未載入';
+                document.getElementById('uid').textContent = '尚未載入';
+                document.getElementById('chainNum').textContent = '0';
+                document.getElementById('echoCount').textContent = '0';
+            }
+        }
+
+        // 載入目標 JSON 檔案
+        targetFileInputModal.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            try {
+                targetFileName = file.name;
+                const text = await file.text();
+                targetData = JSON.parse(text);
+
+                // 填充角色選單
+                roleSelectModal.innerHTML = '';
+                if (targetData.role && Array.isArray(targetData.role)) {
+                    targetData.role.forEach((role, index) => {
+                        const option = document.createElement('option');
+                        option.value = index;
+                        option.textContent = role.name || `角色 ${index + 1}`;
+                        roleSelectModal.appendChild(option);
+                    });
+                    roleSelectModal.disabled = false;
+                    if (targetData.role.length > 0) {
+                        roleSelectModal.selectedIndex = 0;
+                    }
+                    showModalMessage('目標檔案載入成功', 'success');
+                } else {
+                    showModalMessage('目標檔案中沒有角色數據', 'error');
+                }
+
+                checkCanExportModal();
+            } catch (error) {
+                showModalMessage('讀取目標檔案失敗：' + error.message, 'error');
+                console.error(error);
+            }
+        });
+
+        // 匯出數據
+        exportBtnModal.addEventListener('click', () => {
+            if (!allEchoList || allEchoList.length === 0 || !targetData) {
+                showModalMessage('請先載入所有必要檔案', 'error');
+                return;
+            }
+
+            const roleIndex = parseInt(roleSelectModal.value);
+            if (isNaN(roleIndex) || !targetData.role[roleIndex]) {
+                showModalMessage('請選擇有效的角色', 'error');
+                return;
+            }
+
+            const role = targetData.role[roleIndex];
+            
+            // 檢查聲骸數量
+            if (!role.costList || role.costList.length < 5) {
+                showModalMessage('聲骸數量未滿無法替換', 'error');
+                return;
+            }
+
+            if (allEchoList.length < 5) {
+                showModalMessage('來源聲骸數據不足 5 個', 'error');
+                return;
+            }
+
+            try {
+                // 替換數據
+                for (let i = 0; i < role.costList.length && i < allEchoList.length; i++) {
+                    if (role.costList[i].propertyList) {
+                        // 副詞條列表
+                        role.costList[i].propertyList = getPropertyList(allEchoList[i]);
+                        
+                        // 消耗類型
+                        role.costList[i].type = getCostType(allEchoList[i].Cost);
+                        
+                        // 套裝
+                        role.costList[i].suite = getTCtoCNAttributes(allEchoList[i].Attributes);
+                        
+                        // 主詞條
+                        role.costList[i].mainAtrri = getMainAttr(allEchoList[i]);
+                    }
+                }
+
+                // 下載檔案
+                const updatedJson = JSON.stringify(targetData, null, 2);
+                downloadFile(updatedJson, targetFileName);
+
+                showModalMessage('資料已成功匯出', 'success');
+            } catch (error) {
+                showModalMessage('匯出失敗：' + error.message, 'error');
+                console.error(error);
+            }
+        });
+
+        function checkCanExportModal() {
+            exportBtnModal.disabled = !(allEchoList && allEchoList.length > 0 && targetData && !roleSelectModal.disabled);
+        }
+
+        function showModalMessage(text, type) {
+            modalMessage.textContent = text;
+            modalMessage.className = `message ${type} show`;
+            modalMessage.style.display = 'block';
+            setTimeout(() => {
+                modalMessage.style.display = 'none';
+                modalMessage.classList.remove('show');
+            }, 5000);
+        }
+
+        function downloadFile(content, filename) {
+            const blob = new Blob([content], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // 輔助轉換函式
+        function getPropertyList(echo) {
+            const properties = [];
+            // 索引 1-5 是副詞條
+            for (let i = 1; i <= 5; i++) {
+                if (echo.AllEchoAffix[i]) {
+                    properties.push(getProperty(echo.AllEchoAffix[i]));
+                }
+            }
+            return properties;
+        }
+
+        function getProperty(echoAffix) {
+            return {
+                property: supTCtoCN(echoAffix),
+                value: echoAffix.Number
+            };
+        }
+
+        function supTCtoCN(echoAffix) {
+            const name = echoAffix.Name;
+            const number = echoAffix.Number;
+
+            switch (name) {
+                case '暴擊': return '暴击';
+                case '暴擊傷害': return '暴伤';
+                case '攻擊': return number.indexOf('%') !== -1 ? '大攻击' : '小攻击';
+                case '防禦': return number.indexOf('%') !== -1 ? '大防御' : '小防御';
+                case '生命': return number.indexOf('%') !== -1 ? '大生命' : '小生命';
+                case '共鳴效率': return '共鸣效率';
+                case '普攻傷害加成': return '普攻伤害';
+                case '重擊傷害加成': return '重击伤害';
+                case '共鳴技能傷害加成': return '技能伤害';
+                case '共鳴解放傷害加成': return '解放伤害';
+                default: return '';
+            }
+        }
+
+        function mainTCtoCN(name) {
+            switch (name) {
+                case '暴擊': return '暴击';
+                case '暴擊傷害': return '暴伤';
+                case '生命': return '生命';
+                case '攻擊': return '攻击力';
+                case '防禦': return '防御';
+                case '治療效果加成': return '治疗';
+                case '衍射傷害加成':
+                case '湮滅傷害加成':
+                case '熱熔傷害加成':
+                case '冷凝傷害加成':
+                case '導電傷害加成':
+                case '氣動傷害加成': return '属伤';
+                case '共鳴效率': return '共鸣效率';
+                default: return '';
+            }
+        }
+
+        function getMainAttr(echo) {
+            if (echo.AllEchoAffix[0]) {
+                return mainTCtoCN(echo.AllEchoAffix[0].Name) + echo.AllEchoAffix[0].Number;
+            }
+            return '';
+        }
+
+        function getCostType(cost) {
+            switch (String(cost)) {
+                case '1': return 'Cost1';
+                case '3': return 'Cost3';
+                case '4': return 'Cost4';
+                default: return '';
+            }
+        }
+
+        function getTCtoCNAttributes(attr) {
+            switch (attr) {
+                case '浮星祛暗': return '光套';
+                case '熔山裂谷': return '火套';
+                case '凝夜白霜': return '冰套';
+                case '沉日劫明': return '暗套';
+                case '徹空冥雷': return '雷套';
+                case '嘯谷長風': return '风套';
+                case '隱世回光': return '奶套';
+                case '輕雲出月': return '轻云套';
+                case '不絕餘音': return '攻击套';
+                case '凌冽決斷之心': return '凌冽套';
+                case '此間永駐之光': return '此间套';
+                case '幽夜隱匿之帷': return '幽夜套';
+                case '高天共奏之曲': return '高天套';
+                case '無懼浪濤之勇': return '无惧套';
+                case '流雲逝盡之空': return '流云套';
+                case '願戴榮光之旅': return '愿戴套';
+                case '奔狼燎原之焰': return '奔狼套';
+                case '失序彼岸之夢': return '失序套';
+                case '榮鬥鑄鋒之冠': return '荣斗套';
+                case '息界同調之律': return '息界套';
+                case '焚羽獵魔之影': return '焚羽套';
+                case '命理崩毀之弦': return '命理套';
+                default: return '';
+            }
+        }
+
     </script>
 </body>
 
 </html>
-
-
