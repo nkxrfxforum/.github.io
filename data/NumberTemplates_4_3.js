@@ -1,2 +1,2 @@
-import data from './actual/NumberTemplates_4_3.js';
+import data from './data/actual/NumberTemplates_4_3.js';
 export default data;
