@@ -1,43 +1,31 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <meta charset="UTF-8">
-  <title>JSON → JS Object</title>
+    <meta charset="UTF-8">
+    <title>JSON → JS Object</title>
 </head>
+
 <body>
 
-<h2>JSON 轉 JS Object 測試</h2>
+    <h2>JSON 轉 JS Object 測試</h2>
 
-<pre id="output"></pre>
+    <pre id="output"></pre>
 
-<script>
-    // 1. 指定 JSON 路徑
-    const jsonPath = "./data/templates.json";
+    <script>
+        let NumberTemplates_1_1 = {}; // 先宣告
 
-    // 2. 讀取 JSON
-    fetch(jsonPath)
-        .then(res => {
-            if (!res.ok) throw new Error("HTTP error: " + res.status);
-            return res.json(); // 解析 JSON → JS Object
-        })
-        .then(jsObject => {
-            // 3. JS Object 可以直接使用
-            console.log("讀取到的 JS 物件:", jsObject);
-
-            // 例如取得 6.3% 的資料
-            console.log("6.3% width:", jsObject["6.3%"].width);
-            console.log("6.3% data:", jsObject["6.3%"].data);
-
-            // 4. 顯示在網頁上
-            document.getElementById("output").textContent =
-                JSON.stringify(jsObject, null, 2);
-        })
-        .catch(err => {
-            console.error("讀取 JSON 發生錯誤:", err);
-            document.getElementById("output").textContent =
-                "錯誤：" + err.message;
-        });
-</script>
+        (async () => {
+            try {
+                const res = await fetch("./data/templates.json");
+                NumberTemplates_1_1 = await res.json(); // 直接塞入
+                console.log("NumberTemplates_1_1:", NumberTemplates_1_1);
+            } catch (err) {
+                console.error("讀取 JSON 發生錯誤:", err);
+            }
+        })();
+    </script>
 
 </body>
+
 </html>
