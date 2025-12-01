@@ -76,14 +76,15 @@
             border: none;
             box-shadow: none;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
+            gap: 1rem;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .file-input-wrapper {
             position: relative;
-            width: 100%;
-            max-width: 400px;
+            width: auto;
         }
 
         .file-input {
@@ -95,17 +96,20 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            width: 100%;
-            padding: 1rem 2rem;
+            width: auto;
+            min-width: 120px;
+            padding: 0.8rem 1.5rem;
             background: rgba(255, 215, 0, 0.1);
             color: var(--accent-gold);
             border: 2px dashed var(--accent-gold);
-            border-radius: 16px;
+            border-radius: 25px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 1.1rem;
+            font-size: 1rem;
             backdrop-filter: blur(5px);
+            height: 50px;
+            white-space: nowrap;
         }
 
         .file-btn:hover {
@@ -113,14 +117,22 @@
             transform: translateY(-2px);
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
         }
-
-        .file-btn::before {
-            content: '📷';
-            font-size: 1.4rem;
-        }
-
-        #openModalBtn::before {
-            content: none;
+        
+        .switch-btn {
+            padding: 0.8rem 1.5rem;
+            border: 2px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
         }
 
         /* 主要內容區域 */
@@ -154,16 +166,6 @@
             box-shadow: var(--shadow);
             position: relative;
             overflow: hidden;
-        }
-
-        .character-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--accent-gold), var(--accent-orange), var(--accent-gold));
         }
 
         /* ========== 寬版角色卡 ========== */
@@ -639,7 +641,7 @@
             cursor: pointer;
             appearance: none;
         }
-        
+
         .modal select:disabled {
             opacity: 0.5;
             cursor: not-allowed;
@@ -683,7 +685,7 @@
             margin-bottom: 0.5rem;
             color: var(--text-secondary);
         }
-        
+
         .info-box span {
             color: var(--text-primary);
             font-weight: bold;
@@ -714,16 +716,27 @@
 
 <body>
     <div class="controls">
-        <button id="homeBtn" class="switch-btn" onclick="location.reload()">🏠</button>
+        <button id="homeBtn" class="switch-btn" onclick="location.reload()">🏠2.8</button>
+        
         <div class="file-input-wrapper">
             <!-- 注意：ID 已改為 imageInput 以配合 index copy.html 的邏輯 -->
             <input type="file" id="imageInput" class="file-input" accept="image/jpeg,image/jpg">
-            <label for="imageInput" class="file-btn"></label>
+            <label for="imageInput" class="file-btn">選擇圖片</label>
         </div>
+        
         <div style="display:none; align-items:center; gap:0.6rem; margin-left:0.6rem;">
-            <input id="quickJson" placeholder="貼上 JSON 並按 Enter" style="width:260px; padding:0.6rem; border-radius:8px; background:rgba(255,255,255,0.03); color:var(--text-primary); border:1px solid rgba(255,255,255,0.06); font-family:monospace; font-size:0.9rem;">
+            <input id="quickJson" placeholder="貼上 JSON 並按 Enter"
+                style="width:260px; padding:0.6rem; border-radius:8px; background:rgba(255,255,255,0.03); color:var(--text-primary); border:1px solid rgba(255,255,255,0.06); font-family:monospace; font-size:0.9rem;">
         </div>
-        <button id="openModalBtn" class="file-btn">匯出數據</button>
+
+        <div class="file-input-wrapper">
+            <button id="openModalBtn" class="file-btn">匯出數據</button>
+        </div>
+
+        <div class="file-input-wrapper">
+            <button id="openHistoryBtn" class="file-btn">歷史紀錄</button>
+        </div>
+
         <button class="switch-btn" id="layoutToggle">💻</button>
     </div>
 
@@ -763,7 +776,8 @@
             <div class="section">
                 <div class="section-title">步驟 2: 選擇目標檔案</div>
                 <div class="file-input-group">
-                    <label class="file-input-label">選擇要替換的 JSON 檔案：<a href="https://wuwaechotool.pages.dev/" target="_blank" style="color: yellow;">鸣潮声骸评分工具</a></label>
+                    <label class="file-input-label">選擇要替換的 JSON 檔案：<a href="https://wuwaechotool.pages.dev/"
+                            target="_blank" style="color: yellow;">鸣潮声骸评分工具</a></label>
                     <input type="file" id="targetFileInputModal" accept=".json">
                 </div>
             </div>
@@ -783,6 +797,36 @@
 
             <div class="message" id="modalMessage"></div>
         </div>
+    </div>
+
+    <div id="historySection" style="display: none; max-width: 1400px; margin: 2rem auto; background: var(--bg-card); border: 2px solid var(--border-color); border-radius: 20px; padding: 2rem; box-shadow: var(--shadow);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h1 style="margin: 0; color: var(--accent-gold);">辨識歷史紀錄</h1>
+            <button class="switch-btn" id="closeHistorySectionBtn">關閉</button>
+        </div>
+        <div class="section" style="display: flex; gap: 10px; margin-bottom: 1rem;">
+            <button class="switch-btn" id="importHistoryBtn">匯入紀錄</button>
+            <button class="switch-btn" id="exportHistoryBtn">匯出紀錄</button>
+            <input type="file" id="historyFileInput" accept=".json" style="display: none;">
+        </div>
+        <div class="section">
+            <div class="section-title">已儲存的紀錄</div>
+            <div id="historyListContainer" style="max-height: 400px; overflow-y: auto;">
+                <table style="width: 100%; border-collapse: collapse; color: var(--text-primary);">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border-color); text-align: left;">
+                            <th style="padding: 10px;">UID</th>
+                            <th style="padding: 10px;">角色名稱</th>
+                            <th style="padding: 10px;">總分</th>
+                            <th style="padding: 10px;">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="message" id="historyMessage"></div>
     </div>
 
     <script>
@@ -2703,8 +2747,53 @@
             }
         };
 
+        const resonatorsProfilePicture = {
+            "千咲": "https://guide-res.aki-game.net/introduction/material/5a3e8f9a78745b3dbddaefad7eba9ceb/ba81bbe33358b2f73201b58f51df43bb.png",
+            "坎特蕾拉": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/c529907cec256dc427728b03f491b179.png",
+            "布蘭特": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/12af3a43a139b880f2f538677170f066.png",
+            "菲比": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/b18600fa14f98402ba75b5661494b3ee.png",
+            "洛可可": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/8c0be7d51ff69ecaf9f6dd6a8825f804.png",
+            "珂萊塔": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/625ace038419ed5f732b60e0fa60d00a.png",
+            "椿": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/c4cb80b5c5cfe32ba1308f10dd509e1d.png",
+            "守岸人": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/890adae97f3ec5f380008a743cbbc563.png",
+            "相里要": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/1395ae6839b12de38062b75d2fd9d25f.png",
+            "折枝": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/c8f2296790674a0b95dd8b328a10f448.png",
+            "今汐": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/f0f853fc28b06aab285db5ab274bec52.png",
+            "長離": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/6b08d1da05d2ce8bf65033419bd3ab90.png",
+            "維里奈": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/deb60fc64c2de8328301b889518f593f.png",
+            "安可": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/52f422d633124cf6e287e57dda5cb98f.png",
+            "卡卡羅": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/26174bff9a90260842db44a840da1525.png",
+            "吟霖": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/628f4043213e83a3ba475bad8907f5b8.png",
+            "凌陽": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/a5c8de9c8a8d60b02481274bc7f05671.png",
+            "漂泊者-湮滅": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/7352939906e901a783483aa9abfdc738.png",
+            "鑒心": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/3d636a5e0efcac1ba60a70c3a238ba6d.png",
+            "贊妮": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/e0d01f1b2ae2b6adfd257c349484d292.png",
+            "夏空": "https://guide-res.aki-game.net/introduction/material/6d9e505d6ea7905db982b8fbf80aa0ff/716270ae8422a47578106b2b9cd0f74d.png",
+            "卡提希婭": "https://guide-res.aki-game.net/introduction/material/f46dadf4c41df874ea23227598ed296b/ba71005399dfcad6ff518511069c6047.png",
+            "露帕": "https://guide-res.aki-game.net/introduction/material/f46dadf4c41df874ea23227598ed296b/fe170cf89d5648970e857b721bb117f8.png",
+            "弗洛洛": "https://guide-res.aki-game.net/introduction/material/591d4ea9f649dd09c4793227dde45845/246a6e7486ae99e97fb5f9f1e28bf5c2.png",
+            "嘉貝莉娜": "https://guide-res.aki-game.net/introduction/material/3f28db9743498c5b83abb75845095181/f23be01a357c1bde4424317b9b07e876.png",
+            "仇遠": "https://guide-res.aki-game.net/introduction/material/3f28db9743498c5b83abb75845095181/d5e2a4a3f93538f69107a2ee95222de4.png",
+            "燈燈": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/16d26d0d0948c1242774840c50601c97.png",
+            "釉瑚": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/6b06a64f95dc353896e12377a74cb26a.png",
+            "秧秧": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/87d919a165e38fd43355d8bbec5a3e2e.png",
+            "熾霞": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/e05a962eda74b62db0f8ada80845e1c4.png",
+            "散華": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/016f91853740e75f2548041f7b86db3b.png",
+            "桃祈": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/80e25dc73edb84d45d2ca8a60a01ec6b.png",
+            "白芷": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/a47bcae3046ffd93badb14bfa62ca24c.png",
+            "丹瑾": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/5b341b6f1c5e1f43640081bed20ef61c.png",
+            "秋水": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/3fbfcf454c32a1b6d81aa5fd20ac90a4.png",
+            "莫特斐": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/50a37085725e57ca1904015e848d5d07.png",
+            "淵武": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/99755b6393f1bbc4fadb4be5cb3f4d25.png",
+            "漂泊者-氣動": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/e2d9a74d8323aed853d6a1e999a9a56b.png",
+            "漂泊者": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/ebc1ec3a5f3ce13058390564e0513cd3.png",
+            "忌炎": "https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/dfed76d9925a4a98924242b231e236cc.png",
+            "奧古斯塔": "https://guide-res.aki-game.net/introduction/material/01a20883f3d14c9bfb6ddc75a106c606/359c1bbf33fa9be011924f70565f913c.png",
+            "尤諾": "https://guide-res.aki-game.net/introduction/material/01a20883f3d14c9bfb6ddc75a106c606/0b8b32ec96d68a517072c0d83846be60.png"
+        };
+
         // [請複製] resonatorData
-         const resonatorData = {
+        const resonatorData = {
             '今汐': {
                 '0': {
                     '鏈度': '0',
@@ -9861,7 +9950,7 @@
         ];
 
         // [請複製] resonatorCoords
-         const resonatorCoords = [
+        const resonatorCoords = [
             [350, 250, 100, 100]
         ];
         // [請複製] NumberOfStarsCoords
@@ -10910,7 +10999,6 @@
         // ==================================================================================
 
         const charRect = [240, 110, 300, 380];
-        let charImageDataUrl = null;
         let currentLayout = 'landscape';
         const AUTO_LOAD_FROM_LOCAL = false;
 
@@ -10920,7 +11008,7 @@
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d', { willReadFrequently: true });
         const copyBtn = document.getElementById('copyBtn');
-        
+
         // 全域變數 (來自 index copy.html)
         let targetData = null;
         let targetFileName = '';
@@ -11722,31 +11810,6 @@
         imageInput.addEventListener('change', (e) => {
             // 1. 執行辨識
             processImage();
-
-            // 2. 讀取圖片用於顯示頭像 (image_score.html 的功能)
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (ev) {
-                    const img = new Image();
-                    img.onload = function () {
-                        const avatarCanvas = document.createElement('canvas');
-                        avatarCanvas.width = 300;
-                        avatarCanvas.height = 380;
-                        const avatarCtx = avatarCanvas.getContext('2d');
-                        const [x, y, w, h] = charRect;
-                        avatarCtx.drawImage(img, x, y, w, h, 0, 0, avatarCanvas.width, avatarCanvas.height);
-                        charImageDataUrl = avatarCanvas.toDataURL();
-                        // 重新渲染 (如果辨識已完成)
-                        const val = jsonOutput.value;
-                        if (val && val.startsWith('{')) {
-                             try { renderResult(JSON.parse(val)); } catch(e){}
-                        }
-                    };
-                    img.src = ev.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
         });
 
         // 攔截 checkCanExport 以觸發渲染
@@ -11760,6 +11823,11 @@
                     quickJson.value = JSON.stringify(data, null, 2);
                     localStorage.setItem('lastJsonData', quickJson.value);
                     renderResult(data);
+
+                    // 新增：加入歷史紀錄
+                    if (typeof addToHistory === 'function') {
+                        addToHistory(data);
+                    }
                 } catch (e) {
                     console.error("JSON 解析失敗", e);
                 }
@@ -11825,7 +11893,7 @@
                     const costVal = item.Cost || 1;
 
                     let shortName = item.Attributes || '聲骸';
-                    
+
                     let affixRows = filteredAffixes.map(affix => {
                         const pts = affix.Points || 0;
                         const ptClass = pts > 0 ? 'point-pos' : 'point-zero';
@@ -11848,10 +11916,11 @@
 
             let layoutHTML = '';
             if (currentLayout === 'portrait') {
+                const profilePicUrl = resonatorsProfilePicture[data.Name || ''];
                 layoutHTML = `
                     <div class="portrait-layout">
                         <div class="character-card">
-                            ${charImageDataUrl ? `<img src="${charImageDataUrl}" class="character-avatar">` : `<div class="character-avatar" style="background:#333;"></div>`}
+                            ${profilePicUrl ? `<img src="${profilePicUrl}" class="character-avatar">` : `<div class="character-avatar" style="background:#333;"></div>`}
                             <div class="character-info">
                                 <h1>${data.Name || '未知'}</h1>
                                 <div class="character-stars">${stars}</div>
@@ -11863,12 +11932,13 @@
                     </div>
                 `;
             } else {
+                const profilePicUrl = resonatorsProfilePicture[data.Name || ''];
                 layoutHTML = `
                     <div class="landscape-layout">
                         <div class="character-card">
                             <div class="character-header">
                                 <div class="avatar-container">
-                                    ${charImageDataUrl ? `<img src="${charImageDataUrl}" class="character-avatar">` : `<div class="character-avatar" style="background:#333;"></div>`}
+                                    ${profilePicUrl ? `<img src="${profilePicUrl}" class="character-avatar">` : `<div class="character-avatar" style="background:#333;"></div>`}
                                     <div class="character-stars">${stars}</div>
                                 </div>
                                 <div class="character-info">
@@ -11954,7 +12024,7 @@
                 try {
                     const val = jsonOutput.value || (quickJson ? quickJson.value : '');
                     if (val) data = JSON.parse(val);
-                } catch (e) {}
+                } catch (e) { }
 
                 document.getElementById('characterName').textContent = data.Name || 'N/A';
                 document.getElementById('uid').textContent = data.UID || 'N/A';
@@ -12018,7 +12088,7 @@
             }
 
             const role = targetData.role[roleIndex];
-            
+
             // 檢查聲骸數量
             if (!role.costList || role.costList.length < 5) {
                 showModalMessage('聲骸數量未滿無法替換', 'error');
@@ -12036,13 +12106,13 @@
                     if (role.costList[i].propertyList) {
                         // 副詞條列表
                         role.costList[i].propertyList = getPropertyList(allEchoList[i]);
-                        
+
                         // 消耗類型
                         role.costList[i].type = getCostType(allEchoList[i].Cost);
-                        
+
                         // 套裝
                         role.costList[i].suite = getTCtoCNAttributes(allEchoList[i].Attributes);
-                        
+
                         // 主詞條
                         role.costList[i].mainAtrri = getMainAttr(allEchoList[i]);
                     }
@@ -12184,6 +12254,223 @@
                 case '命理崩毀之弦': return '命理套';
                 default: return '';
             }
+        }
+
+        // ==================================================================================
+        // 歷史紀錄邏輯
+        // ==================================================================================
+
+        const openHistoryBtn = document.getElementById('openHistoryBtn');
+        const historySection = document.getElementById('historySection');
+        const closeHistorySectionBtn = document.getElementById('closeHistorySectionBtn');
+        const historyTableBody = document.getElementById('historyTableBody');
+        const historyMessage = document.getElementById('historyMessage');
+
+        // Section 控制
+        if (openHistoryBtn) {
+            openHistoryBtn.addEventListener('click', () => {
+                if (historySection.style.display === 'none') {
+                    historySection.style.display = 'block';
+                    renderHistoryList();
+                    // 滾動到歷史紀錄區域
+                    historySection.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    historySection.style.display = 'none';
+                }
+            });
+        }
+
+        if (closeHistorySectionBtn) {
+            closeHistorySectionBtn.addEventListener('click', () => {
+                historySection.style.display = 'none';
+            });
+        }
+
+        // 儲存歷史紀錄
+        function addToHistory(data) {
+            if (!data || !data.UID) return; // 必須有 UID
+
+            let history = getHistory();
+            
+            // 檢查重複 (UID + 角色名稱 + 總分 + 聲骸列表內容)
+            const dataStr = JSON.stringify(data);
+            const isDuplicate = history.some(item => {
+                // 如果 UID, Name, TotalScore 都一樣，且 JSON 字串一樣，則視為重複
+                // 這裡做一個簡單的檢查，如果完全一樣就不存
+                return item.uid === data.UID && 
+                       item.name === data.Name && 
+                       Math.abs(item.score - data.Total總分) < 0.01 &&
+                       JSON.stringify(item.data) === dataStr;
+            });
+
+            if (isDuplicate) {
+                console.log('重複的紀錄，跳過儲存');
+                return;
+            }
+
+            const newItem = {
+                uid: data.UID,
+                name: data.Name,
+                score: data.Total總分,
+                timestamp: Date.now(),
+                data: data
+            };
+
+            history.unshift(newItem); // 加入到最前面
+            
+            // 限制數量 (例如 50 筆)
+            if (history.length > 50) {
+                history = history.slice(0, 50);
+            }
+
+            localStorage.setItem('recognitionHistory', JSON.stringify(history));
+            console.log('已加入歷史紀錄');
+        }
+
+        function getHistory() {
+            try {
+                const stored = localStorage.getItem('recognitionHistory');
+                return stored ? JSON.parse(stored) : [];
+            } catch (e) {
+                console.error('讀取歷史紀錄失敗', e);
+                return [];
+            }
+        }
+
+        function renderHistoryList() {
+            const history = getHistory();
+            historyTableBody.innerHTML = '';
+
+            if (history.length === 0) {
+                historyTableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 20px;">尚無紀錄</td></tr>';
+                return;
+            }
+
+            history.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.style.borderBottom = '1px solid #333';
+                
+                // const date = new Date(item.timestamp).toLocaleString();
+                
+                tr.innerHTML = `
+                    <td style="padding: 10px;">${item.uid}</td>
+                    <td style="padding: 10px;">${item.name}</td>
+                    <td style="padding: 10px; color: var(--accent-gold); font-weight: bold;">${item.score}</td>
+                    <td style="padding: 10px;">
+                        <button class="switch-btn" style="padding: 5px 10px; font-size: 0.8rem;" onclick="loadHistoryItem(${index})">載入</button>
+                        <button class="switch-btn" style="padding: 5px 10px; font-size: 0.8rem; background: var(--accent-red); border-color: var(--accent-red);" onclick="deleteHistoryItem(${index})">刪除</button>
+                    </td>
+                `;
+                historyTableBody.appendChild(tr);
+            });
+        }
+
+        // 全域函式供 HTML onclick 使用
+        window.loadHistoryItem = function(index) {
+            const history = getHistory();
+            if (history[index]) {
+                const data = history[index].data;
+                
+                // 更新 UI
+                if (quickJson) {
+                    quickJson.value = JSON.stringify(data, null, 2);
+                    localStorage.setItem('lastJsonData', quickJson.value);
+                }
+                renderResult(data);
+                
+                // 關閉 Section
+                const historySection = document.getElementById('historySection');
+                if (historySection) {
+                    historySection.style.display = 'none';
+                }
+                
+                // 滾動到頂部
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        };
+
+        window.deleteHistoryItem = function(index) {
+            if(!confirm('確定要刪除此紀錄嗎？')) return;
+            
+            let history = getHistory();
+            history.splice(index, 1);
+            localStorage.setItem('recognitionHistory', JSON.stringify(history));
+            renderHistoryList();
+        };
+
+        // 匯入/匯出歷史紀錄
+        const importHistoryBtn = document.getElementById('importHistoryBtn');
+        const exportHistoryBtn = document.getElementById('exportHistoryBtn');
+        const historyFileInput = document.getElementById('historyFileInput');
+
+        if (importHistoryBtn) {
+            importHistoryBtn.addEventListener('click', () => {
+                historyFileInput.click();
+            });
+        }
+
+        if (historyFileInput) {
+            historyFileInput.addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                try {
+                    const text = await file.text();
+                    const importedData = JSON.parse(text);
+                    
+                    if (!Array.isArray(importedData)) {
+                        alert('匯入格式錯誤：必須是歷史紀錄陣列');
+                        return;
+                    }
+
+                    let currentHistory = getHistory();
+                    let addedCount = 0;
+
+                    importedData.forEach(newItem => {
+                        // 基本驗證
+                        if (!newItem.uid || !newItem.data) return;
+
+                        // 檢查重複
+                        const dataStr = JSON.stringify(newItem.data);
+                        const isDuplicate = currentHistory.some(existItem => {
+                             return existItem.uid === newItem.uid && 
+                                   existItem.name === newItem.name && 
+                                   Math.abs(existItem.score - newItem.score) < 0.01 &&
+                                   JSON.stringify(existItem.data) === dataStr;
+                        });
+
+                        if (!isDuplicate) {
+                            currentHistory.unshift(newItem);
+                            addedCount++;
+                        }
+                    });
+
+                    // 依時間排序 (如果有 timestamp)
+                    currentHistory.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+                    localStorage.setItem('recognitionHistory', JSON.stringify(currentHistory));
+                    renderHistoryList();
+                    alert(`成功匯入 ${addedCount} 筆紀錄`);
+                    
+                    // 重置輸入
+                    historyFileInput.value = '';
+                } catch (err) {
+                    console.error(err);
+                    alert('匯入失敗：' + err.message);
+                }
+            });
+        }
+
+        if (exportHistoryBtn) {
+            exportHistoryBtn.addEventListener('click', () => {
+                const history = getHistory();
+                if (history.length === 0) {
+                    alert('沒有紀錄可匯出');
+                    return;
+                }
+                const jsonStr = JSON.stringify(history, null, 2);
+                downloadFile(jsonStr, `echo_history_${new Date().toISOString().slice(0,10)}.json`);
+            });
         }
 
     </script>
