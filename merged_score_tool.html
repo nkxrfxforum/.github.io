@@ -70,16 +70,19 @@
 
         /* 控制面板 */
         .controls {
-            max-width: 1400px;
+            width: fit-content;
+            max-width: 100%;
             margin: 0 auto 1rem;
             background: transparent;
             border: none;
             box-shadow: none;
             display: flex;
-            justify-content: center;
             gap: 1rem;
             align-items: center;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
         }
 
         .file-input-wrapper {
@@ -137,16 +140,15 @@
 
         /* 主要內容區域 */
         .main-content {
-            max-width: 1400px;
+            max-width: 98%;
             margin: 0 auto;
         }
 
         /* ==================== 寬版（完整資料） ==================== */
         .landscape-layout {
-            display: grid;
-            grid-template-columns: 380px 1fr;
-            gap: 2.5rem;
-            align-items: start;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
         }
 
         /* ==================== 長版（超密集排版） ==================== */
@@ -170,14 +172,17 @@
 
         /* ========== 寬版角色卡 ========== */
         .landscape-layout .character-card {
-            padding: 2rem;
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .landscape-layout .character-header {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             gap: 1.5rem;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0;
         }
 
         .landscape-layout .avatar-container {
@@ -304,10 +309,9 @@
 
         /* 寬版總分 */
         .landscape-layout .stats-grid {
-            justify-content: flex-start;
-            padding-left: 2rem;
-            margin-bottom: 1rem;
-            margin-top: 1rem;
+            justify-content: flex-end;
+            padding-left: 0;
+            margin: 0;
         }
 
         .landscape-layout .stat-value {
@@ -347,6 +351,7 @@
             gap: 1.5rem;
             padding: 2rem;
             min-height: 500px;
+            width: 100%;
         }
 
         .equipment-grid.portrait {
@@ -417,7 +422,7 @@
         }
 
         .landscape-layout .cost-num {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
         }
 
         .portrait-layout .cost-num {
@@ -445,7 +450,7 @@
         }
 
         .landscape-layout .echo-name {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
         }
 
         .echo-score {
@@ -453,7 +458,7 @@
         }
 
         .landscape-layout .echo-score {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
         }
 
         .portrait-layout .echo-score {
@@ -480,12 +485,20 @@
         }
 
         .landscape-layout .affix-table {
-            font-size: 0.9rem;
+            font-size: 1.1rem;
         }
 
         .landscape-layout .affix-table td {
-            padding: 0.3rem 0;
+            padding: 0.4rem 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .landscape-layout .affix-value {
+            padding-right: 2rem;
+        }
+
+        .landscape-layout .affix-point {
+            width: 60px;
         }
 
         .portrait-layout .affix-table {
@@ -716,7 +729,7 @@
 
 <body>
     <div class="controls">
-        <button id="homeBtn" class="switch-btn" onclick="location.reload()">🏠2.8</button>
+        <button id="homeBtn" class="switch-btn" onclick="showHistorySection()">🏠2.8</button>
         
         <div class="file-input-wrapper">
             <!-- 注意：ID 已改為 imageInput 以配合 index copy.html 的邏輯 -->
@@ -731,10 +744,6 @@
 
         <div class="file-input-wrapper">
             <button id="openModalBtn" class="file-btn">匯出</button>
-        </div>
-
-        <div class="file-input-wrapper">
-            <button id="openHistoryBtn" class="file-btn">歷史</button>
         </div>
 
         <button class="switch-btn" id="layoutToggle">💻</button>
@@ -12280,6 +12289,12 @@
             });
         }
 
+        // 預設顯示歷史紀錄
+        if (historySection) {
+             historySection.style.display = 'block';
+             renderHistoryList();
+        }
+
         if (closeHistorySectionBtn) {
             closeHistorySectionBtn.addEventListener('click', () => {
                 historySection.style.display = 'none';
@@ -12366,6 +12381,15 @@
         }
 
         // 全域函式供 HTML onclick 使用
+        window.showHistorySection = function() {
+            const historySection = document.getElementById('historySection');
+            if (historySection) {
+                historySection.style.display = 'block';
+                renderHistoryList();
+                historySection.scrollIntoView({ behavior: 'smooth' });
+            }
+        };
+
         window.loadHistoryItem = function(index) {
             const history = getHistory();
             if (history[index]) {
