@@ -1,12 +1,36 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>JSON 讀取測試</title>
+    <title>JSON Test</title>
 </head>
 <body>
-    <h1>讀取 JSON 測試</h1>
 
-    <script src="js/main.js"></script>
+<h2>讀取 JSON 測試</h2>
+
+<pre id="output"></pre>
+
+<script>
+    // 這裡是相對於 try.html 的路徑！
+    const jsonPath = "./data/templates.json";
+
+    fetch(jsonPath)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("HTTP error: " + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById("output").textContent =
+                JSON.stringify(data, null, 2);
+        })
+        .catch(err => {
+            console.error("讀取 JSON 發生錯誤：", err);
+            document.getElementById("output").textContent =
+                "錯誤：" + err.message;
+        });
+</script>
+
 </body>
 </html>
