@@ -1,0 +1,12 @@
+{
+  "6.3%": {
+    "width": 75,
+    "height": 22,
+    "data": "SAMPLE_DATA_ABC_123"
+  },
+  "9.1%": {
+    "width": 80,
+    "height": 30,
+    "data": "HELLO_JSON"
+  }
+}
