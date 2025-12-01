@@ -639,7 +639,7 @@
             cursor: pointer;
             appearance: none;
         }
-        
+
         .modal select:disabled {
             opacity: 0.5;
             cursor: not-allowed;
@@ -683,7 +683,7 @@
             margin-bottom: 0.5rem;
             color: var(--text-secondary);
         }
-        
+
         .info-box span {
             color: var(--text-primary);
             font-weight: bold;
@@ -721,7 +721,8 @@
             <label for="imageInput" class="file-btn"></label>
         </div>
         <div style="display:none; align-items:center; gap:0.6rem; margin-left:0.6rem;">
-            <input id="quickJson" placeholder="貼上 JSON 並按 Enter" style="width:260px; padding:0.6rem; border-radius:8px; background:rgba(255,255,255,0.03); color:var(--text-primary); border:1px solid rgba(255,255,255,0.06); font-family:monospace; font-size:0.9rem;">
+            <input id="quickJson" placeholder="貼上 JSON 並按 Enter"
+                style="width:260px; padding:0.6rem; border-radius:8px; background:rgba(255,255,255,0.03); color:var(--text-primary); border:1px solid rgba(255,255,255,0.06); font-family:monospace; font-size:0.9rem;">
         </div>
         <button id="openModalBtn" class="file-btn">匯出數據</button>
         <button class="switch-btn" id="layoutToggle">💻</button>
@@ -763,7 +764,8 @@
             <div class="section">
                 <div class="section-title">步驟 2: 選擇目標檔案</div>
                 <div class="file-input-group">
-                    <label class="file-input-label">選擇要替換的 JSON 檔案：<a href="https://wuwaechotool.pages.dev/" target="_blank" style="color: yellow;">鸣潮声骸评分工具</a></label>
+                    <label class="file-input-label">選擇要替換的 JSON 檔案：<a href="https://wuwaechotool.pages.dev/"
+                            target="_blank" style="color: yellow;">鸣潮声骸评分工具</a></label>
                     <input type="file" id="targetFileInputModal" accept=".json">
                 </div>
             </div>
@@ -802,66 +804,97 @@
 
 
 
-        let NumberTemplates_1_1 = {};
-        let NumberTemplates_1_2 = {};
-        let NumberTemplates_1_3 = {};
-        let NumberTemplates_1_4 = {};
-        let NumberTemplates_1_5 = {};
+        const NumberTemplates_1_1 = {};
+        const NumberTemplates_1_2 = {};
+        const NumberTemplates_1_3 = {};
+        const NumberTemplates_1_4 = {};
+        const NumberTemplates_1_5 = {};
 
-        let NumberTemplates_2_1 = {};
-        let NumberTemplates_2_2 = {};
-        let NumberTemplates_2_3 = {};
-        let NumberTemplates_2_4 = {};
-        let NumberTemplates_2_5 = {};
-        
-        let NumberTemplates_3_1 = {};
-        let NumberTemplates_3_2 = {};
-        let NumberTemplates_3_3 = {};
-        let NumberTemplates_3_4 = {};
-        let NumberTemplates_3_5 = {};
-        
-        let NumberTemplates_4_1 = {};
-        let NumberTemplates_4_2 = {};
-        let NumberTemplates_4_3 = {};
-        let NumberTemplates_4_4 = {};
-        let NumberTemplates_4_5 = {};
-        
-        let NumberTemplates_5_1 = {};
-        let NumberTemplates_5_2 = {};
-        let NumberTemplates_5_3 = {};
-        let NumberTemplates_5_4 = {};
-        let NumberTemplates_5_5 = {};
+        const NumberTemplates_2_1 = {};
+        const NumberTemplates_2_2 = {};
+        const NumberTemplates_2_3 = {};
+        const NumberTemplates_2_4 = {};
+        const NumberTemplates_2_5 = {};
 
-        (async () => {try {const res = await fetch("./data/NumberTemplates_1_1.json");NumberTemplates_1_1 = await res.json();console.log("NumberTemplates_1_1:");} catch (err) {console.error("讀取 JSON 發生錯誤:", err);}})();
-        (async () => {try {const res = await fetch("./data/NumberTemplates_1_2.json");NumberTemplates_1_2 = await res.json();console.log("NumberTemplates_1_2:")} catch (err) {console.error("讀取 JSON 發生錯誤:", err);}})();
-        (async () => {try {const res = await fetch("./data/NumberTemplates_1_3.json");NumberTemplates_1_3 = await res.json();console.log("NumberTemplates_1_3:")} catch (err) {console.error("讀取 JSON 發生錯誤:", err);}})();
-        (async () => {try {const res = await fetch("./data/NumberTemplates_1_4.json");NumberTemplates_1_4 = await res.json();console.log("NumberTemplates_1_4:")} catch (err) {console.error("讀取 JSON 發生錯誤:", err);}})();
-        (async () => {try {const res = await fetch("./data/NumberTemplates_1_5.json");NumberTemplates_1_5 = await res.json();console.log("NumberTemplates_1_5:")} catch (err) {console.error("讀取 JSON 發生錯誤:", err);}})();
-    
-        (async () => {try {const res = await fetch("./data/NumberTemplates_3_1.json");NumberTemplates_2_1 = await res.json();console.log("NumberTemplates_2_1:")} catch (err) {console.error("讀取 JSON 發生錯誤:", err);}})();
-        (async () => {try {const res = await fetch("./data/NumberTemplates_3_2.json");NumberTemplates_2_2 = await res.json();console.log("NumberTemplates_2_2:")} catch (err) {console.error("讀取 JSON 發生錯誤:", err);}})();
-        (async () => {try {const res = await fetch("./data/NumberTemplates_3_3.json");NumberTemplates_2_3 = await res.json();console.log("NumberTemplates_2_3:")} catch (err) {console.error("讀取 JSON 發生錯誤:", err);}})();
-        (async () => {try {const res = await fetch("./data/NumberTemplates_3_4.json");NumberTemplates_2_4 = await res.json();console.log("NumberTemplates_2_4:")} catch (err) {console.error("讀取 JSON 發生錯誤:", err);}})();
-        (async () => {try {const res = await fetch("./data/NumberTemplates_3_5.json");NumberTemplates_2_5 = await res.json();console.log("NumberTemplates_2_5:")} catch (err) {console.error("讀取 JSON 發生錯誤:", err);}})();
-        
-        (async () => {try {const res = await fetch("./data/NumberTemplates_3_1.json");NumberTemplates_3_1 = await res.json();console.log("NumberTemplates_3_1:")} catch (err) {console.error("讀取 JSON 發生錯誤:", err);}})();
-        (async () => {try {const res = await fetch("./data/NumberTemplates_3_2.json");NumberTemplates_3_2 = await res.json();console.log("NumberTemplates_3_2:")} catch (err) {console.error("讀取 JSON 發生錯誤:", err);}})();
-        (async () => {try {const res = await fetch("./data/NumberTemplates_3_3.json");NumberTemplates_3_3 = await res.json();console.log("NumberTemplates_3_3:")} catch (err) {console.error("讀取 JSON 發生錯誤:", err);}})();
-        (async () => {try {const res = await fetch("./data/NumberTemplates_3_4.json");NumberTemplates_3_4 = await res.json();console.log("NumberTemplates_3_4:")} catch (err) {console.error("讀取 JSON 發生錯誤:", err);}})();
-        (async () => {try {const res = await fetch("./data/NumberTemplates_3_5.json");NumberTemplates_3_5 = await res.json();console.log("NumberTemplates_3_5:")} catch (err) {console.error("讀取 JSON 發生錯誤:", err);}})();
-        
-        (async () => {try {const res = await fetch("./data/NumberTemplates_4_1.json");NumberTemplates_4_1 = await res.json();console.log("NumberTemplates_4_1:")} catch (err) {console.error("讀取 JSON 發生錯誤:", err);}})();
-        (async () => {try {const res = await fetch("./data/NumberTemplates_4_2.json");NumberTemplates_4_2 = await res.json();console.log("NumberTemplates_4_2:")} catch (err) {console.error("讀取 JSON 發生錯誤:", err);}})();
-        (async () => {try {const res = await fetch("./data/NumberTemplates_4_3.json");NumberTemplates_4_3 = await res.json();console.log("NumberTemplates_4_3:")} catch (err) {console.error("讀取 JSON 發生錯誤:", err);}})();
-        (async () => {try {const res = await fetch("./data/NumberTemplates_4_4.json");NumberTemplates_4_4 = await res.json();console.log("NumberTemplates_4_4:")} catch (err) {console.error("讀取 JSON 發生錯誤:", err);}})();
-        (async () => {try {const res = await fetch("./data/NumberTemplates_4_5.json");NumberTemplates_4_5 = await res.json();console.log("NumberTemplates_4_5:")} catch (err) {console.error("讀取 JSON 發生錯誤:", err);}})();
+        const NumberTemplates_3_1 = {};
+        const NumberTemplates_3_2 = {};
+        const NumberTemplates_3_3 = {};
+        const NumberTemplates_3_4 = {};
+        const NumberTemplates_3_5 = {};
 
-        (async () => {try {const res = await fetch("./data/NumberTemplates_5_1.json");NumberTemplates_5_1 = await res.json();console.log("NumberTemplates_5_1:")} catch (err) {console.error("讀取 JSON 發生錯誤:", err);}})();
-        (async () => {try {const res = await fetch("./data/NumberTemplates_5_2.json");NumberTemplates_5_2 = await res.json();console.log("NumberTemplates_5_2:")} catch (err) {console.error("讀取 JSON 發生錯誤:", err);}})();
-        (async () => {try {const res = await fetch("./data/NumberTemplates_5_3.json");NumberTemplates_5_3 = await res.json();console.log("NumberTemplates_5_3:")} catch (err) {console.error("讀取 JSON 發生錯誤:", err);}})();
-        (async () => {try {const res = await fetch("./data/NumberTemplates_5_4.json");NumberTemplates_5_4 = await res.json();console.log("NumberTemplates_5_4:")} catch (err) {console.error("讀取 JSON 發生錯誤:", err);}})();
-        (async () => {try {const res = await fetch("./data/NumberTemplates_5_5.json");NumberTemplates_5_5 = await res.json();console.log("NumberTemplates_5_5:")} catch (err) {console.error("讀取 JSON 發生錯誤:", err);}})();
+        const NumberTemplates_4_1 = {};
+        const NumberTemplates_4_2 = {};
+        const NumberTemplates_4_3 = {};
+        const NumberTemplates_4_4 = {};
+        const NumberTemplates_4_5 = {};
 
+        const NumberTemplates_5_1 = {};
+        const NumberTemplates_5_2 = {};
+        const NumberTemplates_5_3 = {};
+        const NumberTemplates_5_4 = {};
+        const NumberTemplates_5_5 = {};
+
+        fetch("./data/NumberTemplates_1_1.json").then(res => {if (!res.ok) throw new Error("HTTP error: " + res.status);return res.json(); }).then(json => {Object.assign(NumberTemplates_1_1, json);console.log("NumberTemplates_1_1 內容:");}).catch(err => {console.error("讀取 JSON 發生錯誤:", err);});
+        fetch("./data/NumberTemplates_1_2.json").then(res => {if (!res.ok) throw new Error("HTTP error: " + res.status);return res.json(); }).then(json => {Object.assign(NumberTemplates_1_1, json);console.log("NumberTemplates_1_2 內容:");}).catch(err => {console.error("讀取 JSON 發生錯誤:", err);});
+        fetch("./data/NumberTemplates_1_3.json").then(res => {if (!res.ok) throw new Error("HTTP error: " + res.status);return res.json(); }).then(json => {Object.assign(NumberTemplates_1_1, json);console.log("NumberTemplates_1_3 內容:");}).catch(err => {console.error("讀取 JSON 發生錯誤:", err);});
+        fetch("./data/NumberTemplates_1_4.json").then(res => {if (!res.ok) throw new Error("HTTP error: " + res.status);return res.json(); }).then(json => {Object.assign(NumberTemplates_1_1, json);console.log("NumberTemplates_1_4 內容:");}).catch(err => {console.error("讀取 JSON 發生錯誤:", err);});
+        fetch("./data/NumberTemplates_1_5.json").then(res => {if (!res.ok) throw new Error("HTTP error: " + res.status);return res.json(); }).then(json => {Object.assign(NumberTemplates_1_1, json);console.log("NumberTemplates_1_5 內容:");}).catch(err => {console.error("讀取 JSON 發生錯誤:", err);});
+
+        fetch("./data/NumberTemplates_2_1.json").then(res => {if (!res.ok) throw new Error("HTTP error: " + res.status);return res.json(); }).then(json => {Object.assign(NumberTemplates_1_1, json);console.log("NumberTemplates_2_1 內容:");}).catch(err => {console.error("讀取 JSON 發生錯誤:", err);});
+        fetch("./data/NumberTemplates_2_2.json").then(res => {if (!res.ok) throw new Error("HTTP error: " + res.status);return res.json(); }).then(json => {Object.assign(NumberTemplates_1_1, json);console.log("NumberTemplates_2_2 內容:");}).catch(err => {console.error("讀取 JSON 發生錯誤:", err);});
+        fetch("./data/NumberTemplates_2_3.json").then(res => {if (!res.ok) throw new Error("HTTP error: " + res.status);return res.json(); }).then(json => {Object.assign(NumberTemplates_1_1, json);console.log("NumberTemplates_2_3 內容:");}).catch(err => {console.error("讀取 JSON 發生錯誤:", err);});
+        fetch("./data/NumberTemplates_2_4.json").then(res => {if (!res.ok) throw new Error("HTTP error: " + res.status);return res.json(); }).then(json => {Object.assign(NumberTemplates_1_1, json);console.log("NumberTemplates_2_4 內容:");}).catch(err => {console.error("讀取 JSON 發生錯誤:", err);});
+        fetch("./data/NumberTemplates_2_5.json").then(res => {if (!res.ok) throw new Error("HTTP error: " + res.status);return res.json(); }).then(json => {Object.assign(NumberTemplates_1_1, json);console.log("NumberTemplates_2_5 內容:");}).catch(err => {console.error("讀取 JSON 發生錯誤:", err);});
+
+        fetch("./data/NumberTemplates_3_1.json").then(res => {if (!res.ok) throw new Error("HTTP error: " + res.status);return res.json(); }).then(json => {Object.assign(NumberTemplates_1_1, json);console.log("NumberTemplates_3_1 內容:");}).catch(err => {console.error("讀取 JSON 發生錯誤:", err);});
+        fetch("./data/NumberTemplates_3_2.json").then(res => {if (!res.ok) throw new Error("HTTP error: " + res.status);return res.json(); }).then(json => {Object.assign(NumberTemplates_1_1, json);console.log("NumberTemplates_3_2 內容:");}).catch(err => {console.error("讀取 JSON 發生錯誤:", err);});
+        fetch("./data/NumberTemplates_3_3.json").then(res => {if (!res.ok) throw new Error("HTTP error: " + res.status);return res.json(); }).then(json => {Object.assign(NumberTemplates_1_1, json);console.log("NumberTemplates_3_3 內容:");}).catch(err => {console.error("讀取 JSON 發生錯誤:", err);});
+        fetch("./data/NumberTemplates_3_4.json").then(res => {if (!res.ok) throw new Error("HTTP error: " + res.status);return res.json(); }).then(json => {Object.assign(NumberTemplates_1_1, json);console.log("NumberTemplates_3_4 內容:");}).catch(err => {console.error("讀取 JSON 發生錯誤:", err);});
+        fetch("./data/NumberTemplates_3_5.json").then(res => {if (!res.ok) throw new Error("HTTP error: " + res.status);return res.json(); }).then(json => {Object.assign(NumberTemplates_1_1, json);console.log("NumberTemplates_3_5 內容:");}).catch(err => {console.error("讀取 JSON 發生錯誤:", err);});
+
+        fetch("./data/NumberTemplates_4_1.json").then(res => {if (!res.ok) throw new Error("HTTP error: " + res.status);return res.json(); }).then(json => {Object.assign(NumberTemplates_1_1, json);console.log("NumberTemplates_4_1 內容:");}).catch(err => {console.error("讀取 JSON 發生錯誤:", err);});
+        fetch("./data/NumberTemplates_4_2.json").then(res => {if (!res.ok) throw new Error("HTTP error: " + res.status);return res.json(); }).then(json => {Object.assign(NumberTemplates_1_1, json);console.log("NumberTemplates_4_2 內容:");}).catch(err => {console.error("讀取 JSON 發生錯誤:", err);});
+        fetch("./data/NumberTemplates_4_3.json").then(res => {if (!res.ok) throw new Error("HTTP error: " + res.status);return res.json(); }).then(json => {Object.assign(NumberTemplates_1_1, json);console.log("NumberTemplates_4_3 內容:");}).catch(err => {console.error("讀取 JSON 發生錯誤:", err);});
+        fetch("./data/NumberTemplates_4_4.json").then(res => {if (!res.ok) throw new Error("HTTP error: " + res.status);return res.json(); }).then(json => {Object.assign(NumberTemplates_1_1, json);console.log("NumberTemplates_4_4 內容:");}).catch(err => {console.error("讀取 JSON 發生錯誤:", err);});
+        fetch("./data/NumberTemplates_4_5.json").then(res => {if (!res.ok) throw new Error("HTTP error: " + res.status);return res.json(); }).then(json => {Object.assign(NumberTemplates_1_1, json);console.log("NumberTemplates_4_5 內容:");}).catch(err => {console.error("讀取 JSON 發生錯誤:", err);});
+
+        fetch("./data/NumberTemplates_5_1.json").then(res => {if (!res.ok) throw new Error("HTTP error: " + res.status);return res.json(); }).then(json => {Object.assign(NumberTemplates_1_1, json);console.log("NumberTemplates_5_1 內容:");}).catch(err => {console.error("讀取 JSON 發生錯誤:", err);});
+        fetch("./data/NumberTemplates_5_2.json").then(res => {if (!res.ok) throw new Error("HTTP error: " + res.status);return res.json(); }).then(json => {Object.assign(NumberTemplates_1_1, json);console.log("NumberTemplates_5_2 內容:");}).catch(err => {console.error("讀取 JSON 發生錯誤:", err);});
+        fetch("./data/NumberTemplates_5_3.json").then(res => {if (!res.ok) throw new Error("HTTP error: " + res.status);return res.json(); }).then(json => {Object.assign(NumberTemplates_1_1, json);console.log("NumberTemplates_5_3 內容:");}).catch(err => {console.error("讀取 JSON 發生錯誤:", err);});
+        fetch("./data/NumberTemplates_5_4.json").then(res => {if (!res.ok) throw new Error("HTTP error: " + res.status);return res.json(); }).then(json => {Object.assign(NumberTemplates_1_1, json);console.log("NumberTemplates_5_4 內容:");}).catch(err => {console.error("讀取 JSON 發生錯誤:", err);});
+        fetch("./data/NumberTemplates_5_5.json").then(res => {if (!res.ok) throw new Error("HTTP error: " + res.status);return res.json(); }).then(json => {Object.assign(NumberTemplates_1_1, json);console.log("NumberTemplates_5_5 內容:");}).catch(err => {console.error("讀取 JSON 發生錯誤:", err);});
+
+        /*
+        (async () => { try { const res = await fetch("./data/NumberTemplates_1_1.json"); NumberTemplates_1_1 = await res.json(); console.log("NumberTemplates_1_1:"); } catch (err) { console.error("讀取 JSON 發生錯誤:", err); } })();
+        (async () => { try { const res = await fetch("./data/NumberTemplates_1_2.json"); NumberTemplates_1_2 = await res.json(); console.log("NumberTemplates_1_2:") } catch (err) { console.error("讀取 JSON 發生錯誤:", err); } })();
+        (async () => { try { const res = await fetch("./data/NumberTemplates_1_3.json"); NumberTemplates_1_3 = await res.json(); console.log("NumberTemplates_1_3:") } catch (err) { console.error("讀取 JSON 發生錯誤:", err); } })();
+        (async () => { try { const res = await fetch("./data/NumberTemplates_1_4.json"); NumberTemplates_1_4 = await res.json(); console.log("NumberTemplates_1_4:") } catch (err) { console.error("讀取 JSON 發生錯誤:", err); } })();
+        (async () => { try { const res = await fetch("./data/NumberTemplates_1_5.json"); NumberTemplates_1_5 = await res.json(); console.log("NumberTemplates_1_5:") } catch (err) { console.error("讀取 JSON 發生錯誤:", err); } })();
+
+        (async () => { try { const res = await fetch("./data/NumberTemplates_3_1.json"); NumberTemplates_2_1 = await res.json(); console.log("NumberTemplates_2_1:") } catch (err) { console.error("讀取 JSON 發生錯誤:", err); } })();
+        (async () => { try { const res = await fetch("./data/NumberTemplates_3_2.json"); NumberTemplates_2_2 = await res.json(); console.log("NumberTemplates_2_2:") } catch (err) { console.error("讀取 JSON 發生錯誤:", err); } })();
+        (async () => { try { const res = await fetch("./data/NumberTemplates_3_3.json"); NumberTemplates_2_3 = await res.json(); console.log("NumberTemplates_2_3:") } catch (err) { console.error("讀取 JSON 發生錯誤:", err); } })();
+        (async () => { try { const res = await fetch("./data/NumberTemplates_3_4.json"); NumberTemplates_2_4 = await res.json(); console.log("NumberTemplates_2_4:") } catch (err) { console.error("讀取 JSON 發生錯誤:", err); } })();
+        (async () => { try { const res = await fetch("./data/NumberTemplates_3_5.json"); NumberTemplates_2_5 = await res.json(); console.log("NumberTemplates_2_5:") } catch (err) { console.error("讀取 JSON 發生錯誤:", err); } })();
+
+        (async () => { try { const res = await fetch("./data/NumberTemplates_3_1.json"); NumberTemplates_3_1 = await res.json(); console.log("NumberTemplates_3_1:") } catch (err) { console.error("讀取 JSON 發生錯誤:", err); } })();
+        (async () => { try { const res = await fetch("./data/NumberTemplates_3_2.json"); NumberTemplates_3_2 = await res.json(); console.log("NumberTemplates_3_2:") } catch (err) { console.error("讀取 JSON 發生錯誤:", err); } })();
+        (async () => { try { const res = await fetch("./data/NumberTemplates_3_3.json"); NumberTemplates_3_3 = await res.json(); console.log("NumberTemplates_3_3:") } catch (err) { console.error("讀取 JSON 發生錯誤:", err); } })();
+        (async () => { try { const res = await fetch("./data/NumberTemplates_3_4.json"); NumberTemplates_3_4 = await res.json(); console.log("NumberTemplates_3_4:") } catch (err) { console.error("讀取 JSON 發生錯誤:", err); } })();
+        (async () => { try { const res = await fetch("./data/NumberTemplates_3_5.json"); NumberTemplates_3_5 = await res.json(); console.log("NumberTemplates_3_5:") } catch (err) { console.error("讀取 JSON 發生錯誤:", err); } })();
+
+        (async () => { try { const res = await fetch("./data/NumberTemplates_4_1.json"); NumberTemplates_4_1 = await res.json(); console.log("NumberTemplates_4_1:") } catch (err) { console.error("讀取 JSON 發生錯誤:", err); } })();
+        (async () => { try { const res = await fetch("./data/NumberTemplates_4_2.json"); NumberTemplates_4_2 = await res.json(); console.log("NumberTemplates_4_2:") } catch (err) { console.error("讀取 JSON 發生錯誤:", err); } })();
+        (async () => { try { const res = await fetch("./data/NumberTemplates_4_3.json"); NumberTemplates_4_3 = await res.json(); console.log("NumberTemplates_4_3:") } catch (err) { console.error("讀取 JSON 發生錯誤:", err); } })();
+        (async () => { try { const res = await fetch("./data/NumberTemplates_4_4.json"); NumberTemplates_4_4 = await res.json(); console.log("NumberTemplates_4_4:") } catch (err) { console.error("讀取 JSON 發生錯誤:", err); } })();
+        (async () => { try { const res = await fetch("./data/NumberTemplates_4_5.json"); NumberTemplates_4_5 = await res.json(); console.log("NumberTemplates_4_5:") } catch (err) { console.error("讀取 JSON 發生錯誤:", err); } })();
+
+        (async () => { try { const res = await fetch("./data/NumberTemplates_5_1.json"); NumberTemplates_5_1 = await res.json(); console.log("NumberTemplates_5_1:") } catch (err) { console.error("讀取 JSON 發生錯誤:", err); } })();
+        (async () => { try { const res = await fetch("./data/NumberTemplates_5_2.json"); NumberTemplates_5_2 = await res.json(); console.log("NumberTemplates_5_2:") } catch (err) { console.error("讀取 JSON 發生錯誤:", err); } })();
+        (async () => { try { const res = await fetch("./data/NumberTemplates_5_3.json"); NumberTemplates_5_3 = await res.json(); console.log("NumberTemplates_5_3:") } catch (err) { console.error("讀取 JSON 發生錯誤:", err); } })();
+        (async () => { try { const res = await fetch("./data/NumberTemplates_5_4.json"); NumberTemplates_5_4 = await res.json(); console.log("NumberTemplates_5_4:") } catch (err) { console.error("讀取 JSON 發生錯誤:", err); } })();
+        (async () => { try { const res = await fetch("./data/NumberTemplates_5_5.json"); NumberTemplates_5_5 = await res.json(); console.log("NumberTemplates_5_5:") } catch (err) { console.error("讀取 JSON 發生錯誤:", err); } })();
+*/
         // [請複製] differentColorAttributeData
         const differentColorAttributeData =
         {
@@ -1488,7 +1521,7 @@
         };
 
         // [請複製] resonatorData
-         const resonatorData = {
+        const resonatorData = {
             '今汐': {
                 '0': {
                     '鏈度': '0',
@@ -8645,7 +8678,7 @@
         ];
 
         // [請複製] resonatorCoords
-         const resonatorCoords = [
+        const resonatorCoords = [
             [350, 250, 100, 100]
         ];
         // [請複製] NumberOfStarsCoords
@@ -9704,7 +9737,7 @@
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d', { willReadFrequently: true });
         const copyBtn = document.getElementById('copyBtn');
-        
+
         // 全域變數 (來自 index copy.html)
         let targetData = null;
         let targetFileName = '';
@@ -10524,7 +10557,7 @@
                         // 重新渲染 (如果辨識已完成)
                         const val = jsonOutput.value;
                         if (val && val.startsWith('{')) {
-                             try { renderResult(JSON.parse(val)); } catch(e){}
+                            try { renderResult(JSON.parse(val)); } catch (e) { }
                         }
                     };
                     img.src = ev.target.result;
@@ -10609,7 +10642,7 @@
                     const costVal = item.Cost || 1;
 
                     let shortName = item.Attributes || '聲骸';
-                    
+
                     let affixRows = filteredAffixes.map(affix => {
                         const pts = affix.Points || 0;
                         const ptClass = pts > 0 ? 'point-pos' : 'point-zero';
@@ -10738,7 +10771,7 @@
                 try {
                     const val = jsonOutput.value || (quickJson ? quickJson.value : '');
                     if (val) data = JSON.parse(val);
-                } catch (e) {}
+                } catch (e) { }
 
                 document.getElementById('characterName').textContent = data.Name || 'N/A';
                 document.getElementById('uid').textContent = data.UID || 'N/A';
@@ -10802,7 +10835,7 @@
             }
 
             const role = targetData.role[roleIndex];
-            
+
             // 檢查聲骸數量
             if (!role.costList || role.costList.length < 5) {
                 showModalMessage('聲骸數量未滿無法替換', 'error');
@@ -10820,13 +10853,13 @@
                     if (role.costList[i].propertyList) {
                         // 副詞條列表
                         role.costList[i].propertyList = getPropertyList(allEchoList[i]);
-                        
+
                         // 消耗類型
                         role.costList[i].type = getCostType(allEchoList[i].Cost);
-                        
+
                         // 套裝
                         role.costList[i].suite = getTCtoCNAttributes(allEchoList[i].Attributes);
-                        
+
                         // 主詞條
                         role.costList[i].mainAtrri = getMainAttr(allEchoList[i]);
                     }
