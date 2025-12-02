@@ -4,11 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>聲骸評分工具Web版本(by 無聊經過的人)</title>
+    <title>聲骸評分工具Web</title>
+    <link rel="icon" href="https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/6b08d1da05d2ce8bf65033419bd3ab90.png" type="image/png">
     <style>
-        /* ==========================================================================
-           來自 image_score.html 的樣式
-           ========================================================================== */
         :root {
             --bg-primary: #0a0a0a;
             --bg-secondary: #1a1a1a;
@@ -729,7 +727,7 @@
 
 <body>
     <div class="controls">
-        <button id="homeBtn" class="switch-btn" onclick="showHistorySection()">🏠2.8</button>
+        <button id="homeBtn" class="switch-btn" onclick="showHistorySection()"><img src="https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/6b08d1da05d2ce8bf65033419bd3ab90.png" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 5px; object-fit: cover;">2.8</button>
         
         <div class="file-input-wrapper">
             <!-- 注意：ID 已改為 imageInput 以配合 index copy.html 的邏輯 -->
@@ -810,8 +808,18 @@
 
     <div id="historySection" style="display: none; max-width: 1400px; margin: 2rem auto; background: var(--bg-card); border: 2px solid var(--border-color); border-radius: 20px; padding: 2rem; box-shadow: var(--shadow);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-            <h1 style="margin: 0; color: var(--accent-gold);">辨識歷史紀錄</h1>
-            <button class="switch-btn" id="closeHistorySectionBtn">關閉</button>
+            <div>
+                <h1 style="margin: 0; color: var(--accent-gold);">聲骸評分工具Web</h1>
+                <div style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 5px;">by 無聊經過的人</div>
+            </div>
+        </div>
+        <div class="section" style="margin-bottom: 1.5rem;">
+            <div style="color: var(--text-secondary); margin-bottom: 0.8rem; font-size: 0.9rem; font-weight: bold;">🔗 相關連結</div>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <a href="https://wuwaechotool.pages.dev/" target="_blank" style="color: var(--accent-blue); text-decoration: none; border: 1px solid var(--accent-blue); padding: 0.4rem 0.8rem; border-radius: 4px; transition: all 0.3s ease; font-size: 0.9rem;">聲骸評分</a>
+                <a href="https://wuwaguide.kurogames.com/zh-Hant/?packageId=A1834&channelId=205&svr_area=global&platform=PC" target="_blank" style="color: var(--accent-blue); text-decoration: none; border: 1px solid var(--accent-blue); padding: 0.4rem 0.8rem; border-radius: 4px; transition: all 0.3s ease; font-size: 0.9rem;">官方攻略站</a>
+                <a href="https://forum.gamer.com.tw/C.php?bsn=74934&snA=9331&tnum=23&bPage=4" target="_blank" style="color: var(--accent-blue); text-decoration: none; border: 1px solid var(--accent-blue); padding: 0.4rem 0.8rem; border-radius: 4px; transition: all 0.3s ease; font-size: 0.9rem;">巴哈連結</a>
+            </div>
         </div>
         <div class="section" style="display: flex; gap: 10px; margin-bottom: 1rem;">
             <button class="switch-btn" id="importHistoryBtn">匯入紀錄</button>
@@ -839,10 +847,6 @@
     </div>
 
     <script>
-        // ==================================================================================
-        // 來自 index copy.html 的資料區塊 (請從原檔案複製完整內容)
-        // ==================================================================================
-
         // 配置常數
         const CONFIG = {
             SIMILARITY_THRESHOLD: 0.7,
@@ -10209,10 +10213,6 @@
             }
         };
 
-        // ==================================================================================
-        // 來自 index copy.html 的函式 (請從原檔案複製完整內容)
-        // ==================================================================================
-
         // [請複製] decompressBinaryData, decodeTemplateImage, buildGrayMap
         function decompressBinaryData(compressed, width, height) {
             const pixelCount = width * height;
@@ -11011,24 +11011,24 @@
         let currentLayout = 'landscape';
         const AUTO_LOAD_FROM_LOCAL = false;
 
-        // DOM 元素 (來自 index copy.html)
+        // DOM 元素
         const imageInput = document.getElementById('imageInput');
         const jsonOutput = document.getElementById('jsonOutput');
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d', { willReadFrequently: true });
         const copyBtn = document.getElementById('copyBtn');
 
-        // 全域變數 (來自 index copy.html)
+        // 全域變數
         let targetData = null;
         let targetFileName = '';
         let allEchoList = [];
 
-        // DOM 元素 (來自 image_score.html)
+        // DOM 元素
         const quickJson = document.getElementById('quickJson');
         const mainContent = document.getElementById('mainContent');
         const noDataMessage = document.getElementById('noDataMessage');
 
-        // [請複製] processImage 函式 (來自 index copy.html)
+        // [請複製] processImage 函式
         // 請將 index copy.html 中的 processImage 函式完整複製到這裡
         // 由於我們已經模擬了 imageInput, jsonOutput, canvas, ctx 等環境，
         // 該函式應該可以直接運作。
@@ -11846,10 +11846,6 @@
         // 輔助函式
         function showMessage(msg) { console.log(msg); }
 
-        // ==================================================================================
-        // 渲染邏輯 (來自 image_score.html)
-        // ==================================================================================
-
         const layoutToggle = document.getElementById('layoutToggle');
         layoutToggle.addEventListener('click', () => {
             currentLayout = currentLayout === 'landscape' ? 'portrait' : 'landscape';
@@ -11858,6 +11854,12 @@
         });
 
         function renderResult(inputData) {
+            // 切換顯示狀態：顯示主內容，隱藏歷史紀錄
+            const historySection = document.getElementById('historySection');
+            const mainContent = document.getElementById('mainContent');
+            if (historySection) historySection.style.display = 'none';
+            if (mainContent) mainContent.style.display = 'block';
+
             let data = inputData;
             if (!data) {
                 try {
@@ -11886,7 +11888,7 @@
                 </svg>`
             ).join('');
 
-            const totalScore = data.Total總分 || 0;
+            const totalScore = parseFloat(data.Total總分) || 0;
             const totalScoreHTML = `<div class="stat-value">${totalScore.toFixed(2)}</div>`;
             const uidDisplay = data.UID ? `<div class="character-uid">${data.UID}</div>` : '';
 
@@ -11897,14 +11899,14 @@
                         .filter(affix => affix.Id !== 0)
                         .sort((a, b) => (b.Points || 0) - (a.Points || 0));
 
-                    const itemScore = item.Points || 0;
+                    const itemScore = parseFloat(item.Points) || 0;
                     let itemScoreColor = itemScore >= 8 ? 'score-high' : (itemScore < 5 ? 'score-low' : 'score-medium');
                     const costVal = item.Cost || 1;
 
                     let shortName = item.Attributes || '聲骸';
 
                     let affixRows = filteredAffixes.map(affix => {
-                        const pts = affix.Points || 0;
+                        const pts = parseFloat(affix.Points) || 0;
                         const ptClass = pts > 0 ? 'point-pos' : 'point-zero';
                         const name = affix.Name;
                         return `<tr><td class="affix-name">${name}</td><td class="affix-value">${affix.Number}</td><td class="affix-point ${ptClass}">${pts.toFixed(2)}</td></tr>`;
@@ -12307,20 +12309,17 @@
 
             let history = getHistory();
             
-            // 檢查重複 (UID + 角色名稱 + 總分 + 聲骸列表內容)
-            const dataStr = JSON.stringify(data);
-            const isDuplicate = history.some(item => {
-                // 如果 UID, Name, TotalScore 都一樣，且 JSON 字串一樣，則視為重複
-                // 這裡做一個簡單的檢查，如果完全一樣就不存
+            // 檢查重複 (UID + 角色名稱 + 總分)
+            // 如果存在相同 UID、角色名稱且分數相近的紀錄，則視為同一筆資料的更新
+            const duplicateIndex = history.findIndex(item => {
                 return item.uid === data.UID && 
                        item.name === data.Name && 
-                       Math.abs(item.score - data.Total總分) < 0.01 &&
-                       JSON.stringify(item.data) === dataStr;
+                       Math.abs(item.score - data.Total總分) < 0.01;
             });
 
-            if (isDuplicate) {
-                console.log('重複的紀錄，跳過儲存');
-                return;
+            if (duplicateIndex !== -1) {
+                // 移除舊的紀錄，以便將新的紀錄加入到最前面
+                history.splice(duplicateIndex, 1);
             }
 
             const newItem = {
@@ -12383,8 +12382,11 @@
         // 全域函式供 HTML onclick 使用
         window.showHistorySection = function() {
             const historySection = document.getElementById('historySection');
+            const mainContent = document.getElementById('mainContent');
+            
             if (historySection) {
                 historySection.style.display = 'block';
+                if (mainContent) mainContent.style.display = 'none';
                 renderHistoryList();
                 historySection.scrollIntoView({ behavior: 'smooth' });
             }
@@ -12450,20 +12452,30 @@
                     let currentHistory = getHistory();
                     let addedCount = 0;
 
-                    importedData.forEach(newItem => {
-                        // 基本驗證
-                        if (!newItem.uid || !newItem.data) return;
+                    importedData.forEach(item => {
+                        // 僅支援 UserData.json 格式 (必須包含 UID)
+                        if (!item.UID) return;
 
-                        // 檢查重複
-                        const dataStr = JSON.stringify(newItem.data);
-                        const isDuplicate = currentHistory.some(existItem => {
+                        const dataObj = item;
+                        const timestamp = Date.now();
+
+                        // 建構內部儲存格式
+                        const newItem = {
+                            uid: dataObj.UID,
+                            name: dataObj.Name,
+                            score: parseFloat(dataObj.Total總分 || 0),
+                            timestamp: timestamp,
+                            data: dataObj
+                        };
+
+                        // 檢查重複 (UID + 角色名稱 + 總分)
+                        const duplicateIndex = currentHistory.findIndex(existItem => {
                              return existItem.uid === newItem.uid && 
                                    existItem.name === newItem.name && 
-                                   Math.abs(existItem.score - newItem.score) < 0.01 &&
-                                   JSON.stringify(existItem.data) === dataStr;
+                                   Math.abs(existItem.score - newItem.score) < 0.01;
                         });
 
-                        if (!isDuplicate) {
+                        if (duplicateIndex === -1) {
                             currentHistory.unshift(newItem);
                             addedCount++;
                         }
@@ -12492,7 +12504,9 @@
                     alert('沒有紀錄可匯出');
                     return;
                 }
-                const jsonStr = JSON.stringify(history, null, 2);
+                // 轉換為 UserData.json 格式 (只匯出 data 部分)
+                const exportData = history.map(item => item.data);
+                const jsonStr = JSON.stringify(exportData, null, 2);
                 downloadFile(jsonStr, `echo_history_${new Date().toISOString().slice(0,10)}.json`);
             });
         }
