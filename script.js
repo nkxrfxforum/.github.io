@@ -1603,6 +1603,143 @@ imageInput.addEventListener('change', (e) => {
     processImage();
 });
 
+//// URL 按鈕事件處理
+const urlBtn = document.getElementById('urlBtn');
+const urlInputModal = document.getElementById('urlInputModal');
+const closeUrlModalBtn = document.getElementById('closeUrlModalBtn');
+const imageUrlInput = document.getElementById('imageUrlInput');
+const scoreFromUrlBtn = document.getElementById('scoreFromUrlBtn');
+const urlModalMessage = document.getElementById('urlModalMessage');
+
+// 開啟 URL 輸入模態框
+if (urlBtn) {
+    urlBtn.addEventListener('click', () => {
+        if (urlInputModal) {
+            urlInputModal.classList.add('show');
+            if (imageUrlInput) imageUrlInput.value = '';
+            if (scoreFromUrlBtn) scoreFromUrlBtn.disabled = true;
+            if (urlModalMessage) {
+                urlModalMessage.style.display = 'none';
+                urlModalMessage.className = 'message';
+            }
+        }
+    });
+}
+
+// 關閉 URL 輸入模態框
+if (closeUrlModalBtn) {
+    closeUrlModalBtn.addEventListener('click', () => {
+        if (urlInputModal) urlInputModal.classList.remove('show');
+    });
+}
+
+// URL 輸入驗證
+if (imageUrlInput) {
+    imageUrlInput.addEventListener('input', () => {
+        const url = imageUrlInput.value.trim();
+        const isValid = url.startsWith('https://wutheringwaves-dc.kurogames-global.com') && url.endsWith('.jpeg');
+
+        if (scoreFromUrlBtn) {
+            scoreFromUrlBtn.disabled = !isValid;
+        }
+    });
+}
+
+// 評分按鈕事件處理
+if (scoreFromUrlBtn) {
+    scoreFromUrlBtn.addEventListener('click', async () => {
+        const imageUrl = imageUrlInput.value.trim();
+
+        if (!imageUrl) {
+            showUrlMessage('請輸入圖片網址', 'error');
+            return;
+        }
+
+        if (!imageUrl.startsWith('https://wutheringwaves-dc.kurogames-global.com') || !imageUrl.endsWith('.jpeg')) {
+            showUrlMessage('網址格式不正確', 'error');
+            return;
+        }
+
+        scoreFromUrlBtn.disabled = true;
+        showUrlMessage('正在載入圖片...', 'success');
+
+        try {
+            // 固定的 GCF URL
+            const gcfUrl = 'https://wwechoscoringtoolsweb-547324461314.asia-east1.run.app';
+            const proxyUrl = `${gcfUrl}?url=${encodeURIComponent(imageUrl)}`;
+
+            // 載入圖片
+            const img = new Image();
+            img.crossOrigin = 'Anonymous';
+
+            img.onload = () => {
+                // 將圖片繪製到 canvas
+                const canvas = document.getElementById('canvas');
+                const ctx = canvas.getContext('2d');
+
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+
+                // 將 canvas 轉換為 blob，然後觸發圖片處理流程
+                canvas.toBlob((blob) => {
+                    if (blob) {
+                        // 建立一個 File 對象
+                        const file = new File([blob], 'image.jpg', { type: 'image/jpeg' });
+
+                        // 建立一個 FileList-like 對象
+                        const dataTransfer = new DataTransfer();
+                        dataTransfer.items.add(file);
+
+                        // 設定到 imageInput
+                        if (imageInput) {
+                            imageInput.files = dataTransfer.files;
+                            // 觸發處理
+                            processImage();
+                        }
+
+                        // 關閉模態框
+                        if (urlInputModal) urlInputModal.classList.remove('show');
+                        showUrlMessage('圖片載入成功', 'success');
+                    } else {
+                        showUrlMessage('圖片轉換失敗', 'error');
+                        scoreFromUrlBtn.disabled = false;
+                    }
+                }, 'image/jpeg');
+            };
+
+            img.onerror = (e) => {
+                console.error('圖片載入失敗', e);
+                showUrlMessage('圖片載入失敗，請檢查網址是否正確', 'error');
+                scoreFromUrlBtn.disabled = false;
+            };
+
+            // 開始載入
+            img.src = proxyUrl;
+
+        } catch (error) {
+            console.error('錯誤:', error);
+            showUrlMessage('發生錯誤: ' + error.message, 'error');
+            scoreFromUrlBtn.disabled = false;
+        }
+    });
+}
+
+// 顯示 URL 模態框訊息
+function showUrlMessage(msg, type) {
+    if (urlModalMessage) {
+        urlModalMessage.textContent = msg;
+        urlModalMessage.className = `message ${type}`;
+        urlModalMessage.style.display = 'block';
+
+        if (type === 'success') {
+            setTimeout(() => {
+                urlModalMessage.style.display = 'none';
+            }, 2000);
+        }
+    }
+}
+
 // 攔截 checkCanExport 以觸發渲染
 // 當 processImage 完成時會呼叫 checkCanExport，我們利用這個時機來更新 UI
 function checkCanExport() {
@@ -1730,30 +1867,30 @@ function renderResult(inputData) {
 
     const totalScore = parseFloat(data.Total總分) || 0;
     const totalScoreHTML = `<div class="stat-value">${totalScore.toFixed(2)}</div>`;
-let damageStatsHtml = '';
-            if (typeof resonatorData !== 'undefined' && resonatorData[data.Name] && resonatorData[data.Name][data.NumberOfStars]) {
-                const weights = resonatorData[data.Name][data.NumberOfStars];
-                const stats = [
-                    { key: 'NormalAttack', label: '普攻傷害' },
-                    { key: 'HeavyAttack', label: '重擊傷害' },
-                    { key: 'SecretWeapon', label: '共鳴解放傷害' },
-                    { key: 'Skills', label: '共鳴技能傷害' },
-                    { key: 'Other', label: '其他' }
-                ];
-                
-                const statsParts = [];
-                
-                // Map to get values and filter valid ones
-                const validStats = stats.map(stat => {
-                    const val = weights[stat.key];
-                    return { ...stat, val };
-                }).filter(item => item.val !== undefined && item.val !== null);
+    let damageStatsHtml = '';
+    if (typeof resonatorData !== 'undefined' && resonatorData[data.Name] && resonatorData[data.Name][data.NumberOfStars]) {
+        const weights = resonatorData[data.Name][data.NumberOfStars];
+        const stats = [
+            { key: 'NormalAttack', label: '普攻傷害' },
+            { key: 'HeavyAttack', label: '重擊傷害' },
+            { key: 'SecretWeapon', label: '共鳴解放傷害' },
+            { key: 'Skills', label: '共鳴技能傷害' },
+            { key: 'Other', label: '其他' }
+        ];
 
-                // Sort by value descending
-                validStats.sort((a, b) => parseFloat(b.val) - parseFloat(a.val));
+        const statsParts = [];
 
-                validStats.forEach(item => {
-                    statsParts.push(`
+        // Map to get values and filter valid ones
+        const validStats = stats.map(stat => {
+            const val = weights[stat.key];
+            return { ...stat, val };
+        }).filter(item => item.val !== undefined && item.val !== null);
+
+        // Sort by value descending
+        validStats.sort((a, b) => parseFloat(b.val) - parseFloat(a.val));
+
+        validStats.forEach(item => {
+            statsParts.push(`
                         <div style="
                             display: inline-flex; 
                             align-items: center; 
@@ -1769,15 +1906,15 @@ let damageStatsHtml = '';
                             <span style="color: #ffd700; font-weight: bold;">${item.val}%</span>
                         </div>
                     `);
-                });
-                if (statsParts.length > 0) {
-                    damageStatsHtml = `<div style="display: flex; flex-wrap: wrap; gap: 6px; margin-left: 10px;">${statsParts.join('')}</div>`;
-                }
-            }
+        });
+        if (statsParts.length > 0) {
+            damageStatsHtml = `<div style="display: flex; flex-wrap: wrap; gap: 6px; margin-left: 10px;">${statsParts.join('')}</div>`;
+        }
+    }
 
-            const exportBtnHtml = `<button id="openModalBtn" class="file-btn" style="padding: 4px 12px; font-size: 0.8rem; min-width: auto; height: auto; border-width: 1px; margin-left: 10px;">匯出</button>`;
+    const exportBtnHtml = `<button id="openModalBtn" class="file-btn" style="padding: 4px 12px; font-size: 0.8rem; min-width: auto; height: auto; border-width: 1px; margin-left: 10px;">匯出</button>`;
 
-            const uidDisplay = `<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+    const uidDisplay = `<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                 ${data.UID ? `<div class="character-uid">${data.UID}</div>` : ''}
                 ${damageStatsHtml}
             </div>`;
@@ -4431,6 +4568,37 @@ function populateEditModal(echo) {
         nameSel.addEventListener('change', () => {
             updateAllSubStatOptions();
             updateSubAffixValueOptions(nameSel, valSel);
+
+            // Update other slots that might be affected by this name change (e.g. double stats)
+            const doubleStats = ['生命', '攻擊', '防禦'];
+            for (let j = 1; j <= 5; j++) {
+                if (j === i) continue;
+                const otherNameSel = document.getElementById(`editSubStatName_${j}`);
+                if (otherNameSel && doubleStats.includes(otherNameSel.value)) {
+                    const otherValSel = document.getElementById(`editSubStatValue_${j}`);
+                    updateSubAffixValueOptions(otherNameSel, otherValSel, otherValSel.value);
+                }
+            }
+        });
+
+        // Add focus listener to ensure options are always up-to-date when user interacts
+        valSel.addEventListener('focus', () => {
+            updateSubAffixValueOptions(nameSel, valSel, valSel.value);
+        });
+
+        valSel.addEventListener('change', () => {
+            const currentName = nameSel.value;
+            const doubleStats = ['生命', '攻擊', '防禦'];
+            if (doubleStats.includes(currentName)) {
+                for (let j = 1; j <= 5; j++) {
+                    if (j === i) continue;
+                    const otherNameSel = document.getElementById(`editSubStatName_${j}`);
+                    if (otherNameSel && otherNameSel.value === currentName) {
+                        const otherValSel = document.getElementById(`editSubStatValue_${j}`);
+                        updateSubAffixValueOptions(otherNameSel, otherValSel, otherValSel.value);
+                    }
+                }
+            }
         });
 
         row.appendChild(label);
@@ -4475,16 +4643,21 @@ function updateMainAffixOptions(currentName) {
 function updateAllSubStatOptions() {
     const allSubStats = Object.keys(SupAffixData).sort();
     const selects = [];
-    const selectedValues = new Set();
+    const counts = {};
 
-    // 1. Collect all selects and current values
+    // 1. Collect all selects and count values
     for (let i = 1; i <= 5; i++) {
         const sel = document.getElementById(`editSubStatName_${i}`);
         if (sel) {
             selects.push(sel);
-            if (sel.value) selectedValues.add(sel.value);
+            const val = sel.value;
+            if (val) {
+                counts[val] = (counts[val] || 0) + 1;
+            }
         }
     }
+
+    const doubleStats = ['生命', '攻擊', '防禦'];
 
     // 2. Rebuild options for each select
     selects.forEach(sel => {
@@ -4498,8 +4671,15 @@ function updateAllSubStatOptions() {
         sel.appendChild(defaultOpt);
 
         allSubStats.forEach(name => {
-            // Show if it's the current value OR if it's not selected elsewhere
-            if (name === currentValue || !selectedValues.has(name)) {
+            // Calculate how many times this name is selected in OTHER dropdowns
+            let countInOthers = counts[name] || 0;
+            if (name === currentValue) {
+                countInOthers--;
+            }
+
+            const maxAllowed = doubleStats.includes(name) ? 2 : 1;
+
+            if (countInOthers < maxAllowed) {
                 const opt = document.createElement('option');
                 opt.value = name;
                 opt.textContent = name;
@@ -4544,7 +4724,41 @@ function updateSubAffixValueOptions(nameSelect, valSelect, currentValue) {
     }
 
     valSelect.disabled = false;
-    const ranges = affixValueRanges[name];
+    let ranges = affixValueRanges[name];
+
+    // Logic to filter ranges based on other slots
+    const doubleStats = ['生命', '攻擊', '防禦'];
+    if (doubleStats.includes(name) && ranges) {
+        const currentSlotIndex = parseInt(nameSelect.dataset.index);
+        let otherValueType = null; // 'percent' or 'fixed'
+
+        for (let i = 1; i <= 5; i++) {
+            if (i === currentSlotIndex) continue;
+
+            const otherNameSel = document.getElementById(`editSubStatName_${i}`);
+            const otherValSel = document.getElementById(`editSubStatValue_${i}`);
+
+            if (otherNameSel && otherNameSel.value === name) {
+                const otherVal = otherValSel.value;
+                if (otherVal) {
+                    if (otherVal.includes('%')) {
+                        otherValueType = 'percent';
+                    } else {
+                        otherValueType = 'fixed';
+                    }
+                    break;
+                }
+            }
+        }
+
+        if (otherValueType === 'percent') {
+            // Filter to keep only fixed values (no %)
+            ranges = ranges.filter(v => !v.includes('%'));
+        } else if (otherValueType === 'fixed') {
+            // Filter to keep only percent values (has %)
+            ranges = ranges.filter(v => v.includes('%'));
+        }
+    }
 
     if (ranges) {
         ranges.forEach(val => {

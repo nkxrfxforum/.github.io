@@ -100,8 +100,8 @@
             justify-content: center;
             gap: 10px;
             width: auto;
-            min-width: 120px;
-            padding: 0.8rem 1.5rem;
+            min-width: 80px;
+            padding: 0.8rem 1rem;
             background: rgba(255, 215, 0, 0.1);
             color: var(--accent-gold);
             border: 2px dashed var(--accent-gold);
@@ -783,7 +783,11 @@
 
         <div class="file-input-wrapper">
             <input type="file" id="imageInput" class="file-input" accept="image/jpeg,image/jpg">
-            <label for="imageInput" class="file-btn">圖片</label>
+            <label for="imageInput" class="file-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="height: 1.5em; width: auto; fill: currentColor;">
+                    <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                </svg>
+            </label>
         </div>
 
         <div style="display:none; align-items:center; gap:0.6rem; margin-left:0.6rem;">
@@ -792,7 +796,19 @@
         </div>
 
         <div class="file-input-wrapper">
-            <button id="echoBtn" class="file-btn">聲骸</button>
+            <button id="urlBtn" class="file-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="height: 1.5em; width: auto; fill: currentColor;">
+                    <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="file-input-wrapper">
+            <button id="echoBtn" class="file-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" style="height: 1.5em; width: auto; fill: currentColor;">
+                    <path d="M20.79 18.18A2.12 2.12 0 0 1 22.88 20l.92 7a15.28 15.28 0 0 0 4.12 8.53 28 28 0 0 0-4.38 10.06c1.6 2 4.43 3.8 9.18 5.46a2.8 2.8 0 0 1 1.89 2.65c0 4.66 2 8.27 5.57 10.45l.22-2.8a2.82 2.82 0 0 1 3.28-2.56c2.42.4 5.1.83 6.32 1 1.22-.18 3.9-.61 6.32-1a2.82 2.82 0 0 1 3.28 2.56l.22 2.8c3.62-2.18 5.57-5.79 5.57-10.45a2.8 2.8 0 0 1 1.89-2.7c4.75-1.66 7.58-3.46 9.18-5.46a28 28 0 0 0-4.38-10.06A15.28 15.28 0 0 0 76.2 27l.92-7a2.12 2.12 0 0 1 2.09-1.86 2.09 2.09 0 0 0 1.93-1.32l4-9.79-20.39 20.65a5.25 5.25 0 0 0-2.63-1h-.25v-1.44a8.73 8.73 0 0 0-2.08-5.67L55.88 15a.14.14 0 0 0-.24.14 26.34 26.34 0 0 1 0 11.6H55c-1.8 0-4.07 1.61-5 3.68-.92-2.07-3.19-3.68-5-3.68h-.67a26.34 26.34 0 0 1 0-11.6.14.14 0 0 0-.24-.14l-3.91 4.59a8.73 8.73 0 0 0-2.08 5.67v1.48h-.25a5.25 5.25 0 0 0-2.63 1L14.85 7.07l4 9.79a2.09 2.09 0 0 0 1.94 1.32Zm33.29 30 9.4-9.57H64a2.69 2.69 0 0 1 2.67 2.72v.4a6.88 6.88 0 0 1-6.82 6.95h-5.56a.29.29 0 0 1-.21-.49Zm-20.73-6.84A2.69 2.69 0 0 1 36 38.62h.5l9.4 9.57a.29.29 0 0 1-.21.5h-5.52a6.88 6.88 0 0 1-6.82-6.95Zm51.24 2.8c2.63 4.71 5.8 9.4 3.11 10.67-3.79 1.8-8.74 4-12.75 13.72-3.79 9.2-6.52 10.65-17.46 12.15a17.73 17.73 0 0 0-4.84 1.44A25.78 25.78 0 0 0 54 79c1.06-3.15 3.1-4.34 8-7.24a14.63 14.63 0 0 0 6.7-4c1.94-1.94 3.89-6.38 6.56-14-.67.37-3.59 1.71-4.27 2-.68 7.48-5.27 13-12.82 15.29a2.62 2.62 0 0 1-.83.13 2.83 2.83 0 0 1-2.82-2.6l-.28-3.68c-1.15.19-2 .32-2.64.41a2.72 2.72 0 0 1-1.14.25 3 3 0 0 1-.42 0 3 3 0 0 1-.42 0 2.72 2.72 0 0 1-1.14-.25c-.64-.09-1.49-.22-2.64-.41l-.29 3.68a2.79 2.79 0 0 1-1.22 2.11 2.84 2.84 0 0 1-1.59.49 2.62 2.62 0 0 1-.83-.13c-7.55-2.29-12.14-7.81-12.82-15.29-.68-.27-3.6-1.61-4.27-2 2.67 7.65 4.62 12.09 6.56 14a14.63 14.63 0 0 0 6.7 4c4.89 2.9 6.94 4.09 8 7.24a25.78 25.78 0 0 0 1.31 3.16 17.73 17.73 0 0 0-4.84-1.44c-10.94-1.5-13.67-3-17.46-12.15-4-9.71-9-11.92-12.75-13.72-2.69-1.27.48-6 3.11-10.67C7.33 46.16 2.82 52.27 2 56.31c8.08 1.49 11.29 2 16.88 8.23 3.06 3.39 2 11.36 10.38 16.3 6.28 3.69 12 8.46 20.37 11.76v.33l.42-.17.42.17v-.33c8.37-3.3 14.09-8.07 20.37-11.76 8.41-4.94 7.32-12.91 10.38-16.3 5.59-6.21 8.8-6.74 16.88-8.23-.92-4.04-5.43-10.15-13.51-12.17Z" />
+                </svg>
+            </button>
         </div>
 
         <button class="switch-btn" id="layoutToggle">💻</button>
@@ -934,6 +950,34 @@
             <div class="modal-footer" style="text-align: right; margin-top: 20px;">
                 <button id="saveEditBtn" class="file-btn" style="display: inline-flex; min-width: 100px;">儲存</button>
             </div>
+        </div>
+    </div>
+
+    <!-- URL Input Modal -->
+    <div class="modal" id="urlInputModal">
+        <div class="modal-content" style="max-width: 500px;">
+            <span class="close-btn" id="closeUrlModalBtn">&times;</span>
+            <h1 style="color: var(--accent-gold); margin-bottom: 1.5rem;">輸入圖片網址</h1>
+            
+            <div class="section">
+                <div class="info-box">
+                    <p>請輸入以下格式的圖片網址：</p>
+                    <p style="color: var(--accent-blue); font-family: monospace; font-size: 0.85rem;">https://wutheringwaves-dc.kurogames-global.com/.../*.jpeg</p>
+                </div>
+                
+                <div class="file-input-group">
+                    <label class="file-input-label">圖片網址</label>
+                    <input type="text" id="imageUrlInput" 
+                           placeholder="https://wutheringwaves-dc.kurogames-global.com/.../image.jpeg"
+                           style="width: 100%; padding: 0.8rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); font-family: monospace; font-size: 0.9rem;">
+                </div>
+            </div>
+
+            <div class="section">
+                <button class="btn" id="scoreFromUrlBtn" disabled>評分</button>
+            </div>
+            
+            <div class="message" id="urlModalMessage"></div>
         </div>
     </div>
 
