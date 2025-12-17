@@ -1128,6 +1128,22 @@
         <div class="message" id="historyMessage"></div>
     </div>
 
+    <!-- Debug Modal -->
+    <div class="modal" id="debugModal">
+        <div class="modal-content" style="max-width: 900px;">
+            <span class="close-btn" id="closeDebugModalBtn">&times;</span>
+            <h1 style="color: var(--accent-gold); margin-bottom: 1.5rem;">辨識對照除錯</h1>
+            
+            <div id="debugContent" style="display: flex; flex-direction: column; gap: 1rem; max-height: 60vh; overflow-y: auto; padding-right: 10px;">
+                <!-- Debug rows will be injected here -->
+            </div>
+
+            <div class="section" style="margin-top: 2rem; text-align: right;">
+                <button class="btn" id="reportDebugBtn" style="width: auto; padding: 0.8rem 2rem; background: var(--accent-red); color: white;">回報</button>
+            </div>
+        </div>
+    </div>
+
 <script src="data.js"></script>
 <script src="script.js"></script>
 </body>

@@ -1446,6 +1446,52 @@ function processImage() {
             }
         }
 
+        // Capture Debug Images
+        const captureEchoDebugImages = (echoIdx) => {
+            const idx1 = echoIdx + 1;
+            const debugData = { Attribute: '', Cost: '', MainAffix: '', SubAffixes: [] };
+            
+            const getCoords = (name) => { try { return eval(name); } catch (e) { return null; } };
+
+            // Attribute
+            const attrCoords = getCoords(`AttributesCoords${idx1}`);
+            if (attrCoords && attrCoords.length > 0) {
+                const [x, y, w, h] = attrCoords[0];
+                debugData.Attribute = cropImageAsBase64(x, y, w, h);
+            }
+
+            // Cost
+            const costCoords = getCoords(`CostCoords${idx1}`);
+            if (costCoords && costCoords.length > 0) {
+                const [x, y, w, h] = costCoords[0];
+                debugData.Cost = cropImageAsBase64(x, y, w, h);
+            }
+
+            // Main Affix
+            const mainCoords = getCoords(`MainTermCoords${idx1}`);
+            if (mainCoords && mainCoords.length > 0) {
+                const [x, y, w, h] = mainCoords[0];
+                debugData.MainAffix = cropImageAsBase64(x, y, w, h);
+            }
+
+            // Sub Affixes
+            for (let subIdx = 1; subIdx <= 5; subIdx++) {
+                const subData = { Name: '', Value: '' };
+                const nameCoords = getCoords(`SupAffixCoords${idx1}_${subIdx}`);
+                if (nameCoords && nameCoords.length > 0) {
+                    const [x, y, w, h] = nameCoords[0];
+                    subData.Name = cropImageAsBase64(x, y, w, h);
+                }
+                const valCoord = SupAffixNumberCoords[`${idx1}_${subIdx}`];
+                if (valCoord) {
+                    const [x, y, w, h] = valCoord;
+                    subData.Value = cropImageAsBase64(x, y, w, h);
+                }
+                debugData.SubAffixes.push(subData);
+            }
+            return debugData;
+        };
+
         // 建立 JSON 結果物件
         const jsonResult = {
             Name: finalResonatorName,
@@ -1458,6 +1504,7 @@ function processImage() {
             list: [
                 {
                     Id: 0,
+                    DebugImages: captureEchoDebugImages(0),
                     Cost: removePrefix(cost1),
                     Attributes: removePrefix(attributes1),
                     AllEchoAffix: [
@@ -1482,6 +1529,7 @@ function processImage() {
                 },
                 {
                     Id: 0,
+                    DebugImages: captureEchoDebugImages(1),
                     Cost: removePrefix(cost2),
                     Attributes: removePrefix(attributes2),
                     AllEchoAffix: [
@@ -1506,6 +1554,7 @@ function processImage() {
                 },
                 {
                     Id: 0,
+                    DebugImages: captureEchoDebugImages(2),
                     Cost: removePrefix(cost3),
                     Attributes: removePrefix(attributes3),
                     AllEchoAffix: [
@@ -1530,6 +1579,7 @@ function processImage() {
                 },
                 {
                     Id: 0,
+                    DebugImages: captureEchoDebugImages(3),
                     Cost: removePrefix(cost4),
                     Attributes: removePrefix(attributes4),
                     AllEchoAffix: [
@@ -1554,6 +1604,7 @@ function processImage() {
                 },
                 {
                     Id: 0,
+                    DebugImages: captureEchoDebugImages(4),
                     Cost: removePrefix(cost5),
                     Attributes: removePrefix(attributes5),
                     AllEchoAffix: [
@@ -1750,6 +1801,8 @@ function checkCanExport() {
             // 同步到 quickJson 並儲存
             quickJson.value = JSON.stringify(data, null, 2);
             localStorage.setItem('lastJsonData', quickJson.value);
+            
+            window.showDebugButton = true; // Enable debug for new recognition
             renderResult(data);
 
             // 新增：加入歷史紀錄
@@ -1812,10 +1865,265 @@ function selectChain(level) {
     closeChainModal();
 }
 
+// Helper to crop image as base64
+function cropImageAsBase64(x, y, w, h) {
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = w;
+    tempCanvas.height = h;
+    const tempCtx = tempCanvas.getContext('2d');
+    const imageData = ctx.getImageData(x, y, w, h);
+    tempCtx.putImageData(imageData, 0, 0);
+    return tempCanvas.toDataURL();
+}
+
+// Debug Modal Logic
+const debugModal = document.getElementById('debugModal');
+const closeDebugModalBtn = document.getElementById('closeDebugModalBtn');
+const reportDebugBtn = document.getElementById('reportDebugBtn');
+let currentDebugEchoIndex = -1;
+
+if (closeDebugModalBtn) {
+    closeDebugModalBtn.addEventListener('click', () => {
+        debugModal.classList.remove('show');
+    });
+}
+
+window.addEventListener('click', (event) => {
+    if (event.target == debugModal) {
+        debugModal.classList.remove('show');
+    }
+});
+
+// 位元壓縮函數：將二值化資料壓縮成位元串
+function compressBinaryData(binaryData) {
+    const pixelCount = binaryData.length / 4; // RGBA，每個像素4個值
+    const byteCount = Math.ceil(pixelCount / 8); // 每8個像素需要1個byte
+    const compressed = new Uint8Array(byteCount);
+    
+    for (let i = 0; i < pixelCount; i++) {
+        const byteIndex = Math.floor(i / 8);
+        const bitIndex = 7 - (i % 8); // 從高位到低位
+        const pixelValue = binaryData[i * 4]; // 取R值（二值化後RGB都相同）
+        
+        if (pixelValue === 255) { // 白色像素設為1
+            compressed[byteIndex] |= (1 << bitIndex);
+        }
+        // 黑色像素為0，不需設置（預設就是0）
+    }
+    
+    return compressed;
+}
+
+function openDebugModal(index) {
+    currentDebugEchoIndex = index;
+    const echo = window.currentJsonResult.list[index];
+    if (!echo || !echo.DebugImages) {
+        alert('此聲骸沒有除錯影像資料 (可能是舊資料或未開啟除錯模式)');
+        return;
+    }
+
+    const content = document.getElementById('debugContent');
+    content.innerHTML = '';
+
+    const createRow = (label, items) => {
+        const row = document.createElement('div');
+        row.style.display = 'flex';
+        row.style.alignItems = 'center';
+        row.style.gap = '10px';
+        row.style.background = 'rgba(255,255,255,0.05)';
+        row.style.padding = '8px';
+        row.style.borderRadius = '8px';
+        row.style.marginBottom = '8px';
+
+        const labelDiv = document.createElement('div');
+        labelDiv.style.width = '80px';
+        labelDiv.style.flexShrink = '0';
+        labelDiv.style.fontWeight = 'bold';
+        labelDiv.style.color = 'var(--accent-blue)';
+        labelDiv.textContent = label;
+        row.appendChild(labelDiv);
+
+        const itemsContainer = document.createElement('div');
+        itemsContainer.style.flex = '1';
+        itemsContainer.style.display = 'flex';
+        itemsContainer.style.gap = '10px';
+
+        items.forEach(item => {
+            const itemDiv = document.createElement('div');
+            itemDiv.style.flex = '1';
+            itemDiv.style.display = 'flex';
+            itemDiv.style.alignItems = 'center';
+            itemDiv.style.justifyContent = 'space-between';
+            itemDiv.style.background = 'rgba(0,0,0,0.2)';
+            itemDiv.style.padding = '5px 10px';
+            itemDiv.style.borderRadius = '4px';
+
+            const contentLeft = document.createElement('div');
+            contentLeft.style.display = 'flex';
+            contentLeft.style.alignItems = 'center';
+            contentLeft.style.gap = '8px';
+
+            if (item.img) {
+                const img = document.createElement('img');
+                img.src = item.img;
+                img.style.height = '30px';
+                img.style.maxWidth = '120px';
+                img.style.objectFit = 'contain';
+                img.style.border = '1px solid #555';
+                contentLeft.appendChild(img);
+            }
+
+            const text = document.createElement('span');
+            text.textContent = item.text;
+            text.style.color = 'var(--text-primary)';
+            contentLeft.appendChild(text);
+
+            itemDiv.appendChild(contentLeft);
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.className = 'debug-checkbox';
+            checkbox.dataset.info = `${label}: ${item.text}`;
+            checkbox.dataset.type = item.type;
+            checkbox.dataset.imgSrc = item.img || '';
+            checkbox.style.width = '18px';
+            checkbox.style.height = '18px';
+            checkbox.style.cursor = 'pointer';
+            itemDiv.appendChild(checkbox);
+
+            itemsContainer.appendChild(itemDiv);
+        });
+
+        row.appendChild(itemsContainer);
+        return row;
+    };
+
+    // 1. 屬性 & Cost
+    content.appendChild(createRow('屬性 & Cost', [
+        { img: echo.DebugImages.Attribute, text: echo.Attributes, type: '屬性' },
+        { img: echo.DebugImages.Cost, text: echo.Cost, type: 'Cost' }
+    ]));
+
+    // 2. 主詞條
+    content.appendChild(createRow('主詞條', [
+        { img: echo.DebugImages.MainAffix, text: `${echo.AllEchoAffix[0].Name} ${echo.AllEchoAffix[0].Number}`, type: '主詞條' }
+    ]));
+
+    // 3-7. 副詞條
+    for (let i = 1; i <= 5; i++) {
+        const affix = echo.AllEchoAffix[i];
+        const debugImg = echo.DebugImages.SubAffixes[i - 1]; // Array is 0-indexed
+        if (affix && debugImg) {
+            content.appendChild(createRow(`副詞條 ${i}`, [
+                { img: debugImg.Name, text: affix.Name, type: `副詞條名稱${i}` },
+                { img: debugImg.Value, text: affix.Number, type: `副詞條數值${i}` }
+            ]));
+        }
+    }
+
+    debugModal.classList.add('show');
+}
+
+if (reportDebugBtn) {
+    reportDebugBtn.addEventListener('click', async () => {
+        const checkboxes = document.querySelectorAll('.debug-checkbox:checked');
+        if (checkboxes.length === 0) {
+            alert('請先選擇要回報的項目');
+            return;
+        }
+
+        reportDebugBtn.disabled = true;
+        reportDebugBtn.textContent = '回報中...';
+
+        try {
+            const echoIndex = currentDebugEchoIndex + 1;
+            const promises = Array.from(checkboxes).map(async (cb) => {
+                const type = cb.dataset.type;
+                const imgSrc = cb.dataset.imgSrc;
+                
+                if (!imgSrc) return;
+
+                // Load image
+                const img = new Image();
+                await new Promise((resolve, reject) => {
+                    img.onload = resolve;
+                    img.onerror = reject;
+                    img.src = imgSrc;
+                });
+
+                // Draw to canvas to get data
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const data = imageData.data;
+
+                // Binarize
+                const threshold = 128;
+                // 屬性為正常二值化，其餘為反向二值化
+                const isInverted = type !== '屬性';
+                const binaryData = [];
+                
+                for (let j = 0; j < data.length; j += 4) {
+                    const gray = (data[j] + data[j + 1] + data[j + 2]) / 3;
+                    let binary;
+                    if (isInverted) {
+                        binary = gray > threshold ? 0 : 255; // 反向二值化
+                    } else {
+                        binary = gray > threshold ? 255 : 0; // 正常二值化
+                    }
+                    binaryData.push(binary, binary, binary, 255); // RGBA
+                }
+
+                // Compress
+                const compressed = compressBinaryData(binaryData);
+                const base64Data = btoa(String.fromCharCode(...compressed));
+                
+                const jsonPayload = JSON.stringify({
+                    width: img.width,
+                    height: img.height,
+                    data: base64Data
+                });
+
+                // Submit to Google Form
+                const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSfVvcNkgBJRAQclBLfX52q8sXDW-18d8VR_WcFEMF94KBpZoA/formResponse';
+                const formData = new FormData();
+                formData.append('entry.1969451592', echoIndex); // 聲骸位置
+                formData.append('entry.705372311', type);       // 辨識位置
+                formData.append('entry.71631029', jsonPayload); // 2值化資料
+
+                await fetch(formUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: formData
+                });
+            });
+
+            await Promise.all(promises);
+            alert('已完成回報');
+            
+            // Uncheck all
+            checkboxes.forEach(cb => cb.checked = false);
+            debugModal.classList.remove('show');
+
+        } catch (error) {
+            console.error('回報失敗:', error);
+            alert('回報失敗: ' + error.message);
+        } finally {
+            reportDebugBtn.disabled = false;
+            reportDebugBtn.textContent = '回報';
+        }
+    });
+}
+
 // Expose functions to global scope for HTML onclick
 window.openChainModal = openChainModal;
 window.closeChainModal = closeChainModal;
 window.selectChain = selectChain;
+
+window.showDebugButton = true; // Global flag to control debug button visibility
 
 function renderResult(inputData) {
     // 切換顯示狀態：顯示主內容，隱藏歷史紀錄與聲骸頁面
@@ -1942,6 +2250,8 @@ function renderResult(inputData) {
                 return `<tr><td class="affix-name">${name}</td><td class="affix-value">${affix.Number}</td><td class="affix-point ${ptClass}">${pts.toFixed(2)}</td></tr>`;
             }).join('');
 
+            const debugBtnHtml = window.showDebugButton ? `<button class="chain-badge" style="padding: 0 6px; font-size: 0.8rem; height: 24px; margin-left: 5px; background: var(--accent-red); color: white; border: 1px solid var(--accent-red); cursor: pointer;" onclick="openDebugModal(${index})" title="除錯">!</button>` : '';
+
             equipmentCards += `
                         <div class="equipment-card fade-in-up" style="animation-delay: ${index * 0.05}s">
                             <div class="equipment-header-row">
@@ -1949,6 +2259,7 @@ function renderResult(inputData) {
                                 <span class="echo-name">${attrDisplay}</span>
                                 <button class="switch-btn" style="padding: 2px 8px; font-size: 0.8rem; height: 24px; margin: 0 5px;" onclick="openReplaceModal(${index})">更換</button>
                                 <span class="echo-score ${itemScoreColor}">${itemScore.toFixed(2)}</span>
+                                ${debugBtnHtml}
                             </div>
                             <table class="affix-table">${affixRows}</table>
                         </div>
@@ -2019,6 +2330,7 @@ if (quickJson) {
                 const parsed = JSON.parse(val);
                 const pretty = JSON.stringify(parsed, null, 2);
                 localStorage.setItem('lastJsonData', pretty);
+                window.showDebugButton = false; // Disable debug for manual JSON input
                 renderResult();
                 this.select();
             } catch (err) {
@@ -2488,6 +2800,8 @@ window.loadHistoryItem = function (index) {
             quickJson.value = JSON.stringify(data, null, 2);
             localStorage.setItem('lastJsonData', quickJson.value);
         }
+        
+        window.showDebugButton = false; // Disable debug for history items
         renderResult(data);
 
         // 關閉 Section
