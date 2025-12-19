@@ -1716,8 +1716,7 @@ if (scoreFromUrlBtn) {
 
         try {
             // 固定的 GCF URL
-            const gcfUrl = 'https://wwechoscoringtoolsweb-547324461314.asia-east1.run.app';
-            const proxyUrl = `${gcfUrl}?url=${encodeURIComponent(imageUrl)}`;
+            const proxyUrl = `${GCF_URL}?url=${encodeURIComponent(imageUrl)}`;
 
             // 載入圖片
             const img = new Image();
@@ -2130,7 +2129,9 @@ function renderResult(inputData) {
     const historySection = document.getElementById('historySection');
     const mainContent = document.getElementById('mainContent');
     const echoPageSection = document.getElementById('echoPageSection');
+    const rankSection = document.getElementById('rankSection');
 
+    if (rankSection) rankSection.style.display = 'none';
     if (historySection) historySection.style.display = 'none';
     if (echoPageSection) echoPageSection.style.display = 'none';
     if (mainContent) mainContent.style.display = 'block';
@@ -2739,7 +2740,11 @@ function renderHistoryList() {
 window.showHistorySection = function () {
     const historySection = document.getElementById('historySection');
     const mainContent = document.getElementById('mainContent');
+    const rankSection = document.getElementById('rankSection');
+    const echoPageSection = document.getElementById('echoPageSection');
 
+    if (rankSection) rankSection.style.display = 'none';
+    if (echoPageSection) echoPageSection.style.display = 'none';
     if (historySection) {
         historySection.style.display = 'block';
         if (mainContent) mainContent.style.display = 'none';
@@ -3022,6 +3027,10 @@ if (echoBtn) {
         if (mainContent) mainContent.style.display = 'none';
         if (historySection) historySection.style.display = 'none';
 
+        // 隱藏排行榜頁面
+        const rankSection = document.getElementById('rankSection');
+        if (rankSection) rankSection.style.display = 'none';
+
         // 顯示聲骸頁面
         if (echoPageSection) {
             echoPageSection.style.display = 'block';
@@ -3036,6 +3045,8 @@ if (homeBtn) {
     // 原本的 onclick="showHistorySection()" 可能會衝突，這裡覆蓋或補充
     homeBtn.onclick = (e) => {
         e.preventDefault(); // 防止預設行為
+        const rankSection = document.getElementById('rankSection');
+        if (rankSection) rankSection.style.display = 'none';
         if (echoPageSection) echoPageSection.style.display = 'none';
         if (historySection) historySection.style.display = 'block'; // 根據需求，首頁可能顯示歷史紀錄或主內容
         // 如果要顯示主內容：
@@ -5143,4 +5154,512 @@ function saveEditModal() {
     saveEchoDataByUid(currentEditUid, echoData);
     renderEchoList();
     editModal.classList.remove('show');
+}
+
+// ==================================================================================
+// 報名參加 (Sign Up) 邏輯
+// ==================================================================================
+
+const signUpModal = document.getElementById('signUpModal');
+const signUpImageUrlInput = document.getElementById('signUpImageUrlInput');
+const signUpAnalyzeBtn = document.getElementById('signUpAnalyzeBtn');
+const signUpMessage = document.getElementById('signUpMessage');
+const signUpResultContainer = document.getElementById('signUpResultContainer');
+
+function openSignUpModal() {
+    if (signUpModal) {
+        signUpModal.classList.add('show');
+        if (signUpImageUrlInput) signUpImageUrlInput.value = '';
+        if (signUpAnalyzeBtn) signUpAnalyzeBtn.disabled = true;
+        if (signUpMessage) signUpMessage.style.display = 'none';
+        if (signUpResultContainer) signUpResultContainer.innerHTML = '<div style="color: var(--text-secondary);">請輸入網址以開始分析</div>';
+    }
+}
+
+function closeSignUpModal() {
+    if (signUpModal) signUpModal.classList.remove('show');
+}
+
+window.openSignUpModal = openSignUpModal;
+window.closeSignUpModal = closeSignUpModal;
+
+window.addEventListener('click', (event) => {
+    if (event.target == signUpModal) {
+        closeSignUpModal();
+    }
+});
+
+// URL Validation
+if (signUpImageUrlInput) {
+    signUpImageUrlInput.addEventListener('input', () => {
+        const url = signUpImageUrlInput.value.trim();
+        const isValid = url.startsWith('https://wutheringwaves-dc.kurogames-global.com') && url.endsWith('.jpeg');
+        if (signUpAnalyzeBtn) {
+            signUpAnalyzeBtn.disabled = !isValid;
+        }
+    });
+}
+
+// Analyze Button Click
+if (signUpAnalyzeBtn) {
+    signUpAnalyzeBtn.addEventListener('click', () => {
+        const imageUrl = signUpImageUrlInput.value.trim();
+        if (!imageUrl) return;
+        
+        signUpAnalyzeBtn.disabled = true;
+        showSignUpMessage('正在載入圖片...', 'success');
+        signUpResultContainer.innerHTML = '<div style="color: var(--accent-gold);">處理中...</div>';
+
+        // Proxy Fetch
+        const proxyUrl = `${GCF_URL}?url=${encodeURIComponent(imageUrl)}`;
+
+        const img = new Image();
+        img.crossOrigin = 'Anonymous';
+        
+        img.onload = () => {
+            showSignUpMessage('圖片載入成功', 'success');
+            analyzeSignUpImage(img);
+            signUpAnalyzeBtn.disabled = false;
+        };
+        
+        img.onerror = () => {
+            showSignUpMessage('圖片載入失敗', 'error');
+            signUpResultContainer.innerHTML = '<div style="color: var(--accent-red);">圖片載入失敗</div>';
+            signUpAnalyzeBtn.disabled = false;
+        };
+        
+        img.src = proxyUrl;
+    });
+}
+
+function showSignUpMessage(msg, type) {
+    if (signUpMessage) {
+        signUpMessage.textContent = msg;
+        signUpMessage.className = `message ${type}`;
+        signUpMessage.style.display = 'block';
+        if (type === 'success') {
+            setTimeout(() => { signUpMessage.style.display = 'none'; }, 2000);
+        }
+    }
+}
+
+function analyzeSignUpImage(img) {
+    if (img.width !== 1920 || img.height !== 1080) {
+        signUpResultContainer.innerHTML = `<div style="color: var(--accent-red);">圖片解析度錯誤: ${img.width}x${img.height} (需要 1920x1080)</div>`;
+        return;
+    }
+
+    canvas.width = 1920;
+    canvas.height = 1080;
+    ctx.drawImage(img, 0, 0);
+
+    const results = [];
+    for (let i = 0; i < uidCoords.length; i++) {
+        const [x, y, w, h] = uidCoords[i];
+        const imageData = ctx.getImageData(x, y, w, h);
+        const roiGray = getGrayROI(imageData);
+        const result = recognizeROI(roiGray);
+        results.push(result);
+    }
+
+    const chainLevel = 0; 
+
+    const resonatorResults = [];
+    for (let i = 0; i < resonatorCoords.length; i++) {
+        const [x, y, w, h] = resonatorCoords[i];
+        const imageData = ctx.getImageData(x, y, w, h);
+        const roiGray = getGrayROINormal(imageData);
+        const result = recognizeResonator(roiGray);
+        resonatorResults.push(result);
+    }
+
+    const differentColorAttributeResults = [];
+    const recognizedResonator = resonatorResults[0]?.name || '';
+    if (recognizedResonator === '漂泊者女' || recognizedResonator === '漂泊者') {
+        for (let i = 0; i < DifferentColorAttributeCoords.length; i++) {
+            const [x, y, w, h] = DifferentColorAttributeCoords[i];
+            const imageData = ctx.getImageData(x, y, w, h);
+            const roiGray = getGrayROINormal(imageData);
+            const result = recognizeDifferentColorAttribute(roiGray);
+            differentColorAttributeResults.push(result);
+        }
+    }
+
+    const recognizeBatch = (coords, func, isNormal = true) => {
+        const res = [];
+        for (let i = 0; i < coords.length; i++) {
+            const [x, y, w, h] = coords[i];
+            const imageData = ctx.getImageData(x, y, w, h);
+            const roiGray = isNormal ? getGrayROINormal(imageData) : getGrayROI(imageData);
+            res.push(func(roiGray));
+        }
+        return res;
+    };
+
+    const attributes1Results = recognizeBatch(AttributesCoords1, recognizeAttributes_1);
+    const attributes2Results = recognizeBatch(AttributesCoords2, recognizeAttributes_2);
+    const attributes3Results = recognizeBatch(AttributesCoords3, recognizeAttributes_3);
+    const attributes4Results = recognizeBatch(AttributesCoords4, recognizeAttributes_4);
+    const attributes5Results = recognizeBatch(AttributesCoords5, recognizeAttributes_5);
+
+    const cost1Results = recognizeBatch(CostCoords1, recognizeConsumption_1, false);
+    const cost2Results = recognizeBatch(CostCoords2, recognizeConsumption_2, false);
+    const cost3Results = recognizeBatch(CostCoords3, recognizeConsumption_3, false);
+    const cost4Results = recognizeBatch(CostCoords4, recognizeConsumption_4, false);
+    const cost5Results = recognizeBatch(CostCoords5, recognizeConsumption_5, false);
+
+    const processMainAffix = (coords, func, costResults, idx) => {
+        const res = [];
+        for (let i = 0; i < coords.length; i++) {
+            const [x, y, w, h] = coords[i];
+            const imageData = ctx.getImageData(x, y, w, h);
+            const roiGray = getGrayROI(imageData);
+            const result = func(roiGray);
+            const costLevel = costResults[0]?.name?.replace(/^\d+_/, '') || '';
+            const affixWithValue = addMainAffixValue(idx, result.name, costLevel);
+            res.push({ ...result, nameWithValue: affixWithValue });
+        }
+        return res;
+    };
+
+    const mainAffix1Results = processMainAffix(MainTermCoords1, recognizeMainAffix_1, cost1Results, 1);
+    const mainAffix2Results = processMainAffix(MainTermCoords2, recognizeMainAffix_2, cost2Results, 2);
+    const mainAffix3Results = processMainAffix(MainTermCoords3, recognizeMainAffix_3, cost3Results, 3);
+    const mainAffix4Results = processMainAffix(MainTermCoords4, recognizeMainAffix_4, cost4Results, 4);
+    const mainAffix5Results = processMainAffix(MainTermCoords5, recognizeMainAffix_5, cost5Results, 5);
+
+    const processSupAffix = (coords, func, posPrefix) => {
+        const res = [];
+        for (let i = 0; i < coords.length; i++) {
+            const [x, y, w, h] = coords[i];
+            const imageData = ctx.getImageData(x, y, w, h);
+            const roiGray = getGrayROI(imageData);
+            const affixResult = func(roiGray);
+            const fullImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const detailedResult = processSupAffixWithNumber(posPrefix, affixResult, fullImageData);
+            res.push(detailedResult);
+        }
+        return res;
+    };
+
+    const supAffix1_1Results = processSupAffix(SupAffixCoords1_1, recognizeSupAffix_1_1, '1_1');
+    const supAffix1_2Results = processSupAffix(SupAffixCoords1_2, recognizeSupAffix_1_2, '1_2');
+    const supAffix1_3Results = processSupAffix(SupAffixCoords1_3, recognizeSupAffix_1_3, '1_3');
+    const supAffix1_4Results = processSupAffix(SupAffixCoords1_4, recognizeSupAffix_1_4, '1_4');
+    const supAffix1_5Results = processSupAffix(SupAffixCoords1_5, recognizeSupAffix_1_5, '1_5');
+
+    const supAffix2_1Results = processSupAffix(SupAffixCoords2_1, recognizeSupAffix_2_1, '2_1');
+    const supAffix2_2Results = processSupAffix(SupAffixCoords2_2, recognizeSupAffix_2_2, '2_2');
+    const supAffix2_3Results = processSupAffix(SupAffixCoords2_3, recognizeSupAffix_2_3, '2_3');
+    const supAffix2_4Results = processSupAffix(SupAffixCoords2_4, recognizeSupAffix_2_4, '2_4');
+    const supAffix2_5Results = processSupAffix(SupAffixCoords2_5, recognizeSupAffix_2_5, '2_5');
+
+    const supAffix3_1Results = processSupAffix(SupAffixCoords3_1, recognizeSupAffix_3_1, '3_1');
+    const supAffix3_2Results = processSupAffix(SupAffixCoords3_2, recognizeSupAffix_3_2, '3_2');
+    const supAffix3_3Results = processSupAffix(SupAffixCoords3_3, recognizeSupAffix_3_3, '3_3');
+    const supAffix3_4Results = processSupAffix(SupAffixCoords3_4, recognizeSupAffix_3_4, '3_4');
+    const supAffix3_5Results = processSupAffix(SupAffixCoords3_5, recognizeSupAffix_3_5, '3_5');
+
+    const supAffix4_1Results = processSupAffix(SupAffixCoords4_1, recognizeSupAffix_4_1, '4_1');
+    const supAffix4_2Results = processSupAffix(SupAffixCoords4_2, recognizeSupAffix_4_2, '4_2');
+    const supAffix4_3Results = processSupAffix(SupAffixCoords4_3, recognizeSupAffix_4_3, '4_3');
+    const supAffix4_4Results = processSupAffix(SupAffixCoords4_4, recognizeSupAffix_4_4, '4_4');
+    const supAffix4_5Results = processSupAffix(SupAffixCoords4_5, recognizeSupAffix_4_5, '4_5');
+
+    const supAffix5_1Results = processSupAffix(SupAffixCoords5_1, recognizeSupAffix_5_1, '5_1');
+    const supAffix5_2Results = processSupAffix(SupAffixCoords5_2, recognizeSupAffix_5_2, '5_2');
+    const supAffix5_3Results = processSupAffix(SupAffixCoords5_3, recognizeSupAffix_5_3, '5_3');
+    const supAffix5_4Results = processSupAffix(SupAffixCoords5_4, recognizeSupAffix_5_4, '5_4');
+    const supAffix5_5Results = processSupAffix(SupAffixCoords5_5, recognizeSupAffix_5_5, '5_5');
+
+    const digits = results.map(r => r.digit).join('');
+    const resonators = resonatorResults.map(r => r.name || '未知').join(', ');
+    
+    const removePrefix = (str) => str ? str.replace(/^\d+_/, '') : str;
+    const parseMainAffix = (affixWithValue) => {
+        if (!affixWithValue) return { name: '', value: '' };
+        const parts = affixWithValue.split('+');
+        return parts.length === 2 ? { name: parts[0], value: parts[1] } : { name: affixWithValue, value: '' };
+    };
+
+    let finalResonatorName = resonators;
+    if (resonators === '漂泊者女' || resonators === '漂泊者') {
+        const attributeResult = differentColorAttributeResults[0];
+        if (attributeResult && attributeResult.name) {
+            if (attributeResult.name === '衍射') finalResonatorName = '漂泊者';
+            else if (attributeResult.name === '湮滅') finalResonatorName = '漂泊者-湮滅';
+            else if (attributeResult.name === '氣動') finalResonatorName = '漂泊者-氣動';
+        }
+    }
+
+    // Capture Debug Images
+    const captureEchoDebugImages = (echoIdx) => {
+        const idx1 = echoIdx + 1;
+        const debugData = { Attribute: '', Cost: '', MainAffix: '', SubAffixes: [] };
+        
+        const getCoords = (name) => { try { return eval(name); } catch (e) { return null; } };
+
+        // Attribute
+        const attrCoords = getCoords(`AttributesCoords${idx1}`);
+        if (attrCoords && attrCoords.length > 0) {
+            const [x, y, w, h] = attrCoords[0];
+            debugData.Attribute = cropImageAsBase64(x, y, w, h);
+        }
+
+        // Cost
+        const costCoords = getCoords(`CostCoords${idx1}`);
+        if (costCoords && costCoords.length > 0) {
+            const [x, y, w, h] = costCoords[0];
+            debugData.Cost = cropImageAsBase64(x, y, w, h);
+        }
+
+        // Main Affix
+        const mainCoords = getCoords(`MainTermCoords${idx1}`);
+        if (mainCoords && mainCoords.length > 0) {
+            const [x, y, w, h] = mainCoords[0];
+            debugData.MainAffix = cropImageAsBase64(x, y, w, h);
+        }
+
+        // Sub Affixes
+        for (let subIdx = 1; subIdx <= 5; subIdx++) {
+            const subData = { Name: '', Value: '' };
+            const nameCoords = getCoords(`SupAffixCoords${idx1}_${subIdx}`);
+            if (nameCoords && nameCoords.length > 0) {
+                const [x, y, w, h] = nameCoords[0];
+                subData.Name = cropImageAsBase64(x, y, w, h);
+            }
+            const valCoord = SupAffixNumberCoords[`${idx1}_${subIdx}`];
+            if (valCoord) {
+                const [x, y, w, h] = valCoord;
+                subData.Value = cropImageAsBase64(x, y, w, h);
+            }
+            debugData.SubAffixes.push(subData);
+        }
+        return debugData;
+    };
+
+    const buildEcho = (id, costRes, attrRes, mainRes, supResArray, echoIndex) => {
+        const parsedMain = parseMainAffix(mainRes[0]?.nameWithValue || '');
+        return {
+            Id: id,
+            DebugImages: captureEchoDebugImages(echoIndex),
+            Cost: removePrefix(costRes[0]?.name || '未知'),
+            Attributes: removePrefix(attrRes[0]?.name || '未知'),
+            AllEchoAffix: [
+                { Name: removePrefix(parsedMain.name), Number: parsedMain.value, Points: 0 },
+                { Name: removePrefix(supResArray[0][0]?.affix || ''), Number: supResArray[0][0]?.value || '', Points: 0 },
+                { Name: removePrefix(supResArray[1][0]?.affix || ''), Number: supResArray[1][0]?.value || '', Points: 0 },
+                { Name: removePrefix(supResArray[2][0]?.affix || ''), Number: supResArray[2][0]?.value || '', Points: 0 },
+                { Name: removePrefix(supResArray[3][0]?.affix || ''), Number: supResArray[3][0]?.value || '', Points: 0 },
+                { Name: removePrefix(supResArray[4][0]?.affix || ''), Number: supResArray[4][0]?.value || '', Points: 0 }
+            ],
+            Points: 0
+        };
+    };
+
+    const list = [
+        buildEcho(0, cost1Results, attributes1Results, mainAffix1Results, [supAffix1_1Results, supAffix1_2Results, supAffix1_3Results, supAffix1_4Results, supAffix1_5Results], 0),
+        buildEcho(0, cost2Results, attributes2Results, mainAffix2Results, [supAffix2_1Results, supAffix2_2Results, supAffix2_3Results, supAffix2_4Results, supAffix2_5Results], 1),
+        buildEcho(0, cost3Results, attributes3Results, mainAffix3Results, [supAffix3_1Results, supAffix3_2Results, supAffix3_3Results, supAffix3_4Results, supAffix3_5Results], 2),
+        buildEcho(0, cost4Results, attributes4Results, mainAffix4Results, [supAffix4_1Results, supAffix4_2Results, supAffix4_3Results, supAffix4_4Results, supAffix4_5Results], 3),
+        buildEcho(0, cost5Results, attributes5Results, mainAffix5Results, [supAffix5_1Results, supAffix5_2Results, supAffix5_3Results, supAffix5_4Results, supAffix5_5Results], 4)
+    ];
+
+    const jsonResult = {
+        Name: finalResonatorName,
+        NameImage: resonators,
+        UID: digits,
+        ValidAffix: '',
+        Total共鳴效率: '',
+        Total總分: '',
+        NumberOfStars: chainLevel,
+        list: list
+    };
+
+    window.currentJsonResult = jsonResult;
+
+    recalculateScore(jsonResult);
+    renderSignUpResult(jsonResult);
+}
+
+function renderSignUpResult(data) {
+    if (!data) return;
+
+    const stars = Array(6).fill().map((_, i) =>
+        `<svg class="star ${i < (data.NumberOfStars || 0) ? '' : 'empty'}" viewBox="0 0 24 24">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>`
+    ).join('');
+
+    const totalScore = parseFloat(data.Total總分) || 0;
+    const totalScoreHTML = `<div class="stat-value">${totalScore.toFixed(2)}</div>`;
+    
+    let equipmentCards = '';
+    if (Array.isArray(data.list)) {
+        data.list.forEach((item, index) => {
+            const filteredAffixes = (item.AllEchoAffix || []).filter(affix => affix.Id !== 0);
+            const itemScore = parseFloat(item.Points) || 0;
+            let itemScoreColor = itemScore >= 8 ? 'score-high' : (itemScore < 5 ? 'score-low' : 'score-medium');
+            const costVal = item.Cost || 1;
+            let shortName = item.Attributes || '聲骸';
+            const attrPic = attributesProfilePicture[shortName];
+            let attrDisplay = attrPic
+                ? `<img src="${attrPic}" style="width: 24px; height: 24px; object-fit: contain; vertical-align: middle;">`
+                : shortName;
+
+            let affixRows = filteredAffixes.map(affix => {
+                const pts = parseFloat(affix.Points) || 0;
+                const ptClass = pts > 0 ? 'point-pos' : 'point-zero';
+                return `<tr><td class="affix-name">${affix.Name}</td><td class="affix-value">${affix.Number}</td><td class="affix-point ${ptClass}">${pts.toFixed(2)}</td></tr>`;
+            }).join('');
+
+            equipmentCards += `
+                <div class="equipment-card" style="padding: 10px; font-size: 0.9rem;">
+                    <div class="equipment-header-row">
+                        <span class="cost-num cost-${costVal}">${costVal}</span>
+                        <span class="echo-name">${attrDisplay}</span>
+                        <span class="echo-score ${itemScoreColor}">${itemScore.toFixed(2)}</span>
+                        <button class="switch-btn" style="padding: 2px 8px; font-size: 0.8rem; margin-left: auto;" onclick="openDebugModal(${index})">回報</button>
+                    </div>
+                    <table class="affix-table">${affixRows}</table>
+                </div>
+            `;
+        });
+    }
+
+    const profilePicUrl = resonatorsProfilePicture[data.Name || ''];
+    const html = `
+        <div class="landscape-layout" style="width: 100%;">
+            <div class="character-card">
+                <div class="character-header">
+                    <div class="avatar-container">
+                        ${profilePicUrl ? `<img src="${profilePicUrl}" class="character-avatar">` : `<div class="character-avatar" style="background:#333;"></div>`}
+                        <div class="character-stars">${stars}</div>
+                    </div>
+                    <div class="character-info">
+                        <h1 style="margin-bottom: 0;">${data.Name || '未知角色'}</h1>
+                        <div class="character-uid">${data.UID || ''}</div>
+                    </div>
+                </div>
+                <div class="stats-grid">${totalScoreHTML}</div>
+            </div>
+            <div class="equipment-section">
+                <div class="equipment-grid landscape" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); padding: 1rem;">
+                    ${equipmentCards}
+                </div>
+            </div>
+            <div style="margin-top: 1rem;">
+                <button class="btn" id="joinRankBtn" onclick="submitToRankForm()">參加</button>
+            </div>
+        </div>
+    `;
+
+    signUpResultContainer.innerHTML = html;
+}
+
+function validateSignUpData(data, event) {
+    if (!event) return { valid: true };
+
+    const errors = [];
+
+    // 1. 檢查角色名稱
+    if (data.Name !== event.name) {
+        errors.push(`角色不符：需要 ${event.name}，辨識為 ${data.Name}`);
+    }
+
+    // 2. 檢查 Cost 分佈
+    const detectedCosts = data.list.map(e => parseInt(e.Cost) || 0).sort((a, b) => b - a);
+    const requiredCosts = [...event.cost_distribution].map(c => parseInt(c)).sort((a, b) => b - a);
+    if (JSON.stringify(detectedCosts) !== JSON.stringify(requiredCosts)) {
+        errors.push(`Cost 組合不符：需要 ${requiredCosts.join('')}，辨識為 ${detectedCosts.filter(c => c > 0).join('')}`);
+    }
+
+    // 3. 檢查套裝效果
+    const attrCounts = {};
+    data.list.forEach(e => {
+        attrCounts[e.Attributes] = (attrCounts[e.Attributes] || 0) + 1;
+    });
+
+    if (event.echo_sets && Array.isArray(event.echo_sets)) {
+        event.echo_sets.forEach(setReq => {
+            const possibleNames = setReq.name.split('/');
+            const meetsRequirement = possibleNames.some(name => (attrCounts[name] || 0) >= setReq.quantity);
+            
+            if (!meetsRequirement) {
+                if (possibleNames.length > 1) {
+                    errors.push(`套裝不符：${possibleNames.join(' 或 ')} 其中之一需要 ${setReq.quantity} 件`);
+                } else {
+                    errors.push(`套裝不符：${setReq.name} 需要 ${setReq.quantity} 件，辨識為 ${attrCounts[setReq.name] || 0} 件`);
+                }
+            }
+        });
+    }
+
+    // 4. 檢查主詞條
+    if (event.main_stats) {
+        data.list.forEach((echo, idx) => {
+            const costKey = `cost_${echo.Cost}`;
+            const allowedStats = event.main_stats[costKey];
+            const detectedStat = echo.AllEchoAffix[0].Name;
+            if (allowedStats && allowedStats.length > 0 && !allowedStats.includes(detectedStat)) {
+                errors.push(`第 ${idx + 1} 個聲骸 (${echo.Cost} Cost) 主詞條不符：${detectedStat} 不在允許清單中 (${allowedStats.join('、')})`);
+            }
+        });
+    }
+
+    return {
+        valid: errors.length === 0,
+        message: errors.join('\n')
+    };
+}
+
+function submitToRankForm() {
+    const data = window.currentJsonResult;
+    const event = window.currentActiveEvent;
+    const imageUrl = document.getElementById('signUpImageUrlInput').value.trim();
+    const btn = document.getElementById('joinRankBtn');
+    
+    if (!data || !imageUrl) {
+        alert('無效的資料或圖片網址');
+        return;
+    }
+
+    // 執行參賽條件驗證
+    const validation = validateSignUpData(data, event);
+    if (!validation.valid) {
+        alert('不符合參賽條件：\n' + validation.message);
+        return;
+    }
+
+    if (btn) {
+        btn.disabled = true;
+        btn.textContent = '送出中...';
+    }
+
+    const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSePcICExGTTBE7NoiwTMMTHHyKKUi2zhUBAymIJKz5425GFuQ/formResponse";
+    const formData = new FormData();
+    
+    formData.append("entry.2051548718", data.UID || "");
+    formData.append("entry.1436373707", data.Name || "");
+    formData.append("entry.432559864", data.Total總分 || "");
+    formData.append("entry.838687698", imageUrl);
+
+    fetch(formUrl, {
+        method: "POST",
+        mode: "no-cors",
+        body: formData
+    })
+    .then(() => {
+        alert('已送出！');
+        closeSignUpModal();
+        if (window.fetchRankDataLive) window.fetchRankDataLive();
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert('送出失敗，請稍後再試。');
+        if (btn) {
+            btn.disabled = false;
+            btn.textContent = '參加';
+        }
+    });
 }
