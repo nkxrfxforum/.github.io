@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>骰副詞條模擬器</title>
+    <link rel="icon"
+        href="https://guide-res.aki-game.net/introduction/material/1b41e5f51811f4be861c6c93c660b7b8/6b08d1da05d2ce8bf65033419bd3ab90.png"
+        type="image/png">
+    <style>
+        :root {
+            color-scheme: dark;
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --bg-color: #121212;
+            --container-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --border-color: #444;
+            --table-stripe: #262626;
+            --hover-bg: #333;
+            --selected-bg: #1c3b57;
+        }
+
+        body {
+            font-family: "Microsoft JhengHei", Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--container-bg);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 16px;
+            font-weight: bold;
+            color: #aaa;
+            transition: color 0.3s, border-bottom 0.3s;
+        }
+
+        .tab-btn:hover {
+            color: var(--primary-color);
+        }
+
+        .tab-btn.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            max-width: 1000px;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: var(--secondary-color);
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: var(--table-stripe);
+        }
+
+        /* Page 2 Specific */
+        .selection-row {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .selection-row:hover {
+            background-color: var(--hover-bg);
+        }
+
+        .selection-row.selected {
+            background-color: var(--selected-bg);
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .tier-btn {
+            background-color: var(--secondary-color);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            min-width: 30px;
+            padding: 0 5px;
+            height: 30px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .tier-btn:disabled {
+            background-color: #555;
+            color: #888;
+            cursor: not-allowed;
+        }
+
+        .tier-btn:hover:not(:disabled) {
+            background-color: var(--primary-color);
+        }
+
+        .result-box {
+            background-color: var(--secondary-color);
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        .result-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #f1c40f;
+        }
+
+        .warning {
+            color: var(--accent-color);
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .header-row h2 {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin: 0;
+        }
+
+        .toggle-btn {
+            background-color: var(--secondary-color);
+            color: #aaa;
+            border: 1px solid var(--border-color);
+            padding: 5px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .toggle-btn:hover {
+            color: #fff;
+            background-color: #333;
+        }
+
+        .toggle-btn.active {
+            background-color: var(--primary-color);
+            color: #fff;
+            border-color: var(--primary-color);
+        }
+
+        /* Page 3 Specific */
+        .prob-table-container {
+            overflow-x: auto;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--container-bg);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #888;
+            line-height: 1;
+        }
+
+        .close-modal:hover {
+            color: #fff;
+        }
+        
+        h2 {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        a {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="tabs">
+        <button class="tab-btn" onclick="switchTab('page1')">試手氣</button>
+        <button class="tab-btn active" onclick="switchTab('page2')">估算表</button>
+        <button class="tab-btn" onclick="switchTab('page3')">機率表</button>
+    </div>
+
+    <!-- Page 1: 試手氣 -->
+    <div id="page1" class="tab-content">
+        <div class="header-row" style="flex-direction: column; align-items: flex-start; gap: 15px;">
+            <div style="display: flex; gap: 10px;">
+                <button id="p1Mode1" class="toggle-btn" onclick="setP1Mode(1)">1輪1條</button>
+                <button id="p1Mode3" class="toggle-btn" onclick="setP1Mode(3)">1輪3條</button>
+                <button id="p1Mode5" class="toggle-btn active" onclick="setP1Mode(5)">1輪5條</button>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <input type="number" id="roundInput" value="1" min="1" style="padding: 6px 10px; border-radius: 4px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); width: 100px; font-size: 1rem;">
+                <button class="toggle-btn active" onclick="startSimulation()">啟動</button>
+                <button class="toggle-btn" onclick="clearSimulation()">清空</button>
+                <button class="toggle-btn" onclick="challengeEstimation()" style="background-color: #f39c12; color: #fff; border-color: #f39c12;">挑戰估算表</button>
+            </div>
+        </div>
+        <div id="simResultContainer" style="margin-top: 20px;">
+            <h3 style="border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">模擬結果 (累計輪數: <span id="totalSimRounds">0</span>)</h3>
+            <div id="simStatsList" style="display: flex; flex-direction: column; gap: 5px; margin-top: 15px; max-height: 400px; overflow-y: auto; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 4px; font-family: monospace; font-size: 0.9rem;"></div>
+        </div>
+        <!-- 第 4 行: 統計表格 -->
+        <!-- 第 4 行: 統計表格 (僅在頁面 1 顯示) -->
+        <div id="simStatsTableContainer" style="margin-top: 30px;">
+            <h3 style="border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">詞條出現次數統計</h3>
+            <table style="width: 100%; margin-top: 10px;">
+                <thead>
+                    <tr>
+                        <th>詞條名稱</th>
+                        <th>出現次數</th>
+                        <th>階級1</th>
+                        <th>階級2</th>
+                        <th>階級3</th>
+                        <th>階級4</th>
+                        <th>階級5</th>
+                        <th>階級6</th>
+                        <th>階級7</th>
+                        <th>階級8</th>
+                    </tr>
+                </thead>
+                <tbody id="p1StatsTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Page 2: 估算表 -->
+    <div id="page2" class="tab-content active">
+        <div class="header-row">
+            <h2>副詞條期望值估算</h2>
+            <div>
+                <button class="toggle-btn" onclick="clearAllSelections()" style="margin-right: 10px;">全部清除</button>
+                <button id="btnHideFlat" class="toggle-btn active" onclick="toggleFlatValues()">隱藏固定值</button>
+            </div>
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+            <button id="btnMode1" class="toggle-btn" onclick="setMode(1)">1輪1條</button>
+            <button id="btnMode3" class="toggle-btn" onclick="setMode(3)">1輪3條</button>
+            <button id="btnMode5" class="toggle-btn active" onclick="setMode(5)">1輪5條</button>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50px;">選取</th>
+                    <th>詞條名稱</th>
+                    <th>目標階級 (>=)</th>
+                    <th>該階級數值</th>
+                    <th>階級機率</th>
+                </tr>
+            </thead>
+            <tbody id="estimationTableBody">
+                <!-- Rows will be generated by JS -->
+            </tbody>
+        </table>
+
+        <div class="result-box">
+            <div>已選詞條數: <span id="selectedCount">0</span> / <span id="slotCountDisplay">5</span></div>
+            <div id="warningMsg" class="warning"></div>
+            <div style="margin-top: 15px;">
+                期望輪數: <span id="expectedRounds" class="result-value">---</span>
+            </div>
+            <div style="font-size: 0.8em; margin-top: 5px;">(平均需要骰多少次聲骸才能達成目標)</div>
+        </div>
+    </div>
+
+    <!-- Page 3: 機率表 -->
+    <div id="page3" class="tab-content">
+        <h2>副詞條機率參考</h2>
+        <p>資料來源：<a href="https://wutheringwaves.fandom.com/wiki/Echo/Stats" target="_blank">此網站</a></p>
+
+        <h3>暴擊、暴擊傷害(8階級)</h3>
+        <div id="tableCritContainer" class="prob-table-container"></div>
+
+        <h3>其他(8階級)</h3>
+        <div id="tablePercentContainer" class="prob-table-container"></div>
+
+        <h3>4階級</h3>
+        <div id="tableFixedContainer" class="prob-table-container"></div>
+    </div>
+</div>
+
+<!-- Modal for Challenge Result -->
+<div id="resultModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeResultModal()">&times;</span>
+        <h2 id="modalTitle">挑戰結果</h2>
+        <div id="modalBody" style="font-size: 1.2rem; margin: 20px 0;"></div>
+        <button class="toggle-btn active" onclick="closeResultModal()" style="width: 100px;">確定</button>
+        <button class="toggle-btn active" onclick="closeResultModal(); challengeEstimation();" style="width: 100px; margin-left: 10px; background-color: #f39c12; border-color: #f39c12;">再次挑戰</button>
+    </div>
+</div>
+
+<script>
+    // --- Data Definitions ---
+
+    // Probability Distributions
+    const PROBS_4_TIER = [9.36, 50.06, 37.83, 2.75]; // Sum ~ 100
+    const PROBS_8_TIER_NORMAL = [7.23, 7.55, 19.73, 25.05, 17.81, 14.92, 6.17, 2.84];
+    const PROBS_8_TIER_CRIT = [22.58, 22.05, 23.97, 9.02, 7.24, 7.72, 3.74, 3.69];
+
+    // Affix Definitions
+    // Type 1: Fixed (4 Tiers)
+    // Type 2: Normal 8 Tiers (Includes Flat HP and Percentages)
+    // Type 3: Crit 8 Tiers
+    
+    const AFFIX_DATA = [
+        { name: "暴擊", type: "crit", values: ["6.3%", "6.9%", "7.5%", "8.1%", "8.7%", "9.3%", "9.9%", "10.5%"], probs: PROBS_8_TIER_CRIT },
+        { name: "暴擊傷害", type: "crit", values: ["12.6%", "13.8%", "15.0%", "16.2%", "17.4%", "18.6%", "19.8%", "21.0%"], probs: PROBS_8_TIER_CRIT },
+        { name: "攻擊%", type: "normal", values: ["6.4%", "7.1%", "7.9%", "8.6%", "9.4%", "10.1%", "10.9%", "11.6%"], probs: PROBS_8_TIER_NORMAL },
+        { name: "共鳴效率", type: "normal", values: ["6.8%", "7.6%", "8.4%", "9.2%", "10%", "10.8%", "11.6%", "12.4%"], probs: PROBS_8_TIER_NORMAL },
+        { name: "共鳴解放傷害加成", type: "normal", values: ["6.4%", "7.1%", "7.9%", "8.6%", "9.4%", "10.1%", "10.9%", "11.6%"], probs: PROBS_8_TIER_NORMAL },
+        { name: "重擊傷害加成", type: "normal", values: ["6.4%", "7.1%", "7.9%", "8.6%", "9.4%", "10.1%", "10.9%", "11.6%"], probs: PROBS_8_TIER_NORMAL },
+        { name: "共鳴技能傷害加成", type: "normal", values: ["6.4%", "7.1%", "7.9%", "8.6%", "9.4%", "10.1%", "10.9%", "11.6%"], probs: PROBS_8_TIER_NORMAL },
+        { name: "普攻傷害加成", type: "normal", values: ["6.4%", "7.1%", "7.9%", "8.6%", "9.4%", "10.1%", "10.9%", "11.6%"], probs: PROBS_8_TIER_NORMAL },
+        { name: "生命%", type: "normal", values: ["6.4%", "7.1%", "7.9%", "8.6%", "9.4%", "10.1%", "10.9%", "11.6%"], probs: PROBS_8_TIER_NORMAL },
+        { name: "防禦%", type: "normal", values: ["8.1%", "9.0%", "10.0%", "10.9%", "11.8%", "12.8%", "13.8%", "14.7%"], probs: PROBS_8_TIER_NORMAL },
+        { name: "攻擊", type: "fixed", values: ["30", "40", "50", "60"], probs: PROBS_4_TIER },
+        { name: "生命", type: "normal", values: ["320", "360", "390", "430", "470", "510", "540", "580"], probs: PROBS_8_TIER_NORMAL },
+        { name: "防禦", type: "fixed", values: ["40", "50", "60", "70"], probs: PROBS_4_TIER }
+    ];
+
+    // State
+    let selectedAffixes = {}; // Key: index, Value: tier (1-based)
+    let isFlatHidden = true;
+    let currentSlots = 5;
+
+    // Page 1 State
+    let p1CurrentSlots = 5;
+    let p1TotalRounds = 0;
+    let p1History = []; // 儲存每一輪的結果字串
+    let p1Stats = {};   // 儲存詞條統計次數 { "名稱": { total: count, tiers: { tierNum: count } } }
+    let settingImgData = null;
+
+    async function fetchSettingImg() {
+        try {
+            const response = await fetch('https://raw.githubusercontent.com/nkxrfxforum/WWEchoScoringToolsWebJSON/refs/heads/main/SettingImg.json');
+            if (response.ok) {
+                settingImgData = await response.json();
+            }
+        } catch (err) {
+            console.error('Error fetching image settings:', err);
+        }
+    }
+
+    // --- Functions ---
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        
+        document.getElementById(tabId).classList.add('active');
+        // Find button that calls this and add active
+        const btns = document.querySelectorAll('.tab-btn');
+        for (let btn of btns) {
+            if (btn.getAttribute('onclick').includes(tabId)) {
+                btn.classList.add('active');
+            }
+        }
+    }
+
+    // --- Page 1 Logic ---
+
+    function setP1Mode(slots) {
+        p1CurrentSlots = slots;
+        document.querySelectorAll('[id^="p1Mode"]').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`p1Mode${slots}`).classList.add('active');
+    }
+
+    function getRandomTier(probs) {
+        const total = probs.reduce((a, b) => a + b, 0);
+        let r = Math.random() * total;
+        for (let i = 0; i < probs.length; i++) {
+            if (r < probs[i]) return i;
+            r -= probs[i];
+        }
+        return probs.length - 1;
+    }
+
+    function startSimulation() {
+        const input = document.getElementById('roundInput');
+        const rounds = parseInt(input.value) || 0;
+        if (rounds <= 0) return;
+
+        for (let r = 0; r < rounds; r++) {
+            p1TotalRounds++;
+            // 模擬單次聲骸抽取，詞條不可重複
+            const indices = [];
+            while (indices.length < p1CurrentSlots) {
+                const idx = Math.floor(Math.random() * AFFIX_DATA.length);
+                if (!indices.includes(idx)) indices.push(idx);
+            }
+
+            const roundAffixes = indices.map(idx => {
+                const affix = AFFIX_DATA[idx];
+                const tierIdx = getRandomTier(affix.probs);
+                const tierNum = tierIdx + 1;
+                const key = `${affix.name}(${affix.values[tierIdx]})`;
+                
+                if (!p1Stats[affix.name]) {
+                    p1Stats[affix.name] = { total: 0, tiers: {} };
+                }
+                p1Stats[affix.name].total++;
+                p1Stats[affix.name].tiers[tierNum] = (p1Stats[affix.name].tiers[tierNum] || 0) + 1;
+                return key;
+            });
+
+            // 格式: 輪數, 詞條1(值)、詞條2(值)...
+            const roundStr = `${p1TotalRounds}, ${roundAffixes.join('、')}`;
+            // 往上疊加，排序採數字(輪數)由大到小
+            p1History.unshift(roundStr);
+        }
+
+        renderP1Results();
+    }
+
+    function clearSimulation() {
+        p1TotalRounds = 0;
+        p1History = [];
+        p1Stats = {};
+        renderP1Results();
+    }
+
+    function challengeEstimation() {
+        const indices = Object.keys(selectedAffixes).map(Number);
+        if (indices.length === 0) {
+            alert("請先在『估算表』分頁選取目標詞條！");
+            switchTab('page2');
+            return;
+        }
+
+        clearSimulation();
+        switchTab('page1');
+
+        const totalTypes = 13;
+        const slots = currentSlots;
+        
+        const combinations = (n, k) => {
+            if (k < 0 || k > n) return 0;
+            if (k === 0 || k === n) return 1;
+            if (k > n / 2) k = n - k;
+            let res = 1;
+            for (let i = 1; i <= k; i++) {
+                res = res * (n - i + 1) / i;
+            }
+            return res;
+        };
+
+        const waysTotal = combinations(totalTypes, slots);
+        const waysSuccess = combinations(totalTypes - indices.length, slots - indices.length);
+        const pTypes = waysSuccess / waysTotal;
+
+        let pTiers = 1.0;
+        indices.forEach(idx => {
+            const affix = AFFIX_DATA[idx];
+            const targetTierIndex = selectedAffixes[idx] - 1;
+            const totalProbSum = affix.probs.reduce((a, b) => a + b, 0);
+            let probSum = 0;
+            for (let i = targetTierIndex; i < affix.probs.length; i++) {
+                probSum += affix.probs[i];
+            }
+            pTiers *= (probSum / totalProbSum);
+        });
+
+        const pTotal = pTypes * pTiers;
+        if (pTotal === 0) {
+            alert("機率為 0，無法挑戰。");
+            return;
+        }
+
+        if (pTotal < 1e-8 && !confirm("達成機率極低，模擬可能需要很長時間，是否繼續？")) {
+            return;
+        }
+
+        const maxRounds = Math.ceil(1 / pTotal);
+        setP1Mode(slots);
+
+        let success = false;
+        let roundReached = 0;
+        let lastRolledData = null;
+
+        const startTime = Date.now();
+        for (let r = 1; r <= maxRounds; r++) {
+            roundReached = r;
+            const rolledIndices = [];
+            const rolledTiers = {};
+            while (rolledIndices.length < slots) {
+                const idx = Math.floor(Math.random() * AFFIX_DATA.length);
+                if (!rolledIndices.includes(idx)) {
+                    rolledIndices.push(idx);
+                    rolledTiers[idx] = getRandomTier(AFFIX_DATA[idx].probs) + 1;
+                }
+            }
+
+            let criteriaMet = true;
+            for (let targetIdx of indices) {
+                if (!rolledIndices.includes(targetIdx) || rolledTiers[targetIdx] < selectedAffixes[targetIdx]) {
+                    criteriaMet = false;
+                    break;
+                }
+            }
+
+            // 更新統計表格資料 (每一輪都更新，確保統計正確)
+            for (let i = 0; i < rolledIndices.length; i++) {
+                const idx = rolledIndices[i];
+                const affix = AFFIX_DATA[idx];
+                const tierNum = rolledTiers[idx];
+                if (!p1Stats[affix.name]) p1Stats[affix.name] = { total: 0, tiers: {} };
+                p1Stats[affix.name].total++;
+                p1Stats[affix.name].tiers[tierNum] = (p1Stats[affix.name].tiers[tierNum] || 0) + 1;
+            }
+
+            // 為了效能，如果次數過多，我們只在歷史紀錄中保留前 100 筆失敗紀錄與最後一筆
+            if (r <= 100 || criteriaMet || r === maxRounds) {
+                const roundAffixesStrings = rolledIndices.map(idx => {
+                    const affix = AFFIX_DATA[idx];
+                    const tierNum = rolledTiers[idx];
+                    return `${affix.name}(${affix.values[tierNum - 1]})`;
+                });
+                const statusSuffix = criteriaMet ? " [達成目標]" : (r === maxRounds ? " [未達成]" : "");
+                p1History.unshift(`${r}, ${roundAffixesStrings.join('、')}${statusSuffix}`);
+            }
+
+            if (criteriaMet) {
+                success = true;
+                break;
+            }
+
+            if (r % 500000 === 0 && Date.now() - startTime > 2000) {
+                if (!confirm(`已模擬 ${r} 輪，尚未達成。是否繼續？`)) break;
+            }
+        }
+
+        p1TotalRounds = roundReached;
+
+        // 判斷歐非：小於期望次數為歐洲人，否則為非洲人
+        const isEuropean = success && (roundReached < maxRounds);
+        const resultStatus = isEuropean ? "🎉 歐洲人！" : "💀 非洲人！";
+        const historyEntry = `[挑戰結果] ${resultStatus}<br>於第 ${roundReached} 輪${success ? '達成' : '未達成'} (期望上限: ${maxRounds})`;
+        
+        // 取得隨機圖片資料
+        let imgData = null;
+        if (settingImgData) {
+            const list = isEuropean ? settingImgData.Yes : settingImgData.No;
+            if (list && list.length > 0) {
+                imgData = list[Math.floor(Math.random() * list.length)];
+            }
+        }
+
+        // 顯示彈窗
+        showResultModal(historyEntry, isEuropean, imgData);
+
+        renderP1Results();
+    }
+
+    function showResultModal(message, isEuropean, imgData) {
+        const modal = document.getElementById('resultModal');
+        const modalBody = document.getElementById('modalBody');
+        const modalTitle = document.getElementById('modalTitle');
+        
+        modalTitle.style.color = isEuropean ? "#f1c40f" : "#e74c3c";
+        
+        const formattedMsg = message.replace('[挑戰結果] ', '');
+        let html = `<div style="line-height: 1.6;">${formattedMsg}</div>`;
+        if (imgData) {
+            // 加上時間戳記 (t=Date.now()) 確保每次開啟彈窗時，動畫圖片都會重新播放
+            const separator = imgData.imgURL.includes('?') ? '&' : '?';
+            const freshImgURL = `${imgData.imgURL}${separator}t=${Date.now()}`;
+            html += `<div style="margin-top: 15px;"><a href="${imgData.imgLink}" target="_blank"><img src="${freshImgURL}" style="max-width: 100%; max-height: 200px; border-radius: 8px; cursor: pointer;"></a></div>`;
+        }
+        modalBody.innerHTML = html;
+        modal.style.display = 'flex';
+    }
+
+    function closeResultModal() {
+        document.getElementById('resultModal').style.display = 'none';
+        document.getElementById('modalBody').innerHTML = ''; // 關閉時清空內容，確保下次開啟時是全新的 DOM 狀態
+    }
+
+    function renderP1Results() {
+        document.getElementById('totalSimRounds').textContent = p1TotalRounds;
+        const list = document.getElementById('simStatsList');
+        const fragment = document.createDocumentFragment();
+
+        p1History.forEach(line => {
+            const div = document.createElement('div');
+            div.style.padding = '2px 0';
+            div.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+            div.textContent = line;
+            fragment.appendChild(div);
+        });
+        list.innerHTML = '';
+        list.appendChild(fragment);
+
+        // 渲染統計表格
+        const statsBody = document.getElementById('p1StatsTableBody');
+        statsBody.innerHTML = '';
+
+        // 排序：按詞條名稱排序 (使用 localeCompare 處理中文排序)
+        const sortedStats = Object.entries(p1Stats).sort((a, b) => a[0].localeCompare(b[0], 'zh-Hant'));
+
+        sortedStats.forEach(([name, data]) => {
+            const tr = document.createElement('tr');
+            const affix = AFFIX_DATA.find(a => a.name === name);
+            const maxTiers = affix ? affix.values.length : 0;
+            
+            let html = `<td>${name}</td><td>${data.total}</td>`;
+            for (let i = 1; i <= 8; i++) {
+                if (i <= maxTiers) {
+                    html += `<td>${data.tiers[i] || 0}</td>`;
+                } else {
+                    html += `<td>-</td>`;
+                }
+            }
+            tr.innerHTML = html;
+            statsBody.appendChild(tr);
+        });
+    }
+
+    // --- Page 2 Logic ---
+
+    function initEstimationTable() {
+        const tbody = document.getElementById('estimationTableBody');
+        tbody.innerHTML = '';
+
+        AFFIX_DATA.forEach((affix, index) => {
+            const tr = document.createElement('tr');
+            tr.className = 'selection-row';
+            tr.dataset.index = index;
+            
+            if (["攻擊", "生命", "防禦"].includes(affix.name)) {
+                tr.classList.add('row-flat');
+            }
+            tr.onclick = (e) => toggleSelection(index, e);
+
+            // Checkbox cell
+            const tdCheck = document.createElement('td');
+            tdCheck.innerHTML = `<input type="checkbox" id="cb_${index}" disabled>`;
+            tr.appendChild(tdCheck);
+
+            // Name
+            const tdName = document.createElement('td');
+            tdName.textContent = affix.name;
+            tr.appendChild(tdName);
+
+            // Tier Select
+            const tdTier = document.createElement('td');
+            const divTier = document.createElement('div');
+            divTier.style.display = 'flex';
+            divTier.style.alignItems = 'center';
+            divTier.style.justifyContent = 'center';
+            divTier.style.gap = '5px';
+
+            const btnMin = document.createElement('button');
+            btnMin.className = 'tier-btn';
+            btnMin.textContent = 'Min';
+            btnMin.id = `btn_min_${index}`;
+            btnMin.disabled = true;
+            btnMin.onclick = (e) => { e.stopPropagation(); setTier(index, 1); };
+
+            const btnMinus = document.createElement('button');
+            btnMinus.className = 'tier-btn';
+            btnMinus.textContent = '-';
+            btnMinus.id = `btn_minus_${index}`;
+            btnMinus.disabled = true;
+            btnMinus.onclick = (e) => { e.stopPropagation(); changeTier(index, -1); };
+
+            const spanTier = document.createElement('span');
+            spanTier.id = `tier_disp_${index}`;
+            spanTier.textContent = '階級 1';
+            
+            const btnPlus = document.createElement('button');
+            btnPlus.className = 'tier-btn';
+            btnPlus.textContent = '+';
+            btnPlus.id = `btn_plus_${index}`;
+            btnPlus.disabled = true;
+            btnPlus.onclick = (e) => { e.stopPropagation(); changeTier(index, 1); };
+
+            const btnMax = document.createElement('button');
+            btnMax.className = 'tier-btn';
+            btnMax.textContent = 'Max';
+            btnMax.id = `btn_max_${index}`;
+            btnMax.disabled = true;
+            btnMax.onclick = (e) => { e.stopPropagation(); setTier(index, 'max'); };
+
+            divTier.appendChild(btnMin);
+            divTier.appendChild(btnMinus);
+            divTier.appendChild(spanTier);
+            divTier.appendChild(btnPlus);
+            divTier.appendChild(btnMax);
+            tdTier.appendChild(divTier);
+            tr.appendChild(tdTier);
+
+            // Value Display
+            const tdValue = document.createElement('td');
+            tdValue.id = `val_${index}`;
+            tdValue.textContent = '-';
+            tr.appendChild(tdValue);
+
+            // Probability Display (Cumulative)
+            const tdProb = document.createElement('td');
+            tdProb.id = `prob_${index}`;
+            tdProb.textContent = '-';
+            tr.appendChild(tdProb);
+
+            tbody.appendChild(tr);
+        });
+
+        updateFlatVisibility();
+    }
+
+    function setMode(slots) {
+        currentSlots = slots;
+        
+        // Update buttons
+        document.querySelectorAll('[id^="btnMode"]').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`btnMode${slots}`).classList.add('active');
+
+        // Update display
+        document.getElementById('slotCountDisplay').textContent = slots;
+
+        // Trim selections if needed
+        const keys = Object.keys(selectedAffixes);
+        if (keys.length > slots) {
+            for (let i = slots; i < keys.length; i++) {
+                delete selectedAffixes[keys[i]];
+                updateRowUI(keys[i]);
+            }
+        }
+        updateCalculation();
+    }
+
+    function clearAllSelections() {
+        const indices = Object.keys(selectedAffixes).map(Number);
+        selectedAffixes = {};
+        indices.forEach(index => {
+            updateRowUI(index);
+        });
+        updateCalculation();
+    }
+
+    function toggleSelection(index, event) {
+        // If clicking the select box itself, don't toggle (handled by stopPropagation, but double check)
+        if (event && event.target.tagName === 'SELECT') return;
+
+        const isSelected = selectedAffixes.hasOwnProperty(index);
+        
+        if (isSelected) {
+            // Deselect
+            delete selectedAffixes[index];
+        } else {
+            // Select
+            if (Object.keys(selectedAffixes).length >= currentSlots) {
+                alert(`最多只能選擇 ${currentSlots} 個詞條！`);
+                return;
+            }
+            selectedAffixes[index] = 1; // Default tier 1
+        }
+        
+        updateRowUI(index);
+        updateCalculation();
+    }
+
+    function toggleFlatValues() {
+        isFlatHidden = !isFlatHidden;
+        const btn = document.getElementById('btnHideFlat');
+        if (isFlatHidden) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+        updateFlatVisibility();
+    }
+
+    function updateFlatVisibility() {
+        const rows = document.querySelectorAll('.row-flat');
+        rows.forEach(row => {
+            row.style.display = isFlatHidden ? 'none' : 'table-row';
+        });
+    }
+
+    function changeTier(index, delta) {
+        if (!selectedAffixes.hasOwnProperty(index)) return;
+        
+        const affix = AFFIX_DATA[index];
+        const maxTier = affix.values.length;
+        let newTier = selectedAffixes[index] + delta;
+        
+        if (newTier < 1) newTier = 1;
+        if (newTier > maxTier) newTier = maxTier;
+        
+        selectedAffixes[index] = newTier;
+        updateRowUI(index);
+        updateCalculation();
+    }
+
+    function setTier(index, target) {
+        if (!selectedAffixes.hasOwnProperty(index)) return;
+        
+        const affix = AFFIX_DATA[index];
+        const maxTier = affix.values.length;
+        let newTier = (target === 'max') ? maxTier : target;
+        
+        selectedAffixes[index] = newTier;
+        updateRowUI(index);
+        updateCalculation();
+    }
+
+    function updateRowUI(index) {
+        const isSelected = selectedAffixes.hasOwnProperty(index);
+        const tr = document.querySelector(`tr[data-index="${index}"]`);
+        const cb = document.getElementById(`cb_${index}`);
+        const btnMin = document.getElementById(`btn_min_${index}`);
+        const btnMinus = document.getElementById(`btn_minus_${index}`);
+        const btnPlus = document.getElementById(`btn_plus_${index}`);
+        const btnMax = document.getElementById(`btn_max_${index}`);
+        const spanTier = document.getElementById(`tier_disp_${index}`);
+        const valDisplay = document.getElementById(`val_${index}`);
+        const probDisplay = document.getElementById(`prob_${index}`);
+
+        if (isSelected) {
+            tr.classList.add('selected');
+            cb.checked = true;
+            btnMin.disabled = false;
+            btnMinus.disabled = false;
+            btnPlus.disabled = false;
+            btnMax.disabled = false;
+            spanTier.textContent = `階級 ${selectedAffixes[index]}`;
+        } else {
+            tr.classList.remove('selected');
+            cb.checked = false;
+            btnMin.disabled = true;
+            btnMinus.disabled = true;
+            btnPlus.disabled = true;
+            btnMax.disabled = true;
+            spanTier.textContent = '階級 1';
+            valDisplay.textContent = '-';
+            probDisplay.textContent = '-';
+        }
+    }
+
+    function updateCalculation() {
+        const indices = Object.keys(selectedAffixes).map(Number);
+        const count = indices.length;
+        document.getElementById('selectedCount').textContent = count;
+
+        // Update state from dropdowns for selected items
+        indices.forEach(idx => {
+            // Update display values
+            const tierIndex = selectedAffixes[idx] - 1;
+            const affix = AFFIX_DATA[idx];
+            document.getElementById(`val_${idx}`).textContent = affix.values[tierIndex];
+            
+            // Calculate cumulative probability for this tier >= selected
+            const totalProbSum = affix.probs.reduce((a, b) => a + b, 0);
+            let cumProb = 0;
+            for (let i = tierIndex; i < affix.probs.length; i++) {
+                cumProb += affix.probs[i];
+            }
+            const normalizedProb = (cumProb / totalProbSum) * 100;
+            document.getElementById(`prob_${idx}`).textContent = normalizedProb.toFixed(2) + '%';
+        });
+
+        if (count === 0) {
+            document.getElementById('expectedRounds').textContent = '---';
+            document.getElementById('warningMsg').textContent = '';
+            return;
+        }
+
+        // --- Math Calculation ---
+        // 1. Probability of getting the specific combination of types
+        // Total types = 13. Slots = 5.
+        // We need all 'count' selected types to appear in the 5 slots.
+        // P(types) = C(13 - count, 5 - count) / C(13, 5)
+        
+        const totalTypes = 13;
+        const slots = currentSlots;
+        
+        const combinations = (n, k) => {
+            if (k < 0 || k > n) return 0;
+            if (k === 0 || k === n) return 1;
+            if (k > n / 2) k = n - k;
+            let res = 1;
+            for (let i = 1; i <= k; i++) {
+                res = res * (n - i + 1) / i;
+            }
+            return res;
+        };
+
+        const waysTotal = combinations(totalTypes, slots); // C(13, 5) = 1287
+        const waysSuccess = combinations(totalTypes - count, slots - count);
+        
+        const pTypes = waysSuccess / waysTotal;
+
+        // 2. Probability of tiers
+        // For each selected type, P(tier >= target)
+        let pTiers = 1.0;
+        indices.forEach(idx => {
+            const affix = AFFIX_DATA[idx];
+            const targetTierIndex = selectedAffixes[idx] - 1;
+            const totalProbSum = affix.probs.reduce((a, b) => a + b, 0);
+            let probSum = 0;
+            for (let i = targetTierIndex; i < affix.probs.length; i++) {
+                probSum += affix.probs[i];
+            }
+            pTiers *= (probSum / totalProbSum);
+        });
+
+        const pTotal = pTypes * pTiers;
+        
+        if (pTotal === 0) {
+            document.getElementById('expectedRounds').textContent = '∞';
+        } else {
+            const expected = 1 / pTotal;
+            // Format number
+            let displayNum;
+            if (expected > 100000000) { // 超過一億才使用科學記號
+                displayNum = expected.toExponential(2);
+            } else if (expected >= 10000) { // 超過一萬顯示「萬」單位
+                displayNum = (expected / 10000).toLocaleString(undefined, { maximumFractionDigits: 2 }) + ' 萬';
+            } else {
+                displayNum = expected.toLocaleString(undefined, { maximumFractionDigits: 1 });
+            }
+            document.getElementById('expectedRounds').textContent = displayNum;
+        }
+    }
+
+    // --- Page 3 Logic ---
+
+    function createTable(containerId, headers, dataRows) {
+        const container = document.getElementById(containerId);
+        const table = document.createElement('table');
+        
+        // Header
+        const thead = document.createElement('thead');
+        const trHead = document.createElement('tr');
+        headers.forEach(h => {
+            const th = document.createElement('th');
+            th.textContent = h;
+            trHead.appendChild(th);
+        });
+        thead.appendChild(trHead);
+        table.appendChild(thead);
+
+        // Body
+        const tbody = document.createElement('tbody');
+        dataRows.forEach(row => {
+            const tr = document.createElement('tr');
+            row.forEach(cell => {
+                const td = document.createElement('td');
+                td.textContent = cell;
+                tr.appendChild(td);
+            });
+            tbody.appendChild(tr);
+        });
+        table.appendChild(tbody);
+        container.appendChild(table);
+    }
+
+    function initProbTables() {
+        // Table 1: Fixed
+        const headersFixed = ["數值階級", "階級1", "階級2", "階級3", "階級4"];
+        const rowsFixed = [];
+        AFFIX_DATA.filter(a => a.type === 'fixed').forEach(a => {
+            rowsFixed.push([a.name, ...a.values]);
+        });
+        // Add Probability Row
+        rowsFixed.push(["機率", ...PROBS_4_TIER.map(p => p + "%")]);
+        createTable("tableFixedContainer", headersFixed, rowsFixed);
+
+        // Table 2: Percent + Life
+        const headers8 = ["數值階級", "階級1", "階級2", "階級3", "階級4", "階級5", "階級6", "階級7", "階級8"];
+        const rowsPercent = [];
+        AFFIX_DATA.filter(a => a.type === 'normal').forEach(a => {
+            rowsPercent.push([a.name, ...a.values]);
+        });
+        rowsPercent.push(["機率", ...PROBS_8_TIER_NORMAL.map(p => p + "%")]);
+        createTable("tablePercentContainer", headers8, rowsPercent);
+
+        // Table 3: Crit
+        const rowsCrit = [];
+        AFFIX_DATA.filter(a => a.type === 'crit').forEach(a => {
+            rowsCrit.push([a.name, ...a.values]);
+        });
+        rowsCrit.push(["機率", ...PROBS_8_TIER_CRIT.map(p => p + "%")]);
+        createTable("tableCritContainer", headers8, rowsCrit);
+    }
+
+    // --- Initialization ---
+    window.onload = function() {
+        initEstimationTable();
+        initProbTables();
+        fetchSettingImg();
+    };
+
+</script>
+
+</body>
+</html>
