@@ -1797,8 +1797,14 @@ function checkCanExport() {
     if (val && val.startsWith('{')) {
         try {
             const data = JSON.parse(val);
+
+            // 儲存前剔除影像資料以節省空間
+            const storageData = JSON.parse(JSON.stringify(data));
+            if (storageData.list) {
+                storageData.list.forEach(echo => delete echo.DebugImages);
+            }
             // 同步到 quickJson 並儲存
-            quickJson.value = JSON.stringify(data, null, 2);
+            quickJson.value = JSON.stringify(storageData, null, 2);
             localStorage.setItem('lastJsonData', quickJson.value);
             
             window.showDebugButton = true; // Enable debug for new recognition
@@ -2664,14 +2670,20 @@ if (closeHistorySectionBtn) {
 function addToHistory(data) {
     if (!data || !data.UID) return; // 必須有 UID
 
+    // 複製資料並剔除影像資料以節省空間
+    const dataToStore = JSON.parse(JSON.stringify(data));
+    if (dataToStore.list) {
+        dataToStore.list.forEach(echo => delete echo.DebugImages);
+    }
+
     let history = getHistory();
 
     // 檢查重複 (UID + 角色名稱 + 總分)
     // 如果存在相同 UID、角色名稱且分數相近的紀錄，則視為同一筆資料的更新
     const duplicateIndex = history.findIndex(item => {
-        return item.uid === data.UID &&
-            item.name === data.Name &&
-            Math.abs(item.score - data.Total總分) < 0.01;
+        return item.uid === dataToStore.UID &&
+            item.name === dataToStore.Name &&
+            Math.abs(item.score - dataToStore.Total總分) < 0.01;
     });
 
     if (duplicateIndex !== -1) {
@@ -2680,11 +2692,11 @@ function addToHistory(data) {
     }
 
     const newItem = {
-        uid: data.UID,
-        name: data.Name,
-        score: data.Total總分,
+        uid: dataToStore.UID,
+        name: dataToStore.Name,
+        score: dataToStore.Total總分,
         timestamp: Date.now(),
-        data: data
+        data: dataToStore
     };
 
     history.unshift(newItem); // 加入到最前面
@@ -2905,6 +2917,7 @@ if (historyFileInput) {
                         if (!exists) {
                             // 儲存前將評分歸零
                             const echoToSave = JSON.parse(JSON.stringify(newEcho));
+                            delete echoToSave.DebugImages;
                             echoToSave.Points = 0;
                             if (echoToSave.AllEchoAffix) {
                                 echoToSave.AllEchoAffix.forEach(a => a.Points = 0);
@@ -3587,6 +3600,7 @@ function normalizeForComparison(echo) {
     // 清除 ID 和 Points
     copy.Id = 0;
     copy.Points = 0;
+    delete copy.DebugImages;
     if (copy.AllEchoAffix) {
         copy.AllEchoAffix.forEach(affix => {
             affix.Points = 0;
@@ -4291,6 +4305,46 @@ function processImportAttributes(img) {
         }
     });
 }
+
+// 清除舊版殘留的 DebugImages 資料以釋放 LocalStorage 空間
+function cleanupLegacyDebugImages() {
+    if (localStorage.getItem('debugImagesCleaned_v1')) return;
+    
+    const cleanList = (list) => {
+        if (!list || !Array.isArray(list)) return false;
+        let changed = false;
+        list.forEach(echo => {
+            if (echo.DebugImages) {
+                delete echo.DebugImages;
+                changed = true;
+            }
+        });
+        return changed;
+    };
+
+    try {
+        const historyRaw = localStorage.getItem('recognitionHistory');
+        if (historyRaw) {
+            const history = JSON.parse(historyRaw);
+            history.forEach(item => { if (item.data) cleanList(item.data.list); });
+            localStorage.setItem('recognitionHistory', JSON.stringify(history));
+        }
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key.startsWith('echoData_')) {
+                const data = JSON.parse(localStorage.getItem(key));
+                if (cleanList(data)) localStorage.setItem(key, JSON.stringify(data));
+            }
+        }
+        const lastJsonRaw = localStorage.getItem('lastJsonData');
+        if (lastJsonRaw) {
+            const data = JSON.parse(lastJsonRaw);
+            if (cleanList(data.list)) localStorage.setItem('lastJsonData', JSON.stringify(data));
+        }
+        localStorage.setItem('debugImagesCleaned_v1', 'true');
+    } catch (e) { console.error('Cleanup error:', e); }
+}
+cleanupLegacyDebugImages();
 
 function compareAttributes(currentBinaryArray, width, height, resultsObj) {
     const keys = Object.keys(AttributesData);
