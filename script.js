@@ -1450,7 +1450,7 @@ function processImage() {
         const captureEchoDebugImages = (echoIdx) => {
             const idx1 = echoIdx + 1;
             const debugData = { Attribute: '', Cost: '', MainAffix: '', SubAffixes: [] };
-            
+
             const getCoords = (name) => { try { return eval(name); } catch (e) { return null; } };
 
             // Attribute
@@ -1806,7 +1806,7 @@ function checkCanExport() {
             // 同步到 quickJson 並儲存
             quickJson.value = JSON.stringify(storageData, null, 2);
             localStorage.setItem('lastJsonData', quickJson.value);
-            
+
             window.showDebugButton = true; // Enable debug for new recognition
             renderResult(data);
 
@@ -1904,18 +1904,18 @@ function compressBinaryData(binaryData) {
     const pixelCount = binaryData.length / 4; // RGBA，每個像素4個值
     const byteCount = Math.ceil(pixelCount / 8); // 每8個像素需要1個byte
     const compressed = new Uint8Array(byteCount);
-    
+
     for (let i = 0; i < pixelCount; i++) {
         const byteIndex = Math.floor(i / 8);
         const bitIndex = 7 - (i % 8); // 從高位到低位
         const pixelValue = binaryData[i * 4]; // 取R值（二值化後RGB都相同）
-        
+
         if (pixelValue === 255) { // 白色像素設為1
             compressed[byteIndex] |= (1 << bitIndex);
         }
         // 黑色像素為0，不需設置（預設就是0）
     }
-    
+
     return compressed;
 }
 
@@ -2045,7 +2045,7 @@ if (reportDebugBtn) {
             const promises = Array.from(checkboxes).map(async (cb) => {
                 const type = cb.dataset.type;
                 const imgSrc = cb.dataset.imgSrc;
-                
+
                 if (!imgSrc) return;
 
                 // Load image
@@ -2070,7 +2070,7 @@ if (reportDebugBtn) {
                 // 屬性為正常二值化，其餘為反向二值化
                 const isInverted = type !== '屬性';
                 const binaryData = [];
-                
+
                 for (let j = 0; j < data.length; j += 4) {
                     const gray = (data[j] + data[j + 1] + data[j + 2]) / 3;
                     let binary;
@@ -2085,7 +2085,7 @@ if (reportDebugBtn) {
                 // Compress
                 const compressed = compressBinaryData(binaryData);
                 const base64Data = btoa(String.fromCharCode(...compressed));
-                
+
                 const jsonPayload = JSON.stringify({
                     width: img.width,
                     height: img.height,
@@ -2108,7 +2108,7 @@ if (reportDebugBtn) {
 
             await Promise.all(promises);
             alert('已完成回報');
-            
+
             // Uncheck all
             checkboxes.forEach(cb => cb.checked = false);
             debugModal.classList.remove('show');
@@ -2820,7 +2820,7 @@ window.loadHistoryItem = function (index) {
             quickJson.value = JSON.stringify(data, null, 2);
             localStorage.setItem('lastJsonData', quickJson.value);
         }
-        
+
         window.showDebugButton = false; // Disable debug for history items
         renderResult(data);
 
@@ -3512,6 +3512,9 @@ const AttributesData = {
     '嘯谷長風': { width: 17, height: 17, data: '4AfAAcAAYgETgcmIYNawe1g9LBoUBw4BzgBmCBwEBgcAB+AHgA==' },
     '息界同調之律': { width: 17, height: 17, data: '4AdAweDgYPwQ/gg/AM8AT4AP4A94B54DjwHvCH+0H4cHB+AHAA==' },
     '高天共奏之曲': { width: 17, height: 17, data: '4AdAAeAAYDoQQQmzwZhYnAQ/gn/5D+GBw4BvCDAEEAcAB+AHAA==' },
+    '流金溯真之式': { width: 17, height: 17, data: '4AfgAeAwYAYQMcgMcEM4EZwJzgjHAMcBh4APiAMGAAeAB+AHgA==' },
+    '星構尋輝之環': { width: 17, height: 17, data: '4AdAAcBgYf4Tw8GAQEYgIzAX+AjMBGYDAgCDAGMEHwcDBsAHAA==' },
+    '逆光躍彩之約': { width: 17, height: 17, data: '4AfAAeBgYfwTw8mAQEYgJbARWAnMBZYDAgCDCGMEHwcDB+AHgA==' },
 };
 
 const MainAffixData = {
@@ -4312,7 +4315,7 @@ function processImportAttributes(img) {
 // 清除舊版殘留的 DebugImages 資料以釋放 LocalStorage 空間
 function cleanupLegacyDebugImages() {
     if (localStorage.getItem('debugImagesCleaned_v1')) return;
-    
+
     const cleanList = (list) => {
         if (!list || !Array.isArray(list)) return false;
         let changed = false;
@@ -5262,7 +5265,7 @@ if (signUpAnalyzeBtn) {
     signUpAnalyzeBtn.addEventListener('click', () => {
         const imageUrl = signUpImageUrlInput.value.trim();
         if (!imageUrl) return;
-        
+
         signUpAnalyzeBtn.disabled = true;
         showSignUpMessage('正在載入圖片...', 'success');
         signUpResultContainer.innerHTML = '<div style="color: var(--accent-gold);">處理中...</div>';
@@ -5272,19 +5275,19 @@ if (signUpAnalyzeBtn) {
 
         const img = new Image();
         img.crossOrigin = 'Anonymous';
-        
+
         img.onload = () => {
             showSignUpMessage('圖片載入成功', 'success');
             analyzeSignUpImage(img);
             signUpAnalyzeBtn.disabled = false;
         };
-        
+
         img.onerror = () => {
             showSignUpMessage('圖片載入失敗', 'error');
             signUpResultContainer.innerHTML = '<div style="color: var(--accent-red);">圖片載入失敗</div>';
             signUpAnalyzeBtn.disabled = false;
         };
-        
+
         img.src = proxyUrl;
     });
 }
@@ -5319,7 +5322,7 @@ function analyzeSignUpImage(img) {
         results.push(result);
     }
 
-    const chainLevel = 0; 
+    const chainLevel = 0;
 
     const resonatorResults = [];
     for (let i = 0; i < resonatorCoords.length; i++) {
@@ -5431,7 +5434,7 @@ function analyzeSignUpImage(img) {
 
     const digits = results.map(r => r.digit).join('');
     const resonators = resonatorResults.map(r => r.name || '未知').join(', ');
-    
+
     const removePrefix = (str) => str ? str.replace(/^\d+_/, '') : str;
     const parseMainAffix = (affixWithValue) => {
         if (!affixWithValue) return { name: '', value: '' };
@@ -5453,7 +5456,7 @@ function analyzeSignUpImage(img) {
     const captureEchoDebugImages = (echoIdx) => {
         const idx1 = echoIdx + 1;
         const debugData = { Attribute: '', Cost: '', MainAffix: '', SubAffixes: [] };
-        
+
         const getCoords = (name) => { try { return eval(name); } catch (e) { return null; } };
 
         // Attribute
@@ -5550,7 +5553,7 @@ function renderSignUpResult(data) {
 
     const totalScore = parseFloat(data.Total總分) || 0;
     const totalScoreHTML = `<div class="stat-value">${totalScore.toFixed(2)}</div>`;
-    
+
     let equipmentCards = '';
     if (Array.isArray(data.list)) {
         data.list.forEach((item, index) => {
@@ -5641,7 +5644,7 @@ function validateSignUpData(data, event) {
         event.echo_sets.forEach(setReq => {
             const possibleNames = setReq.name.split('/');
             const meetsRequirement = possibleNames.some(name => (attrCounts[name] || 0) >= setReq.quantity);
-            
+
             if (!meetsRequirement) {
                 if (possibleNames.length > 1) {
                     errors.push(`套裝不符：${possibleNames.join(' 或 ')} 其中之一需要 ${setReq.quantity} 件`);
@@ -5675,7 +5678,7 @@ function submitToRankForm() {
     const event = window.currentActiveEvent;
     const imageUrl = document.getElementById('signUpImageUrlInput').value.trim();
     const btn = document.getElementById('joinRankBtn');
-    
+
     if (!data || !imageUrl) {
         alert('無效的資料或圖片網址');
         return;
@@ -5695,7 +5698,7 @@ function submitToRankForm() {
 
     const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSePcICExGTTBE7NoiwTMMTHHyKKUi2zhUBAymIJKz5425GFuQ/formResponse";
     const formData = new FormData();
-    
+
     formData.append("entry.2051548718", data.UID || "");
     formData.append("entry.1436373707", data.Name || "");
     formData.append("entry.432559864", data.Total總分 || "");
@@ -5706,17 +5709,17 @@ function submitToRankForm() {
         mode: "no-cors",
         body: formData
     })
-    .then(() => {
-        alert('已送出！');
-        closeSignUpModal();
-        if (window.fetchRankDataLive) window.fetchRankDataLive();
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-        alert('送出失敗，請稍後再試。');
-        if (btn) {
-            btn.disabled = false;
-            btn.textContent = '參加';
-        }
-    });
+        .then(() => {
+            alert('已送出！');
+            closeSignUpModal();
+            if (window.fetchRankDataLive) window.fetchRankDataLive();
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('送出失敗，請稍後再試。');
+            if (btn) {
+                btn.disabled = false;
+                btn.textContent = '參加';
+            }
+        });
 }
