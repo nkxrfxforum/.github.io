@@ -2626,6 +2626,9 @@ function getTCtoCNAttributes(attr) {
         case '息界同調之律': return '息界套';
         case '焚羽獵魔之影': return '焚羽套';
         case '命理崩毀之弦': return '命理套';
+        case '星構尋輝之環': return '星构套';
+        case '流金溯真之式': return '流金套';
+        case '逆光躍彩之約': return '逆光套';
         default: return '';
     }
 }
