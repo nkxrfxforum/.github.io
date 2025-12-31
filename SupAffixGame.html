@@ -449,7 +449,8 @@
         // Find button that calls this and add active
         const btns = document.querySelectorAll('.tab-btn');
         for (let btn of btns) {
-            if (btn.getAttribute('onclick').includes(tabId)) {
+            const onclickAttr = btn.getAttribute('onclick');
+            if (onclickAttr && onclickAttr.includes(tabId)) {
                 btn.classList.add('active');
             }
         }
@@ -542,7 +543,7 @@
             return res;
         };
 
-        const waysTotal = combinations(totalTypes, slots);
+        const waysTotal = combinations(totalTypes, slots); // C(13, 5) = 1287
         const waysSuccess = combinations(totalTypes - indices.length, slots - indices.length);
         const pTypes = waysSuccess / waysTotal;
 
@@ -561,7 +562,7 @@
         const pTotal = pTypes * pTiers;
         if (pTotal === 0) {
             alert("機率為 0，無法挑戰。");
-            return;
+            return; // 這裡如果機率為0會直接返回，這是正確的邏輯
         }
 
         if (pTotal < 1e-8 && !confirm("達成機率極低，模擬可能需要很長時間，是否繼續？")) {
@@ -591,7 +592,7 @@
             let criteriaMet = true;
             for (let targetIdx of indices) {
                 if (!rolledIndices.includes(targetIdx) || rolledTiers[targetIdx] < selectedAffixes[targetIdx]) {
-                    criteriaMet = false;
+                    criteriaMet = false; // 只要有一個目標詞條未達成，則標記為失敗
                     break;
                 }
             }
@@ -606,7 +607,7 @@
                 p1Stats[affix.name].tiers[tierNum] = (p1Stats[affix.name].tiers[tierNum] || 0) + 1;
             }
 
-            // 為了效能，如果次數過多，我們只在歷史紀錄中保留前 100 筆失敗紀錄與最後一筆
+            // 為了效能，如果次數過多，我們只在歷史紀錄中保留前 100 筆與最後一筆
             if (r <= 100 || criteriaMet || r === maxRounds) {
                 const roundAffixesStrings = rolledIndices.map(idx => {
                     const affix = AFFIX_DATA[idx];
@@ -622,7 +623,7 @@
                 break;
             }
 
-            if (r % 500000 === 0 && Date.now() - startTime > 2000) {
+            if (r % 50000 === 0 && Date.now() - startTime > 2000) { // 降低檢查頻率以避免過度卡頓，但保持響應
                 if (!confirm(`已模擬 ${r} 輪，尚未達成。是否繼續？`)) break;
             }
         }
