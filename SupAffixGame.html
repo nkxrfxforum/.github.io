@@ -255,6 +255,7 @@
         <button class="tab-btn" onclick="switchTab('page1')">試手氣</button>
         <button class="tab-btn active" onclick="switchTab('page2')">估算表</button>
         <button class="tab-btn" onclick="switchTab('page3')">機率表</button>
+        <a href="index.html" class="tab-btn" style="margin-left: auto; text-decoration: none;">回首頁</a>
     </div>
 
     <!-- Page 1: 試手氣 -->
@@ -338,6 +339,17 @@
                 期望輪數: <span id="expectedRounds" class="result-value">---</span>
             </div>
             <div style="font-size: 0.8em; margin-top: 5px;">(平均需要骰多少次聲骸才能達成目標)</div>
+            
+            <div id="resourceResult" style="margin-top: 20px; border-top: 1px solid #555; padding-top: 15px; display: none;">
+                <div style="font-weight: bold; margin-bottom: 10px;">預估資源消耗</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.95em; text-align: left; padding: 0 20px;">
+                    <div>特級密音筒: <span id="resGold" style="color: #f1c40f;">0</span></div>
+                    <div>高級密音筒: <span id="resPurple" style="color: #9b59b6;">0</span></div>
+                    <div>中級密音筒: <span id="resBlue" style="color: #3498db;">0</span></div>
+                    <div>初級密音筒: <span id="resGreen" style="color: #2ecc71;">0</span></div>
+                    <div style="grid-column: span 2; border-top: 1px dashed #444; margin-top: 5px; padding-top: 5px;">特級調諧器: <span id="resTuner" style="color: #e74c3c;">0</span></div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -396,6 +408,13 @@
         { name: "生命", type: "normal", values: ["320", "360", "390", "430", "470", "510", "540", "580"], probs: PROBS_8_TIER_NORMAL },
         { name: "防禦", type: "fixed", values: ["40", "50", "60", "70"], probs: PROBS_4_TIER }
     ];
+
+    // Cost Data Definition
+    const COST_PER_ROUND = {
+        1: { gold: 0, purple: 2, blue: 0, green: 1, tuner: 10 },
+        3: { gold: 8, purple: 0, blue: 0, green: 0, tuner: 30 },
+        5: { gold: 28, purple: 1, blue: 1, green: 0, tuner: 50 }
+    };
 
     // State
     let selectedAffixes = {}; // Key: index, Value: tier (1-based)
@@ -941,6 +960,7 @@
         if (count === 0) {
             document.getElementById('expectedRounds').textContent = '---';
             document.getElementById('warningMsg').textContent = '';
+            document.getElementById('resourceResult').style.display = 'none';
             return;
         }
 
@@ -985,20 +1005,50 @@
 
         const pTotal = pTypes * pTiers;
         
+        const resourceDiv = document.getElementById('resourceResult');
+
         if (pTotal === 0) {
             document.getElementById('expectedRounds').textContent = '∞';
+            resourceDiv.style.display = 'none';
         } else {
             const expected = 1 / pTotal;
+            const expectedCeil = Math.ceil(expected);
+
             // Format number
             let displayNum;
             if (expected > 100000000) { // 超過一億才使用科學記號
                 displayNum = expected.toExponential(2);
             } else if (expected >= 10000) { // 超過一萬顯示「萬」單位
-                displayNum = (expected / 10000).toLocaleString(undefined, { maximumFractionDigits: 2 }) + ' 萬';
+                const wanStr = (expected / 10000).toLocaleString(undefined, { maximumFractionDigits: 2 }) + ' 萬';
+                displayNum = `${expectedCeil.toLocaleString()} (${wanStr})`;
             } else {
-                displayNum = expected.toLocaleString(undefined, { maximumFractionDigits: 1 });
+                const decimalStr = expected.toLocaleString(undefined, { maximumFractionDigits: 1 });
+                displayNum = `${expectedCeil.toLocaleString()} (${decimalStr})`;
             }
             document.getElementById('expectedRounds').textContent = displayNum;
+
+            // Resource Calculation
+            const cost = COST_PER_ROUND[currentSlots];
+            const totalGold = expectedCeil * cost.gold;
+            const totalPurple = expectedCeil * cost.purple;
+            const totalBlue = expectedCeil * cost.blue;
+            const totalGreen = expectedCeil * cost.green;
+            const totalTuner = expectedCeil * cost.tuner;
+
+            const formatResource = (num) => {
+                if (num === 0) return '0';
+                if (num >= 100000000) return num.toExponential(2);
+                if (num >= 10000) return (num / 10000).toLocaleString(undefined, { maximumFractionDigits: 1 }) + ' 萬';
+                return Math.ceil(num).toLocaleString();
+            };
+
+            document.getElementById('resGold').textContent = formatResource(totalGold);
+            document.getElementById('resPurple').textContent = formatResource(totalPurple);
+            document.getElementById('resBlue').textContent = formatResource(totalBlue);
+            document.getElementById('resGreen').textContent = formatResource(totalGreen);
+            document.getElementById('resTuner').textContent = formatResource(totalTuner);
+            
+            resourceDiv.style.display = 'block';
         }
     }
 
