@@ -74,37 +74,6 @@ var attributesProfilePicture = {
 };
 
 
-function getTCtoCNAttributes(attr) {
-    switch (attr) {
-        case '浮星祛暗': return '光套';
-        case '熔山裂谷': return '火套';
-        case '凝夜白霜': return '冰套';
-        case '沉日劫明': return '暗套';
-        case '徹空冥雷': return '雷套';
-        case '嘯谷長風': return '风套';
-        case '隱世回光': return '奶套';
-        case '輕雲出月': return '轻云套';
-        case '不絕餘音': return '攻击套';
-        case '凌冽決斷之心': return '凌冽套';
-        case '此間永駐之光': return '此间套';
-        case '幽夜隱匿之帷': return '幽夜套';
-        case '高天共奏之曲': return '高天套';
-        case '無懼浪濤之勇': return '无惧套';
-        case '流雲逝盡之空': return '流云套';
-        case '願戴榮光之旅': return '愿戴套';
-        case '奔狼燎原之焰': return '奔狼套';
-        case '失序彼岸之夢': return '失序套';
-        case '榮鬥鑄鋒之冠': return '荣斗套';
-        case '息界同調之律': return '息界套';
-        case '焚羽獵魔之影': return '焚羽套';
-        case '命理崩毀之弦': return '命理套';
-        case '星構尋輝之環': return '星构套';
-        case '流金溯真之式': return '流金套';
-        case '逆光躍彩之約': return '逆光套';
-        default: return '';
-    }
-}
-
 // --- 副詞綴數值範圍 ---
 var affixValueRanges = {
     '攻擊': ['6.4%', '7.1%', '7.9%', '8.6%', '9.4%', '10.1%', '10.9%', '11.6%', '30', '40', '50', '60'],
@@ -149,6 +118,68 @@ var mainAffixFixedValues = {
 };
 
 
+function getTCtoCNAttributes(attr) {
+    switch (attr) {
+        case '浮星祛暗': return '光套';
+        case '熔山裂谷': return '火套';
+        case '凝夜白霜': return '冰套';
+        case '沉日劫明': return '暗套';
+        case '徹空冥雷': return '雷套';
+        case '嘯谷長風': return '风套';
+        case '隱世回光': return '奶套';
+        case '輕雲出月': return '轻云套';
+        case '不絕餘音': return '攻击套';
+        case '凌冽決斷之心': return '凌冽套';
+        case '此間永駐之光': return '此间套';
+        case '幽夜隱匿之帷': return '幽夜套';
+        case '高天共奏之曲': return '高天套';
+        case '無懼浪濤之勇': return '无惧套';
+        case '流雲逝盡之空': return '流云套';
+        case '願戴榮光之旅': return '愿戴套';
+        case '奔狼燎原之焰': return '奔狼套';
+        case '失序彼岸之夢': return '失序套';
+        case '榮鬥鑄鋒之冠': return '荣斗套';
+        case '息界同調之律': return '息界套';
+        case '焚羽獵魔之影': return '焚羽套';
+        case '命理崩毀之弦': return '命理套';
+        case '星構尋輝之環': return '星构套';
+        case '流金溯真之式': return '流金套';
+        case '逆光躍彩之約': return '逆光套';
+        default: return '';
+    }
+}
+
+function getCNtoTCAttributes(attr) {
+    switch (attr) {
+        case '光套': return '浮星祛暗';
+        case '火套': return '熔山裂谷';
+        case '冰套': return '凝夜白霜';
+        case '暗套': return '沉日劫明';
+        case '雷套': return '徹空冥雷';
+        case '风套': return '嘯谷長風';
+        case '奶套': return '隱世回光';
+        case '轻云套': return '輕雲出月';
+        case '攻击套': return '不絕餘音';
+        case '凌冽套': return '凌冽決斷之心';
+        case '此间套': return '此間永駐之光';
+        case '幽夜套': return '幽夜隱匿之帷';
+        case '高天套': return '高天共奏之曲';
+        case '无惧套': return '無懼浪濤之勇';
+        case '流云套': return '流雲逝盡之空';
+        case '愿戴套': return '願戴榮光之旅';
+        case '奔狼套': return '奔狼燎原之焰';
+        case '失序套': return '失序彼岸之夢';
+        case '荣斗套': return '榮鬥鑄鋒之冠';
+        case '息界套': return '息界同調之律';
+        case '焚羽套': return '焚羽獵魔之影';
+        case '命理套': return '命理崩毀之弦';
+        case '星构套': return '星構尋輝之環';
+        case '流金套': return '流金溯真之式';
+        case '逆光套': return '逆光躍彩之約';
+        default: return '浮星祛暗';
+    }
+}
+
 // --- 名稱繁體轉簡體 ---
 function supTCtoCN(echoAffix) {
     const name = echoAffix.Name;
@@ -169,31 +200,128 @@ function supTCtoCN(echoAffix) {
     }
 }
 
-// --- 主詞綴繁體轉簡體 ---
-function mainTCtoCN(name) {
+// --- 副詞綴簡體轉繁體 ---
+function supCNtoTC(name) {
     switch (name) {
-        case '暴擊': return '暴击';
-        case '暴擊傷害': return '暴伤';
-        case '生命': return '生命';
-        case '攻擊': return '攻击力';
-        case '防禦': return '防御';
-        case '治療效果加成': return '治疗';
-        case '衍射傷害加成':
-        case '湮滅傷害加成':
-        case '熱熔傷害加成':
-        case '冷凝傷害加成':
-        case '導電傷害加成':
-        case '氣動傷害加成': return '属伤';
-        case '共鳴效率': return '共鸣效率';
+        case '暴击': return '暴擊';
+        case '暴伤': return '暴擊傷害';
+        case '大攻击': return '攻擊';
+        case '小攻击': return '攻擊';
+        case '大防御': return '防禦';
+        case '小防御': return '防禦';
+        case '大生命': return '生命';
+        case '小生命': return '生命';
+        case '共鸣效率': return '共鳴效率';
+        case '普攻伤害': return '普攻傷害加成';
+        case '重击伤害': return '重擊傷害加成';
+        case '技能伤害': return '共鳴技能傷害加成';
+        case '解放伤害': return '共鳴解放傷害加成';
         default: return '';
     }
 }
+
+// --- 主詞綴簡體轉繁體 ---
+function mainAtrriCNtoTCName(name,cost) {
+    return mainAtrriCNtoTCName(name,cost, null);
+}
+function mainAtrriCNtoTCName(name,cost, suite) {
+    switch (name) {
+        case '暴击22%': return '暴擊';
+        case '暴伤44%': return '暴擊傷害';
+        case '生命33%': return '生命';
+        case '攻击力33%': return '攻擊';
+        case '防御41.8%': return '防禦';
+        case '治疗26.4%': return '治療效果加成';
+        case '攻击力30%': return '攻擊';
+        case '属伤30%':
+            switch (suite) {
+                case '光套': return '衍射傷害加成';
+                case '此间套': return '衍射傷害加成';
+                case '逆光套': return '衍射傷害加成';
+                case '流金套': return '衍射傷害加成';
+                case '暗套': return '湮滅傷害加成';
+                case '幽夜套': return '湮滅傷害加成';
+                case '失序套': return '湮滅傷害加成';
+                case '命理套': return '湮滅傷害加成';
+                case '火套': return '熱熔傷害加成';
+                case '奔狼套': return '熱熔傷害加成';
+                case '焚羽套': return '熱熔傷害加成';
+                case '无惧套': return '熱熔傷害加成';
+                case '冰套': return '冷凝傷害加成';
+                case '凌冽套': return '冷凝傷害加成';
+                case '高天套': return '冷凝傷害加成';
+                case '雷套': return '導電傷害加成';
+                case '荣斗套': return '導電傷害加成';
+                case '风套': return '氣動傷害加成';
+                case '愿戴套': return '氣動傷害加成';
+                case '流云套': return '氣動傷害加成';
+                case '息界套': return '氣動傷害加成';
+                default: return '冷凝傷害加成';
+            }
+        case '共鸣效率32%': return '共鳴效率';
+        case '防御38%': return '防禦';
+        case '攻击力18%': return '攻擊';
+        case '生命22.8%': return '生命';
+        case '防御18%': return '防禦';
+        default: 
+        switch (cost) {
+            case 'Cost4':
+                return '暴擊';
+            case 'Cost3':
+                return '攻擊';
+            case 'Cost1':
+                return '攻擊';
+            default:
+                return '';
+        }
+    }
+}
+
+function mainAtrriCNtoTCNumber(name,cost) {
+    switch (name) {
+        case '暴击22%': return '22%';
+        case '暴伤44%': return '44%';
+        case '生命33%': return '33%';
+        case '攻击力33%': return '33%';
+        case '防御41.8%': return '41.8%';
+        case '治疗26.4%': return '26.4%';
+        case '攻击力30%': return '30%';
+        case '属伤30%': return '30%';
+        case '共鸣效率32%': return '32%';
+        case '防御38%': return '38%';
+        case '攻击力18%': return '18%';
+        case '生命22.8%': return '22.8%';
+        case '防御18%': return '18%';
+        default: 
+        switch (cost) {
+            case 'Cost4':
+                return '22%';
+            case 'Cost3':
+                return '30%';
+            case 'Cost1':
+                return '18%';
+            default:
+                return '';
+        }
+    }
+}
+
 // --- 花費類型轉換 ---
 function getCostType(cost) {
     switch (String(cost)) {
         case '1': return 'Cost1';
         case '3': return 'Cost3';
         case '4': return 'Cost4';
+        default: return '';
+    }
+}
+
+// --- 花費類型轉換 ---
+function getReversalCostType(cost) {
+    switch (String(cost)) {
+        case 'Cost1': return '1';
+        case 'Cost3': return '3';
+        case 'Cost4': return '4';
         default: return '';
     }
 }
