@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1049,6 +1048,7 @@
             </div>
 
             <div class="section">
+                <button class="btn" onclick="captureScreen()" style="margin-bottom: 10px; background: transparent; border: 1px solid var(--accent-gold); color: var(--accent-gold);">直接截取螢幕/視窗 (免存檔)</button>
                 <button class="btn" id="confirmImportBtn">選擇檔案</button>
             </div>
         </div>
@@ -1127,12 +1127,17 @@
 
     <div id="historySection"
         style="display: none; max-width: 1400px; margin: 2rem auto; background: var(--bg-card); border: 2px solid var(--border-color); border-radius: 20px; padding: 2rem; box-shadow: var(--shadow);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 15px;">
             <div>
                 <h1 style="margin: 0; color: var(--accent-gold);">聲骸評分工具Web</h1>
                 <div style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 5px;">by 無聊經過的人</div>
             </div>
+            <div class="switch-container">
+                <button class="switch-btn active" id="btnShowNewFeatures" onclick="switchHistoryTab('newFeatures')">新功能</button>
+                <button class="switch-btn" id="btnShowHistory" onclick="switchHistoryTab('history')">歷史紀錄</button>
+            </div>
         </div>
+
         <div class="section" style="margin-bottom: 1.5rem;">
             <div style="color: var(--text-secondary); margin-bottom: 0.8rem; font-size: 0.9rem; font-weight: bold;">🔗
                 相關連結</div>
@@ -1152,29 +1157,46 @@
 
             </div>
         </div>
-        <div class="section" style="display: flex; gap: 10px; margin-bottom: 1rem;">
-            <button class="switch-btn" id="importHistoryBtn">匯入紀錄</button>
-            <button class="switch-btn" id="exportHistoryBtn">匯出紀錄</button>
-            <input type="file" id="historyFileInput" accept=".json" style="display: none;">
-        </div>
-        <div class="section">
-            <div class="section-title">已儲存的紀錄</div>
-            <div id="historyListContainer" style="max-height: 400px; overflow-y: auto;">
-                <table style="width: 100%; border-collapse: collapse; color: var(--text-primary);">
-                    <thead>
-                        <tr style="border-bottom: 1px solid var(--border-color); text-align: left;">
-                            <th style="padding: 10px;">UID</th>
-                            <th style="padding: 10px;">角色名稱</th>
-                            <th style="padding: 10px;">總分</th>
-                            <th style="padding: 10px;">操作</th>
-                        </tr>
-                    </thead>
-                    <tbody id="historyTableBody">
-                    </tbody>
-                </table>
+
+        <!-- 新功能區塊 -->
+        <div id="newFeaturesContent">
+            <div class="controls" id="featureTabsContainer" style="justify-content: flex-start; margin: 0 0 1rem 0; padding-bottom: 10px; overflow-x: auto;">
+                <!-- JS 生成 -->
+            </div>
+            <div id="featureTextContent" style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 10px; margin-bottom: 1rem; color: var(--text-secondary); font-size: 1rem; line-height: 1.6;">
+                載入中...
+            </div>
+            <div id="featureImageContainer" style="text-align: center; background: rgba(0,0,0,0.2); border-radius: 10px; padding: 10px; min-height: 200px; display: flex; align-items: center; justify-content: center;">
+                <video id="featureVideo" src="" style="max-width: 100%; max-height: 500px; border-radius: 5px;" autoplay loop muted playsinline></video>
             </div>
         </div>
-        <div class="message" id="historyMessage"></div>
+
+        <!-- 歷史紀錄區塊 -->
+        <div id="historyContent" style="display: none;">
+            <div class="section" style="display: flex; gap: 10px; margin-bottom: 1rem;">
+                <button class="switch-btn" id="importHistoryBtn">匯入紀錄</button>
+                <button class="switch-btn" id="exportHistoryBtn">匯出紀錄</button>
+                <input type="file" id="historyFileInput" accept=".json" style="display: none;">
+            </div>
+            <div class="section">
+                <div class="section-title">已儲存的紀錄</div>
+                <div id="historyListContainer" style="max-height: 400px; overflow-y: auto;">
+                    <table style="width: 100%; border-collapse: collapse; color: var(--text-primary);">
+                        <thead>
+                            <tr style="border-bottom: 1px solid var(--border-color); text-align: left;">
+                                <th style="padding: 10px;">UID</th>
+                                <th style="padding: 10px;">角色名稱</th>
+                                <th style="padding: 10px;">總分</th>
+                                <th style="padding: 10px;">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="message" id="historyMessage"></div>
+        </div>
     </div>
 
 
@@ -1246,9 +1268,176 @@
         </div>
     </div>
 
+    <script src="config.js"></script>
+    <script src="js/game-data-resonator.js"></script>
+    <script src="js/game-data-other.js"></script>
+    <script src="js/ocr-discord-templates-other-data.js"></script>
+    <script src="js/ocr-discord-coordinates.js"></script>
+    <script src="js/ocr-backpack-coordinate.js"></script>
+    <script src="js/ocr-backpack-data.js"></script>
+    <script src="js/ocr-discord-templates-supaffix-number-data.js"></script>
+    <script src="json/NewFeatures.js"></script>
+    <script src="script.js"></script>
     <script>
+        // 使用 Screen Capture API 進行截圖 (不存檔)
+        async function captureScreen() {
+            // 檢查瀏覽器支援度與環境 (需要 HTTPS 或 localhost)
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
+                alert('您的瀏覽器不支援直接截圖，或未在安全環境 (HTTPS/localhost) 下執行。');
+                return;
+            }
+
+            try {
+                // 請求螢幕分享權限
+                const stream = await navigator.mediaDevices.getDisplayMedia({
+                    video: { cursor: "never" }, // 嘗試隱藏游標
+                    audio: false
+                });
+
+                const video = document.createElement('video');
+                video.srcObject = stream;
+                
+                // 等待影片載入並播放
+                video.onloadedmetadata = async () => {
+                    await video.play();
+                    // 暫停一小段時間確保畫面已渲染
+                    await new Promise(r => setTimeout(r, 300));
+
+                    // 繪製到 Canvas
+                    const canvas = document.createElement('canvas');
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    
+                    // 停止串流 (釋放資源)
+                    stream.getTracks().forEach(track => track.stop());
+
+                    // 轉換為 Blob 並匯入
+                    canvas.toBlob(async (blob) => {
+                        if (blob) {
+                            const file = new File([blob], "screenshot.png", { type: "image/png" });
+                            
+                            // 關閉模態框
+                            const modal = document.getElementById('importInstructionModal');
+                            if (modal) modal.classList.remove('show');
+                            
+                            // 呼叫匯入處理
+                            if (typeof processImportImages === 'function') {
+                                await processImportImages([file]);
+                            }
+                        }
+                    }, 'image/png');
+                };
+            } catch (err) {
+                console.error("截圖失敗:", err);
+                // NotAllowedError 表示使用者取消了選擇，不需報錯
+                if (err.name !== 'NotAllowedError') {
+                    alert('截圖失敗: ' + err.message);
+                }
+            }
+        }
+
+        // 監聽貼上事件 (Ctrl+V) 以支援直接匯入 (跳過選取檔案)
+        document.addEventListener('paste', async (event) => {
+            // 檢查是否有開啟匯入模態框，或者是否在聲骸頁面
+            const modal = document.getElementById('importInstructionModal');
+            const echoPage = document.getElementById('echoPageSection');
+            
+            // 只有在模態框開啟或聲骸頁面顯示時才處理
+            if ((modal && modal.classList.contains('show')) || (echoPage && echoPage.style.display !== 'none')) {
+                const items = (event.clipboardData || event.originalEvent.clipboardData).items;
+                const files = [];
+                for (let i = 0; i < items.length; i++) {
+                    if (items[i].kind === 'file' && items[i].type.startsWith('image/')) {
+                        files.push(items[i].getAsFile());
+                    }
+                }
+                
+                if (files.length > 0) {
+                    event.preventDefault(); // 防止瀏覽器預設貼上行為
+                    if (modal) modal.classList.remove('show'); // 關閉說明視窗
+                    if (typeof processImportImages === 'function') {
+                        await processImportImages(files); // 直接呼叫匯入處理函式
+                    }
+                }
+            }
+        });
+
+        function initNewFeatures() {
+            const container = document.getElementById('featureTabsContainer');
+            if (!container) return;
+
+            const data = window.newFeaturesData || [];
+            container.innerHTML = '';
+            
+            data.forEach((feature, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'switch-btn';
+                if (index === 0) btn.classList.add('active');
+                btn.textContent = feature.title;
+                btn.onclick = () => selectFeature(index);
+                container.appendChild(btn);
+            });
+
+            if (data.length > 0) selectFeature(0);
+        }
+
+        function selectFeature(index) {
+            const data = window.newFeaturesData || [];
+            const feature = data[index];
+            if (!feature) return;
+
+            const tabsContainer = document.getElementById('featureTabsContainer');
+            Array.from(tabsContainer.children).forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+
+            document.getElementById('featureTextContent').textContent = feature.content;
+            const videoContainer = document.getElementById('featureImageContainer');
+            let video = document.getElementById('featureVideo');
+
+            // 如果 video 元素不存在（例如被之前的錯誤訊息覆蓋），則重新建立
+            if (!video) {
+                videoContainer.innerHTML = '<video id="featureVideo" style="max-width: 100%; max-height: 500px; border-radius: 5px;" autoplay loop muted playsinline></video>';
+                video = document.getElementById('featureVideo');
+            }
+
+            if (feature.mp4) {
+                video.src = feature.mp4;
+                video.style.display = 'block';
+                video.onerror = function() { this.style.display = 'none'; this.parentElement.innerText = '預覽影片載入失敗 (' + feature.mp4 + ')'; };
+            } else {
+                video.style.display = 'none';
+                video.removeAttribute('src');
+            }
+        }
+
+        function switchHistoryTab(tabName) {
+            const isNew = tabName === 'newFeatures';
+            document.getElementById('newFeaturesContent').style.display = isNew ? 'block' : 'none';
+            document.getElementById('historyContent').style.display = isNew ? 'none' : 'block';
+            document.getElementById('btnShowNewFeatures').classList.toggle('active', isNew);
+            document.getElementById('btnShowHistory').classList.toggle('active', !isNew);
+        }
+
+        function showHistorySection() {
+            const sections = ['mainContent', 'echoPageSection', 'rankSection'];
+            sections.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+
+            const historySection = document.getElementById('historySection');
+            if (historySection) {
+                historySection.style.display = 'block';
+                switchHistoryTab('newFeatures');
+            }
+        }
+
         // Rank Button Logic
         document.addEventListener('DOMContentLoaded', () => {
+            initNewFeatures();
             const rankBtn = document.getElementById('rankBtn');
             const rankSection = document.getElementById('rankSection');
 
@@ -1602,10 +1791,8 @@
             </div>
         </div>
     </div>
-
-    <script src="config.js"></script>
-    <script src="data.js"></script>
-    <script src="script.js"></script>
 </body>
+
+</html>
 
 </html>
