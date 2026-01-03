@@ -1054,6 +1054,74 @@
         </div>
     </div>
 
+    <!-- McData Import Instruction Modal -->
+    <div class="modal" id="importMcDataInstructionModal">
+        <div class="modal-content" style="max-width: 600px;">
+            <span class="close-btn" id="closeImportMcDataInstructionModalBtn">&times;</span>
+            <h1>鸣潮声骸评分工具 匯入說明</h1>
+            <div class="section">
+                <div class="info-box">
+                    <p>此功能用於匯入「鸣潮声骸评分工具」的 <code>mcdata.json</code> 檔案。</p>
+                    <p>1. 在該網站中點擊「将数据导出为文本(匯出資料到本地)/将文本导入到本地(本地匯入資料)」並匯出 JSON。</p>
+                    <p>2. 選擇該檔案進行匯入。</p>
+                </div>
+                <div class="section-title">轉換規則說明</div>
+                <div class="info-box" style="font-size: 0.85rem;">
+                    <p>● 自動進行簡繁轉換與套裝屬性判定。</p>
+                    <p>● 系統會自動過濾重複的聲骸資料。</p>
+                </div>
+                <div class="section-title">屬性傷害轉換邏輯 (注意共用套裝)</div>
+                <div class="info-box" style="font-size: 0.75rem; max-height: 200px; overflow-y: auto;">
+                    <p style="color: var(--accent-orange); margin-bottom: 5px;">※ 由於屬傷無法準確轉換，轉換邏輯如下，有不同屬共用的套裝的需要注意：</p>
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead style="position: sticky; top: 0; background: var(--bg-card); z-index: 1;">
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <th style="padding: 4px;">來源套裝</th>
+                                <th style="padding: 4px;">轉換屬性</th>
+                                <th style="padding: 4px;">目標套裝</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>光套</td><td>衍射傷害加成</td><td>浮星祛暗</td></tr>
+                            <tr><td>此间套</td><td>衍射傷害加成</td><td>此間永駐之光</td></tr>
+                            <tr><td>逆光套</td><td>衍射傷害加成</td><td>逆光躍彩之約</td></tr>
+                            <tr><td>流金套</td><td>衍射傷害加成</td><td>流金溯真之式</td></tr>
+                            <tr><td>暗套</td><td>湮滅傷害加成</td><td>沉日劫明</td></tr>
+                            <tr><td>幽夜套</td><td>湮滅傷害加成</td><td>幽夜隱匿之帷</td></tr>
+                            <tr><td>失序套</td><td>湮滅傷害加成</td><td>失序彼岸之夢</td></tr>
+                            <tr><td>命理套</td><td>湮滅傷害加成</td><td>命理崩毀之弦</td></tr>
+                            <tr><td>火套</td><td>熱熔傷害加成</td><td>熔山裂谷</td></tr>
+                            <tr><td>奔狼套</td><td>熱熔傷害加成</td><td>奔狼燎原之焰</td></tr>
+                            <tr><td>焚羽套</td><td>熱熔傷害加成</td><td>焚羽獵魔之影</td></tr>
+                            <tr><td>无惧套</td><td>氣動傷害加成</td><td>無懼浪濤之勇</td></tr>
+                            <tr><td>冰套</td><td>冷凝傷害加成</td><td>凝夜白霜</td></tr>
+                            <tr><td>凌冽套</td><td>冷凝傷害加成</td><td>凌冽決斷之心</td></tr>
+                            <tr><td>高天套</td><td>冷凝傷害加成</td><td>高天共奏之曲</td></tr>
+                            <tr><td>雷套</td><td>導電傷害加成</td><td>徹空冥雷</td></tr>
+                            <tr><td>荣斗套</td><td>導電傷害加成</td><td>榮鬥鑄鋒之冠</td></tr>
+                            <tr><td>风套</td><td>氣動傷害加成</td><td>嘯谷長風</td></tr>
+                            <tr><td>愿戴套</td><td>氣動傷害加成</td><td>願戴榮光之旅</td></tr>
+                            <tr><td>流云套</td><td>氣動傷害加成</td><td>流雲逝盡之空</td></tr>
+                            <tr><td>息界套</td><td>氣動傷害加成</td><td>息界同調之律</td></tr>
+                            <tr><td>其他</td><td>冷凝傷害加成</td><td>其他</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="section-title">未選擇屬性之預設資料</div>
+                <div class="info-box" style="font-size: 0.85rem;">
+                    <p>● 預設套裝：<span>浮星祛暗</span></p>
+                    <p>● Cost 4：<span>暴擊 22%</span></p>
+                    <p>● Cost 3：<span>攻擊 30%</span></p>
+                    <p>● Cost 1：<span>攻擊 18%</span></p>
+                </div>
+            </div>
+            <div class="section">
+                <button class="btn" id="confirmImportMcDataBtn">僅匯入聲骸庫</button>
+                <button class="btn" id="confirmImportAllMcDataBtn" style="margin-top: 10px; background: linear-gradient(135deg, var(--accent-blue) 0%, #2196F3 100%);">角色 + 聲骸庫 匯入</button>
+            </div>
+        </div>
+    </div>
+
     <div id="echoPageSection"
         style="display: none; max-width: 1400px; margin: 2rem auto; background: var(--bg-card); border: 2px solid var(--border-color); border-radius: 20px; padding: 2rem; box-shadow: var(--shadow);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
@@ -1074,6 +1142,9 @@
                     style="padding: 5px 15px; height: 36px; font-size: 0.9rem; display: none;">聲骸匯出</button>
                 <button id="echoPageImportDataBtn" class="switch-btn"
                     style="padding: 5px 15px; height: 36px; font-size: 0.9rem; display: none;">聲骸匯入</button>
+                <button id="echoPageImportMcDataBtn" class="switch-btn"
+                    style="padding: 5px 15px; height: 36px; font-size: 0.9rem; display: none;">鸣潮声骸评分工具 匯入</button>
+                <input type="file" id="echoPageImportMcDataInput" accept=".json" style="display: none;">
                 <input type="file" id="echoPageImportDataInput" accept=".json" style="display: none;">
                 <input type="file" id="echoPageImportInput" accept="image/*" multiple style="display: none;">
             </div>
@@ -1302,13 +1373,32 @@
                     await video.play();
                     // 暫停一小段時間確保畫面已渲染
                     await new Promise(r => setTimeout(r, 300));
+                    console.log("擷取圖片大小:", video.videoWidth, "*", video.videoHeight);
 
                     // 繪製到 Canvas
                     const canvas = document.createElement('canvas');
-                    canvas.width = video.videoWidth;
-                    canvas.height = video.videoHeight;
+                    let width = video.videoWidth;
+                    let height = video.videoHeight;
+                    let sx = 0, sy = 0;
+
+                    // 判斷是否為特定解析度 (1922*1112)，若是則進行裁剪
+                    if (width === 1922 && height === 1112) {
+                        sx = 1;        // 左方減少 1px
+                        sy = 31;       // 上方減少 31px
+                        width = 1920;  // 1922 - 1(左) - 1(右)
+                        height = 1080; // 1112 - 31(上) - 1(下)
+                    }
+                    else if (width === 1920 && height === 1110) {
+                        sx = 0;        // 左方減少 1px
+                        sy = 30;       // 上方減少 31px
+                        width = 1920;  // 1922 - 1(左) - 1(右)
+                        height = 1080; // 1112 - 31(上) - 1(下)
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
                     const ctx = canvas.getContext('2d');
-                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(video, sx, sy, width, height, 0, 0, width, height);
                     
                     // 停止串流 (釋放資源)
                     stream.getTracks().forEach(track => track.stop());
@@ -1338,7 +1428,53 @@
             }
         }
 
-        // 監聽貼上事件 (Ctrl+V) 以支援直接匯入 (跳過選取檔案)
+        // 調整選擇檔案按鈕功能：先清除舊有監聽器（解決開啟兩次的問題），再加入裁剪邏輯
+        const oldImportBtn = document.getElementById('confirmImportBtn');
+        const newImportBtn = oldImportBtn.cloneNode(true);
+        oldImportBtn.parentNode.replaceChild(newConfirmImportBtn = newImportBtn, oldImportBtn);
+
+        newConfirmImportBtn.addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.multiple = true;
+            input.onchange = async (e) => {
+                const files = Array.from(e.target.files);
+                const processedFiles = [];
+                for (const file of files) {
+                    const img = await new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onload = (ev) => {
+                            const i = new Image();
+                            i.onload = () => resolve(i);
+                            i.src = ev.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    });
+
+                    // 判斷是否為特定解析度 (1922*1112)，若是則進行裁剪
+                    if (img.width === 1922 && img.height === 1112) {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = 1920;  // 1922 - 1(左) - 1(右)
+                        canvas.height = 1080; // 1112 - 31(上) - 1(下)
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 1, 31, 1920, 1080, 0, 0, 1920, 1080);
+                        const blob = await new Promise(r => canvas.toBlob(r, 'image/png'));
+                        processedFiles.push(new File([blob], file.name, { type: 'image/png' }));
+                    } else {
+                        processedFiles.push(file);
+                    }
+                }
+                const modal = document.getElementById('importInstructionModal');
+                if (modal) modal.classList.remove('show');
+                if (typeof processImportImages === 'function') {
+                    await processImportImages(processedFiles);
+                }
+            };
+            input.click();
+        });
+
+        // 監聽貼上事件 (Ctrl+V) 以支援直接匯入
         document.addEventListener('paste', async (event) => {
             // 檢查是否有開啟匯入模態框，或者是否在聲骸頁面
             const modal = document.getElementById('importInstructionModal');
@@ -1412,6 +1548,167 @@
                 video.removeAttribute('src');
             }
         }
+
+        // 監聽 UID 選擇器變動，控制按鈕顯示
+        document.getElementById('echoPageUidSelector').addEventListener('change', (e) => {
+            const hasUid = e.target.value !== "";
+            const displayStyle = hasUid ? 'inline-flex' : 'none';
+            
+            // 控制相關按鈕的顯示狀態
+            const buttonsToToggle = [
+                'echoPageImportMcDataBtn',
+                'echoPageImportDataBtn',
+                'echoPageExportDataBtn',
+                'echoPageImportBtn'
+            ];
+            
+            buttonsToToggle.forEach(id => {
+                const btn = document.getElementById(id);
+                if (btn) btn.style.display = displayStyle;
+            });
+        });
+
+        // 處理「鸣潮声骸评分工具」mcdata.json 匯入邏輯
+        document.getElementById('echoPageImportMcDataBtn').addEventListener('click', () => {
+            document.getElementById('importMcDataInstructionModal').classList.add('show');
+        });
+
+        document.getElementById('closeImportMcDataInstructionModalBtn').addEventListener('click', () => {
+            document.getElementById('importMcDataInstructionModal').classList.remove('show');
+        });
+
+        document.getElementById('confirmImportMcDataBtn').addEventListener('click', () => {
+            document.getElementById('importMcDataInstructionModal').classList.remove('show');
+            const input = document.getElementById('echoPageImportMcDataInput');
+            input.dataset.importType = 'unused'; // 僅匯入聲骸庫
+            input.click();
+        });
+
+        // 處理彈窗內的「角色+聲骸庫」匯入按鈕
+        document.getElementById('confirmImportAllMcDataBtn').addEventListener('click', () => {
+            document.getElementById('importMcDataInstructionModal').classList.remove('show');
+            const input = document.getElementById('echoPageImportMcDataInput');
+            input.dataset.importType = 'all'; // 標記為全部匯入
+            input.click();
+        });
+
+        document.getElementById('echoPageImportMcDataInput').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const importType = e.target.dataset.importType || 'unused';
+
+            const reader = new FileReader();
+            reader.onload = async (event) => {
+                try {
+                    const rawData = JSON.parse(event.target.result);
+                    let echoesToProcess = [];
+
+                    if (importType === 'all') {
+                        // 匯入角色裝備中的聲骸
+                        if (rawData.role && Array.isArray(rawData.role)) {
+                            rawData.role.forEach(r => {
+                                if (r.costList && Array.isArray(r.costList)) {
+                                    echoesToProcess.push(...r.costList);
+                                }
+                            });
+                        }
+                        // 匯入聲骸庫中的聲骸
+                        if (rawData.unusedEchoes && Array.isArray(rawData.unusedEchoes)) {
+                            echoesToProcess.push(...rawData.unusedEchoes);
+                        }
+                    } else {
+                        echoesToProcess = rawData.unusedEchoes || [];
+                    }
+                    
+                    if (echoesToProcess.length === 0) {
+                        alert('找不到可匯入的聲骸資料。');
+                        return;
+                    }
+
+                    const currentUid = document.getElementById('echoPageUidSelector').value || 'default';
+                    let echoData = JSON.parse(localStorage.getItem(`echoData_${currentUid}`) || '[]');
+                    let importCount = 0;
+
+                    echoesToProcess.forEach(echo => {
+                        // 1. 處理套裝與預設值
+                        const suite = echo.suite || '光套';
+                        const type = echo.type || 'Cost1';
+                        
+                        // 2. 處理主詞條與預設值
+                        let mainAttrRaw = echo.mainAtrri;
+                        if (!mainAttrRaw) {
+                            if (type === 'Cost4') mainAttrRaw = '暴击22%';
+                            else if (type === 'Cost3') mainAttrRaw = '攻击力30%';
+                            else mainAttrRaw = '攻击力18%';
+                        }
+
+                        // 轉換單一聲骸格式
+                        const convertedEcho = {
+                            Id: 0,
+                            Cost: typeof getReversalCostType === 'function' ? getReversalCostType(type) : type.replace('Cost', ''),
+                            Attributes: suite === '其他' ? '其他' : (typeof getCNtoTCAttributes === 'function' ? getCNtoTCAttributes(suite) : suite),
+                            AllEchoAffix: [],
+                            Points: 0
+                        };
+
+                        // 4. 主詞條轉換 (AllEchoAffix[0])
+                        let mainName = typeof mainAtrriCNtoTCName === 'function' ? mainAtrriCNtoTCName(mainAttrRaw, type, suite) : mainAttrRaw;
+                        
+                        // 處理使用者特別提到的「无惧套」與「其他」邏輯
+                        if (mainAttrRaw === '属伤30%') {
+                            if (suite === '无惧套') mainName = '氣動傷害加成';
+                            else if (suite === '其他') mainName = '冷凝傷害加成';
+                        }
+
+                        convertedEcho.AllEchoAffix.push({
+                            Name: mainName,
+                            Number: typeof mainAtrriCNtoTCNumber === 'function' ? mainAtrriCNtoTCNumber(mainAttrRaw, type) : mainAttrRaw,
+                            Points: 0
+                        });
+
+                        // 5. 副詞條轉換 (AllEchoAffix[1-5])
+                        for (let i = 0; i < 5; i++) {
+                            const p = (echo.propertyList && echo.propertyList[i]) ? echo.propertyList[i] : null;
+                            if (p) {
+                                convertedEcho.AllEchoAffix.push({
+                                    Name: typeof supCNtoTC === 'function' ? supCNtoTC(p.property) : p.property,
+                                    Number: p.value,
+                                    Points: 0
+                                });
+                            } else {
+                                convertedEcho.AllEchoAffix.push({ Name: "", Number: "", Points: 0 });
+                            }
+                        }
+
+                        // 確保聲骸庫沒有重複資料 (使用 normalizeForComparison 進行比對)
+                        const isDuplicate = echoData.some(existing => {
+                            const normalizedExisting = typeof normalizeForComparison === 'function' ? normalizeForComparison(existing) : existing;
+                            const normalizedNew = typeof normalizeForComparison === 'function' ? normalizeForComparison(convertedEcho) : convertedEcho;
+                            return JSON.stringify(normalizedExisting) === JSON.stringify(normalizedNew);
+                        });
+
+                        if (!isDuplicate) {
+                            echoData.push(convertedEcho);
+                            importCount++;
+                        }
+                    });
+
+                    localStorage.setItem(`echoData_${currentUid}`, JSON.stringify(echoData));
+                    alert(`匯入完成！共新增 ${importCount} 個聲骸。`);
+                    
+                    // 刷新列表與篩選按鈕
+                    if (typeof renderEchoList === 'function') renderEchoList();
+                    if (typeof updateSetFilterButtons === 'function') updateSetFilterButtons();
+                    
+                } catch (err) {
+                    console.error('匯入失敗:', err);
+                    alert('檔案解析失敗，請確保選擇正確的 mcdata.json。');
+                }
+                e.target.value = ''; // 清除 input
+                delete e.target.dataset.importType;
+            };
+            reader.readAsText(file);
+        });
 
         function switchHistoryTab(tabName) {
             const isNew = tabName === 'newFeatures';
