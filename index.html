@@ -1716,6 +1716,11 @@
             document.getElementById('historyContent').style.display = isNew ? 'none' : 'block';
             document.getElementById('btnShowNewFeatures').classList.toggle('active', isNew);
             document.getElementById('btnShowHistory').classList.toggle('active', !isNew);
+
+            // 切換至歷史紀錄分頁時，重新渲染列表以確保資料最新
+            if (!isNew && typeof renderHistoryList === 'function') {
+                renderHistoryList();
+            }
         }
 
         function showHistorySection() {
