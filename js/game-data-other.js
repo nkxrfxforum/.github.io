@@ -326,3 +326,23 @@ function getReversalCostType(cost) {
     }
 }
 
+// --- 主詞綴繁體轉簡體 ---
+function mainTCtoCN(name) {
+    switch (name) {
+        case '暴擊': return '暴击';
+        case '暴擊傷害': return '暴伤';
+        case '生命': return '生命';
+        case '攻擊': return '攻击力';
+        case '防禦': return '防御';
+        case '治療效果加成': return '治疗';
+        case '衍射傷害加成':
+        case '湮滅傷害加成':
+        case '熱熔傷害加成':
+        case '冷凝傷害加成':
+        case '導電傷害加成':
+        case '氣動傷害加成': return '属伤';
+        case '共鳴效率': return '共鸣效率';
+        default: return '';
+    }
+}
+
