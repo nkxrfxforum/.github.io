@@ -249,25 +249,95 @@ function recognizeDifferentColorAttribute(roiGray) {
     return { name: result.match, similarity: result.similarity, allScores: result.allScores };
 }
 
+function computeWeightedAttributeSimilarity(roiGray, candidateGray, width, height) {
+    if (roiGray.length !== candidateGray.length) return 0;
+
+    // 1. 安全檢查：確保寬高有值，否則權重計算會失效 (導致 isCenter 永遠為 false)
+    if (!width || !height) {
+        // 嘗試推算 (假設圖片為正方形)
+        width = Math.sqrt(roiGray.length);
+        height = width;
+    }
+
+    let weightedMatchCount = 0;
+    let weightedWhitePixelCount = 0;
+
+    // 中心點
+    const centerX = Math.floor(width / 2);
+    const centerY = Math.floor(height / 2);
+    
+    // 2. 動態調整中心區域大小
+    // 調整為固定長寬的 1/4 (即中心區域覆蓋長寬的 50%)
+    // Math.max(2, ...) 確保至少有 5x5 (半徑2) 的中心區域
+    const halfWidth = Math.max(2, Math.floor(width / 4));
+    const halfHeight = Math.max(2, Math.floor(height / 4));
+
+    for (let i = 0; i < roiGray.length; i++) {
+        // 檢查是否為白色像素 (255)
+        if (roiGray[i] === 255) {
+            const x = i % width;
+            const y = Math.floor(i / width);
+
+            // 檢查是否在中心範圍內
+            const isCenter = (x >= centerX - halfWidth && x <= centerX + halfWidth) &&
+                             (y >= centerY - halfHeight && y <= centerY + halfHeight);
+
+            // 中心區域權重加倍 (改為 5 倍)
+            const weight = isCenter ? 5 : 1;
+
+            weightedWhitePixelCount += weight;
+
+            if (candidateGray[i] === 255) {
+                weightedMatchCount += weight;
+            }
+        }
+    }
+
+    if (weightedWhitePixelCount === 0) return 0;
+    return weightedMatchCount / weightedWhitePixelCount;
+}
+
+function recognizeAttributeFromGrayMap(roiGray, grayMap, width, height, threshold = CONFIG.SIMILARITY_THRESHOLD) {
+    let bestMatch = null;
+    let bestSimilarity = 0;
+    const allScores = {};
+
+    for (const [key, candidateGray] of Object.entries(grayMap)) {
+        const similarity = computeWeightedAttributeSimilarity(roiGray, candidateGray, width, height);
+        allScores[key] = similarity;
+
+        if (similarity > bestSimilarity) {
+            bestSimilarity = similarity;
+            bestMatch = key;
+        }
+    }
+
+    return {
+        match: bestSimilarity > threshold ? bestMatch : '',
+        similarity: bestSimilarity,
+        allScores
+    };
+}
+
 // recognizeAttributes_1~5, recognizeConsumption_1~5, recognizeMainAffix_1~5
-function recognizeAttributes_1(roiGray) {
-    const result = recognizeFromGrayMap(roiGray, AttributesGrayMap1);
+function recognizeAttributes_1(roiGray, width, height) {
+    const result = recognizeAttributeFromGrayMap(roiGray, AttributesGrayMap1, width, height);
     return { name: result.match, similarity: result.similarity, allScores: result.allScores };
 }
-function recognizeAttributes_2(roiGray) {
-    const result = recognizeFromGrayMap(roiGray, AttributesGrayMap2);
+function recognizeAttributes_2(roiGray, width, height) {
+    const result = recognizeAttributeFromGrayMap(roiGray, AttributesGrayMap2, width, height);
     return { name: result.match, similarity: result.similarity, allScores: result.allScores };
 }
-function recognizeAttributes_3(roiGray) {
-    const result = recognizeFromGrayMap(roiGray, AttributesGrayMap3);
+function recognizeAttributes_3(roiGray, width, height) {
+    const result = recognizeAttributeFromGrayMap(roiGray, AttributesGrayMap3, width, height);
     return { name: result.match, similarity: result.similarity, allScores: result.allScores };
 }
-function recognizeAttributes_4(roiGray) {
-    const result = recognizeFromGrayMap(roiGray, AttributesGrayMap4);
+function recognizeAttributes_4(roiGray, width, height) {
+    const result = recognizeAttributeFromGrayMap(roiGray, AttributesGrayMap4, width, height);
     return { name: result.match, similarity: result.similarity, allScores: result.allScores };
 }
-function recognizeAttributes_5(roiGray) {
-    const result = recognizeFromGrayMap(roiGray, AttributesGrayMap5);
+function recognizeAttributes_5(roiGray, width, height) {
+    const result = recognizeAttributeFromGrayMap(roiGray, AttributesGrayMap5, width, height);
     return { name: result.match, similarity: result.similarity, allScores: result.allScores };
 }
 
@@ -938,7 +1008,7 @@ function processImage() {
             const [x, y, w, h] = AttributesCoords1[i];
             const imageData = ctx.getImageData(x, y, w, h);
             const roiGray = getGrayROINormal(imageData);  // 使用正常二值化
-            const result = recognizeAttributes_1(roiGray);
+            const result = recognizeAttributes_1(roiGray, w, h);
             attributes1Results.push(result);
         }
 
@@ -948,7 +1018,7 @@ function processImage() {
             const [x, y, w, h] = AttributesCoords2[i];
             const imageData = ctx.getImageData(x, y, w, h);
             const roiGray = getGrayROINormal(imageData);  // 使用正常二值化
-            const result = recognizeAttributes_2(roiGray);
+            const result = recognizeAttributes_2(roiGray, w, h);
             attributes2Results.push(result);
         }
 
@@ -958,7 +1028,7 @@ function processImage() {
             const [x, y, w, h] = AttributesCoords3[i];
             const imageData = ctx.getImageData(x, y, w, h);
             const roiGray = getGrayROINormal(imageData);  // 使用正常二值化
-            const result = recognizeAttributes_3(roiGray);
+            const result = recognizeAttributes_3(roiGray, w, h);
             attributes3Results.push(result);
         }
 
@@ -968,7 +1038,7 @@ function processImage() {
             const [x, y, w, h] = AttributesCoords4[i];
             const imageData = ctx.getImageData(x, y, w, h);
             const roiGray = getGrayROINormal(imageData);  // 使用正常二值化
-            const result = recognizeAttributes_4(roiGray);
+            const result = recognizeAttributes_4(roiGray, w, h);
             attributes4Results.push(result);
         }
 
@@ -978,9 +1048,15 @@ function processImage() {
             const [x, y, w, h] = AttributesCoords5[i];
             const imageData = ctx.getImageData(x, y, w, h);
             const roiGray = getGrayROINormal(imageData);  // 使用正常二值化
-            const result = recognizeAttributes_5(roiGray);
+            const result = recognizeAttributes_5(roiGray, w, h);
             attributes5Results.push(result);
         }
+
+        console.log('attributes1Results:', attributes1Results);
+        console.log('attributes2Results:', attributes2Results);
+        console.log('attributes3Results:', attributes3Results);
+        console.log('attributes4Results:', attributes4Results);
+        console.log('attributes5Results:', attributes5Results);
 
         // 辨識每個消耗1
         const cost1Results = [];
@@ -3228,30 +3304,28 @@ async function processImportImages(files) {
 
     for (let i = 0; i < files.length; i++) {
         try {
-            const result = await processSingleImageImport(files[i]);
+            // 改為直接呼叫背包辨識函式 (from ocr-backpack-script.js)
+            const result = await processImageFile(files[i]);
 
             // 驗證資料完整性
             let isValid = true;
             // 必須要有套裝、Cost、主詞條名稱與數值
-            if (!result.Attributes || !result.Cost) isValid = false;
-            if (!result.AllEchoAffix[0].Name || !result.AllEchoAffix[0].Number) isValid = false;
+            if (!result || !result.Attributes || !result.Cost || !result.AllEchoAffix || !result.AllEchoAffix[0] || !result.AllEchoAffix[0].Name || !result.AllEchoAffix[0].Number) {
+                isValid = false;
+            } else {
+                // 副詞條驗證：允許空詞條，但若有名稱則必須有數值，反之亦然。
+                for (let j = 1; j < result.AllEchoAffix.length; j++) {
+                    const affix = result.AllEchoAffix[j];
+                    if ((affix.Name && !affix.Number) || (!affix.Name && affix.Number)) {
+                        isValid = false;
+                        break;
+                    }
 
-            // 檢查副詞條：當json資料中副詞條名稱有空值則該筆資料不匯入
-            for (let j = 1; j < result.AllEchoAffix.length; j++) {
-                const affix = result.AllEchoAffix[j];
-                // 嚴格檢查：名稱不能為空
-                if (!affix.Name || affix.Name === "") {
-                    isValid = false;
-                    break;
-                }
-                // 檢查數值也不能為空
-                if (!affix.Number || affix.Number === "") {
-                    isValid = false;
-                    break;
                 }
             }
 
             if (isValid) {
+                result.Id = Date.now() + i; // 賦予一個簡單的 ID
                 allResults.push(result);
             } else {
                 console.warn(`File ${files[i].name} skipped due to incomplete data (low similarity).`);
@@ -3270,6 +3344,7 @@ async function processImportImages(files) {
 
     echoPageImportBtn.textContent = originalText;
     echoPageImportBtn.disabled = false;
+    return allResults;
 }
 
 function processSingleImageImport(file) {
@@ -3347,7 +3422,7 @@ function autoSaveEchoesToCurrentUid(echoList) {
 
     if (addedCount > 0) {
         saveEchoDataByUid(uid, existingData);
-        console.log(`自動儲存 ${addedCount} 個新聲骸至 UID: ${uid}`);
+        //console.log(`自動儲存 ${addedCount} 個新聲骸至 UID: ${uid}`);
         // 如果當前在聲骸頁面，重新渲染列表
         if (echoPageSection.style.display === 'block') {
             renderEchoList();
@@ -5051,7 +5126,7 @@ function analyzeSignUpImage(img) {
             const [x, y, w, h] = coords[i];
             const imageData = ctx.getImageData(x, y, w, h);
             const roiGray = isNormal ? getGrayROINormal(imageData) : getGrayROI(imageData);
-            res.push(func(roiGray));
+            res.push(func(roiGray, w, h));
         }
         return res;
     };
