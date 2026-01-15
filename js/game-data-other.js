@@ -44,6 +44,7 @@ var resonatorsProfilePicture = {
     "尤諾": "https://guide-res.aki-game.net/introduction/material/01a20883f3d14c9bfb6ddc75a106c606/0b8b32ec96d68a517072c0d83846be60.png",
     "卜靈": "https://guide-res.aki-game.net/introduction/material/0da47ac57cb16dc38f725b41ffc56f48/2fdb664642d57f6fe3a444c595821059.png",
     "琳奈": "https://guide-res.aki-game.net/introduction/material/110abffdd225038bdcd9f6e575b82946/acd70405164cb93b7dffe29fb3f6acb8.png",
+    "莫寧": "https://guide-res.aki-game.net/introduction/material/6954cb4694ffd0ecb21ed82128a8914a/34bf12f0ca96c0ad5bbfd06f57f8e564.png",
 };
 
 // --- 屬性素材圖片對照表 ---
@@ -221,10 +222,10 @@ function supCNtoTC(name) {
 }
 
 // --- 主詞綴簡體轉繁體 ---
-function mainAtrriCNtoTCName(name,cost) {
-    return mainAtrriCNtoTCName(name,cost, null);
+function mainAtrriCNtoTCName(name, cost) {
+    return mainAtrriCNtoTCName(name, cost, null);
 }
-function mainAtrriCNtoTCName(name,cost, suite) {
+function mainAtrriCNtoTCName(name, cost, suite) {
     switch (name) {
         case '暴击22%': return '暴擊';
         case '暴伤44%': return '暴擊傷害';
@@ -263,21 +264,21 @@ function mainAtrriCNtoTCName(name,cost, suite) {
         case '攻击力18%': return '攻擊';
         case '生命22.8%': return '生命';
         case '防御18%': return '防禦';
-        default: 
-        switch (cost) {
-            case 'Cost4':
-                return '暴擊';
-            case 'Cost3':
-                return '攻擊';
-            case 'Cost1':
-                return '攻擊';
-            default:
-                return '';
-        }
+        default:
+            switch (cost) {
+                case 'Cost4':
+                    return '暴擊';
+                case 'Cost3':
+                    return '攻擊';
+                case 'Cost1':
+                    return '攻擊';
+                default:
+                    return '';
+            }
     }
 }
 
-function mainAtrriCNtoTCNumber(name,cost) {
+function mainAtrriCNtoTCNumber(name, cost) {
     switch (name) {
         case '暴击22%': return '22%';
         case '暴伤44%': return '44%';
@@ -292,17 +293,17 @@ function mainAtrriCNtoTCNumber(name,cost) {
         case '攻击力18%': return '18%';
         case '生命22.8%': return '22.8%';
         case '防御18%': return '18%';
-        default: 
-        switch (cost) {
-            case 'Cost4':
-                return '22%';
-            case 'Cost3':
-                return '30%';
-            case 'Cost1':
-                return '18%';
-            default:
-                return '';
-        }
+        default:
+            switch (cost) {
+                case 'Cost4':
+                    return '22%';
+                case 'Cost3':
+                    return '30%';
+                case 'Cost1':
+                    return '18%';
+                default:
+                    return '';
+            }
     }
 }
 
