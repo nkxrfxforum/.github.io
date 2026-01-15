@@ -1052,12 +1052,6 @@ function processImage() {
             attributes5Results.push(result);
         }
 
-        console.log('attributes1Results:', attributes1Results);
-        console.log('attributes2Results:', attributes2Results);
-        console.log('attributes3Results:', attributes3Results);
-        console.log('attributes4Results:', attributes4Results);
-        console.log('attributes5Results:', attributes5Results);
-
         // 辨識每個消耗1
         const cost1Results = [];
         for (let i = 0; i < CostCoords1.length; i++) {
@@ -2706,7 +2700,6 @@ function addToHistory(data) {
     }
 
     localStorage.setItem('recognitionHistory', JSON.stringify(history));
-    console.log('已加入歷史紀錄');
 }
 
 function getHistory() {
