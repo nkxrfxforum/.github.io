@@ -72,6 +72,7 @@ var attributesProfilePicture = {
     "焚羽獵魔之影": "https://guide-res.aki-game.net/introduction/material/15d54498227df4c02ecc74e4f065a7ec/75c168b671d4ce827fca23907d85f114.png",
     "命理崩毀之弦": "https://guide-res.aki-game.net/introduction/material/3b9ca540ee66b46851b1a00eb1118230/7ae5e99a8c2f19cd25f44313293553aa.png",
     "逆光躍彩之約": "https://guide-res.aki-game.net/introduction/material/e996fb48eee1f66623aaac326df6ac51/2484a7df36877a14689574eebda6dd7c.png",
+    "星構尋輝之環": "https://guide-res.aki-game.net/introduction/material/e996fb48eee1f66623aaac326df6ac51/a969aaab995e4aaddbfe5fc3781fa63b.png",
 };
 
 
