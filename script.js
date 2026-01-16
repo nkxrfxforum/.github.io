@@ -1951,19 +1951,21 @@ function cropImageAsBase64(x, y, w, h) {
 
 // Debug Modal Logic
 const debugModal = document.getElementById('debugModal');
-const closeDebugModalBtn = document.getElementById('closeDebugModalBtn');
-const reportDebugBtn = document.getElementById('reportDebugBtn');
 let currentDebugEchoIndex = -1;
 
-if (closeDebugModalBtn) {
-    closeDebugModalBtn.addEventListener('click', () => {
-        debugModal.classList.remove('show');
-    });
-}
+document.addEventListener('click', (e) => {
+    let target = e.target;
+    if (target && target.nodeType === 3) target = target.parentNode; // 處理文字節點
+    if (target && target.closest && target.closest('#closeDebugModalBtn')) {
+        const modal = document.getElementById('debugModal');
+        if (modal) modal.classList.remove('show');
+    }
+});
 
 window.addEventListener('click', (event) => {
-    if (event.target == debugModal) {
-        debugModal.classList.remove('show');
+    const modal = document.getElementById('debugModal');
+    if (modal && event.target == modal) {
+        modal.classList.remove('show');
     }
 });
 
@@ -2094,19 +2096,23 @@ function openDebugModal(index) {
         }
     }
 
-    debugModal.classList.add('show');
+    const modal = document.getElementById('debugModal');
+    if (modal) modal.classList.add('show');
 }
 
-if (reportDebugBtn) {
-    reportDebugBtn.addEventListener('click', async () => {
+document.addEventListener('click', async (e) => {
+    let target = e.target;
+    if (target && target.nodeType === 3) target = target.parentNode; // 處理文字節點
+    const btn = target && target.closest ? target.closest('#reportDebugBtn') : null;
+    if (btn) {
         const checkboxes = document.querySelectorAll('.debug-checkbox:checked');
         if (checkboxes.length === 0) {
             alert('請先選擇要回報的項目');
             return;
         }
 
-        reportDebugBtn.disabled = true;
-        reportDebugBtn.textContent = '回報中...';
+        btn.disabled = true;
+        btn.textContent = '回報中...';
 
         try {
             const echoIndex = currentDebugEchoIndex + 1;
@@ -2179,17 +2185,18 @@ if (reportDebugBtn) {
 
             // Uncheck all
             checkboxes.forEach(cb => cb.checked = false);
-            debugModal.classList.remove('show');
+            const modal = document.getElementById('debugModal');
+            if (modal) modal.classList.remove('show');
 
         } catch (error) {
             console.error('回報失敗:', error);
             alert('回報失敗: ' + error.message);
         } finally {
-            reportDebugBtn.disabled = false;
-            reportDebugBtn.textContent = '回報';
+            btn.disabled = false;
+            btn.textContent = '回報';
         }
-    });
-}
+    }
+});
 
 // Expose functions to global scope for HTML onclick
 window.openChainModal = openChainModal;
@@ -4981,7 +4988,8 @@ function saveEditModal() {
 
     saveEchoDataByUid(currentEditUid, echoData);
     renderEchoList();
-    editModal.classList.remove('show');
+    const modal = document.getElementById('editModal');
+    if (modal) modal.classList.remove('show');
 }
 
 // ==================================================================================
