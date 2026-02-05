@@ -793,6 +793,33 @@
             color: #000;
             transform: scale(1.1);
         }
+
+        /* 裁切工具 Modal 樣式 (來自 ocr.html) */
+        #cropModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center; user-select: none; }
+        #cropContainer { position: relative; }
+        #userImg { display: block; max-width: 95vw; max-height: calc(100vh - 100px); }
+        #cropBox {
+            position: absolute;
+            border: 2px solid red;
+            cursor: move;
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
+        }
+        .resize-handle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: red;
+            border: 1px solid white;
+        }
+        .resize-handle.nw { top: -5px; left: -5px; cursor: nwse-resize; }
+        .resize-handle.ne { top: -5px; right: -5px; cursor: nesw-resize; }
+        .resize-handle.sw { bottom: -5px; left: -5px; cursor: nesw-resize; }
+        .resize-handle.se { bottom: -5px; right: -5px; cursor: nwse-resize; }
+        .crop-controls { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 20; display: flex; gap: 15px; }
+        .crop-btn { padding: 10px 20px; font-size: 16px; cursor: pointer; border: none; border-radius: 5px; background: #fff; color: #000; font-weight: bold; }
+        .crop-btn:hover { background: #eee; }
+        .crop-btn.confirm { background: #4CAF50; color: white; }
+        .crop-btn.cancel { background: #f44336; color: white; }
     </style>
 </head>
 
@@ -1050,6 +1077,8 @@
             <div class="section">
                 <button class="btn" onclick="captureScreen()" style="margin-bottom: 10px; background: transparent; border: 1px solid var(--accent-gold); color: var(--accent-gold);">直接截取螢幕/視窗 (免存檔)</button>
                 <button class="btn" id="confirmImportBtn">選擇檔案</button>
+                <button class="btn" id="btnManualCrop" style="margin-top: 10px; background: linear-gradient(135deg, #9c27b0 0%, #673ab7 100%);">選取檔案(選取框)</button>
+                <input type="file" id="manualCropInput" accept="image/*" style="display:none">
             </div>
         </div>
     </div>
@@ -1339,6 +1368,38 @@
         </div>
     </div>
 
+    <!-- 裁切工具 Modal -->
+    <div id="cropModal">
+        <div id="cropContainer">
+            <img id="userImg">
+            <div id="cropBox">
+                <div class="resize-handle nw"></div>
+                <div class="resize-handle ne"></div>
+                <div class="resize-handle sw"></div>
+                <div class="resize-handle se"></div>
+            </div>
+        </div>
+        <div class="crop-controls">
+            <button id="btnCropOriginal" class="crop-btn">原圖</button>
+            <button id="btnCropMax" class="crop-btn">最大化</button>
+            <button id="btnCropConfirm" class="crop-btn confirm">確認</button>
+            <button id="btnCropCancel" class="crop-btn cancel">取消</button>
+        </div>
+    </div>
+    <canvas id="resultCanvas" style="display: none;"></canvas>
+
+    <!-- Shutdown Notice Modal -->
+    <div class="modal" id="shutdownNoticeModal">
+        <div class="modal-content" style="max-width: 500px; text-align: center;">
+            <span class="close-btn" onclick="closeShutdownNoticeModal()">&times;</span>
+            <h1 style="color: var(--accent-gold); margin-bottom: 1.5rem;">公告</h1>
+            <div class="info-box" style="text-align: center; font-size: 1.1rem;">
+                <p>由於原網站評分已停止更新，此網站一併停止更新，感謝大家的支持，版本僅停留在3.0</p>
+            </div>
+            <button class="btn" onclick="closeShutdownNoticeModal()" style="margin-top: 1rem;">確認</button>
+        </div>
+    </div>
+
     <script src="config.js"></script>
     <script src="js/game-data-resonator.js"></script>
     <script src="js/game-data-other.js"></script>
@@ -1348,8 +1409,13 @@
     <script src="js/ocr-backpack-data.js"></script>
     <script src="js/ocr-discord-templates-supaffix-number-data.js"></script>
     <script src="json/NewFeatures.js"></script>
+    <script src="js/ocr-backpack-script.js"></script>
     <script src="script.js"></script>
     <script>
+        function closeShutdownNoticeModal() {
+            document.getElementById('shutdownNoticeModal').classList.remove('show');
+        }
+
         // 使用 Screen Capture API 進行截圖 (不存檔)
         async function captureScreen() {
             // 檢查瀏覽器支援度與環境 (需要 HTTPS 或 localhost)
@@ -1473,6 +1539,27 @@
             };
             input.click();
         });
+
+        // 處理手動裁切結果的回呼函式
+        window.handleManualCropResult = async function(blob) {
+            if (blob) {
+                const file = new File([blob], "cropped_image.png", { type: "image/png" });
+                // 關閉匯入說明模態框
+                const modal = document.getElementById('importInstructionModal');
+                if (modal) modal.classList.remove('show');
+                
+                // 呼叫既有的匯入處理函式
+                if (typeof processImportImages === 'function') {
+                    const results = await processImportImages([file]);
+                    // console.log("手動裁切辨識結果 JSON:", results);
+                }
+            }
+        };
+
+        // 初始化手動裁切功能
+        if (typeof initManualCrop === 'function') {
+            initManualCrop();
+        }
 
         // 監聽貼上事件 (Ctrl+V) 以支援直接匯入
         document.addEventListener('paste', async (event) => {
@@ -1739,6 +1826,10 @@
 
         // Rank Button Logic
         document.addEventListener('DOMContentLoaded', () => {
+            // Show shutdown notice
+            const shutdownModal = document.getElementById('shutdownNoticeModal');
+            if (shutdownModal) shutdownModal.classList.add('show');
+
             initNewFeatures();
             const rankBtn = document.getElementById('rankBtn');
             const rankSection = document.getElementById('rankSection');
